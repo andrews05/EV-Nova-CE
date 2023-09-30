@@ -11,6 +11,7 @@ CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 OBJS        = sym.o \
 			  imports.o \
 			  src/winmain.o \
+              src/windows-keys.o \
               src/open-pilot.o
 
 PETOOL     ?= petool
