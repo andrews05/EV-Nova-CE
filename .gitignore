@@ -1,0 +1,19 @@
+# object files
+*.o
+
+# patched machine code
+*.exe
+
+# PETool on unix
+/petool
+
+# configuration
+config.mk
+
+# misc junk
+*~
+\#*\#
+.DS_Store
+
+# Visual Studio
+.vs
