@@ -1,5 +1,5 @@
-#ifndef NOVA_H 
-#define NOVA_H
+#ifndef IMPORTS_H 
+#define IMPORTS_H
 
 // This header is used for patches
 // This header will be split up as it becomes larger
@@ -14,6 +14,6 @@
 
 // ### Functions ###
 
-int APIENTRY nv_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow);
+void imports_init();
 
 #endif

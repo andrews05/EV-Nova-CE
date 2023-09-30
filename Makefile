@@ -9,6 +9,8 @@ NFLAGS      = -f elf -Iinc/
 CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 
 OBJS        = sym.o \
+			  imports.o \
+			  src/winmain.o \
               src/open-pilot.o
 
 PETOOL     ?= petool

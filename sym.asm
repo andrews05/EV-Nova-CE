@@ -5,9 +5,7 @@
 
 ; functions
 
-; clib (From Ghidra)
-
-; clib (From IDA)
+setcglob 0x004D2A80, nv_WinMain
 
 ; imports
 

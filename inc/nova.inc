@@ -6,15 +6,7 @@
 
 ; ### vars ###
 
-
-
-; ### clib (From Ghidra) ###
-
-;cextern strncpy
-
-
-; ### clib (From IDA) ###
-
+; ### functions ###
 
 ; ### Imports ###
 
