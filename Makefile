@@ -38,3 +38,5 @@ endif
 
 clean:
 	$(RM) $(wildcard $(INPUT)*.exe) "$(OUTPUT).exe" $(wildcard rsrc*.o) $(OBJS)
+
+.SECONDARY: $(OBJS)
