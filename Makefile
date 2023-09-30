@@ -1,6 +1,7 @@
 -include config.mk
 
-TARGET      = EV\ Nova
+INPUT       = EV_Nova
+OUTPUT      = $(subst _, ,$(INPUT))
 SUFFIXES    = mod stock
 IMPORTS     = 0x18F000 7670
 LDFLAGS     = --section-alignment=0x1000 --subsystem=windows --enable-stdcall-fixup
@@ -17,16 +18,16 @@ WINDRES    ?= windres
 
 all: mod
 
-$(SUFFIXES): %: $(TARGET)_%.exe
-	cp "$<" $(TARGET).exe
+$(SUFFIXES): %: $(INPUT)_%.exe
+	cp "$<" "$(OUTPUT).exe" || copy "$<" "$(OUTPUT).exe"
 
 %.o: %.asm
 	$(NASM) $(NFLAGS) -o $@ $<
     
-rsrc%.o: $(TARGET)%.dat
+rsrc%.o: $(INPUT)%.dat
 	$(PETOOL) re2obj "$<" $@
 
-$(TARGET)%.exe: rsrc%.o $(OBJS)
+$(INPUT)%.exe: rsrc%.o $(OBJS)
 	$(LD) $(LDFLAGS) -T "$(basename $@).lds" -o "$@" $< $(OBJS)
 ifneq (,$(IMPORTS))
 	$(PETOOL) setdd "$@" 1 $(IMPORTS) || ($(RM) "$@" && exit 1)
@@ -36,4 +37,4 @@ endif
 	$(PETOOL) dump "$@"
 
 clean:
-	$(RM) $(TARGET)*.exe rsrc*.o $(OBJS)
+	$(RM) $(wildcard $(INPUT)*.exe) "$(OUTPUT).exe" $(wildcard rsrc*.o) $(OBJS)
