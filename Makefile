@@ -11,9 +11,9 @@ CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 OBJS        = sym.o \
 			  imports.o \
 			  src/winmain.o \
-			  src/windows-keys.o \
-			  src/radar-interference.o \
-			  src/open-pilot.o
+			  src/windows-keys-fix.o \
+			  src/radar-interference-fix.o \
+			  src/open-pilot-fix.o
 
 PETOOL     ?= petool
 STRIP      ?= strip
