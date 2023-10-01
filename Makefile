@@ -10,7 +10,7 @@ CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 
 BASEOBJS    = rsrc.o \
 			  sym.o \
-			  imports.o \
+#			  imports.o \
 			  src/winmain.o \
 			  src/windows-keys-fix.o \
 			  src/radar-interference-fix.o \
