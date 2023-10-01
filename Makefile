@@ -1,38 +1,41 @@
 -include config.mk
 
-INPUT       = EV_Nova
-OUTPUT      = $(subst _, ,$(INPUT))
-SUFFIXES    = mod stock
+INPUT       = EV_Nova.dat
+OUTPUT      = EV\ Nova.exe
+LDS         = EV_Nova.lds
 IMPORTS     = 0x18F000 7670
 LDFLAGS     = --section-alignment=0x1000 --subsystem=windows --enable-stdcall-fixup
 NFLAGS      = -f elf -Iinc/
 CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 
-OBJS        = sym.o \
+BASEOBJS    = rsrc.o \
+			  sym.o \
 			  imports.o \
 			  src/winmain.o \
 			  src/windows-keys-fix.o \
 			  src/radar-interference-fix.o \
 			  src/open-pilot-fix.o
+HERETIC     = src/HERETiC.o
+OBJS        = $(BASEOBJS) $(HERETIC)
 
 PETOOL     ?= petool
 STRIP      ?= strip
 NASM       ?= nasm
 WINDRES    ?= windres
 
-all: mod
+all: $(OUTPUT)
 
-$(SUFFIXES): %: $(INPUT)_%.exe
-	cp "$<" "$(OUTPUT).exe" || copy "$<" "$(OUTPUT).exe"
+stock: OBJS = $(BASEOBJS)
+stock: $(OUTPUT)
 
 %.o: %.asm
 	$(NASM) $(NFLAGS) -o $@ $<
     
-rsrc%.o: $(INPUT)%.dat
-	$(PETOOL) re2obj "$<" $@
+rsrc.o: $(INPUT)
+	$(PETOOL) re2obj $(INPUT) $@
 
-$(INPUT)%.exe: rsrc%.o $(OBJS)
-	$(LD) $(LDFLAGS) -T "$(basename $@).lds" -o "$@" $< $(OBJS)
+$(OUTPUT): $(LDS) $(INPUT) $(OBJS)
+	$(LD) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS)
 ifneq (,$(IMPORTS))
 	$(PETOOL) setdd "$@" 1 $(IMPORTS) || ($(RM) "$@" && exit 1)
 endif
@@ -41,6 +44,4 @@ endif
 	$(PETOOL) dump "$@"
 
 clean:
-	$(RM) $(wildcard $(INPUT)*.exe) "$(OUTPUT).exe" $(wildcard rsrc*.o) $(OBJS)
-
-.SECONDARY: $(OBJS)
+	$(RM) $(OUTPUT) $(OBJS)
