@@ -14,7 +14,6 @@ BASEOBJS    = rsrc.o \
 			  src/windows-keys-fix.o \
 			  src/radar-interference-fix.o \
 			  src/open-pilot-fix.o
-#			  imports.o \
 HERETIC     = src/HERETiC.o
 OBJS        = $(BASEOBJS) $(HERETIC)
 
