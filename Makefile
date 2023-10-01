@@ -10,11 +10,11 @@ CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 
 BASEOBJS    = rsrc.o \
 			  sym.o \
-#			  imports.o \
 			  src/winmain.o \
 			  src/windows-keys-fix.o \
 			  src/radar-interference-fix.o \
 			  src/open-pilot-fix.o
+#			  imports.o \
 HERETIC     = src/HERETiC.o
 OBJS        = $(BASEOBJS) $(HERETIC)
 
