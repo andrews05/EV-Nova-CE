@@ -13,7 +13,8 @@ BASEOBJS    = rsrc.o \
 			  src/winmain.o \
 			  src/windows-keys-fix.o \
 			  src/radar-interference-fix.o \
-			  src/open-pilot-fix.o
+			  src/open-pilot-fix.o \
+			  src/font-substitution-fix.o
 HERETIC     = src/HERETiC.o
 OBJS        = $(BASEOBJS) $(HERETIC)
 
