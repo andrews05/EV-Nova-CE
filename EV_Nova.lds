@@ -13,7 +13,7 @@ SECTIONS
     .idata            0x58F000 : { EV_Nova.dat(.idata) }
     /DISCARD/                  : { EV_Nova.dat(.bss) }
     .bss              0x591000 : { . = . + 0x2DFE13; }
-    .reloc            0x871000 : { EV_Nova.dat(.reloc) }
+    /DISCARD/                  : { EV_Nova.dat(.reloc) }
 
     /DISCARD/                  : { *(.drectve) *(.rdata$zzz) }
     .p_text      ALIGN(0x1000) : { *(.text) }
