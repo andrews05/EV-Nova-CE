@@ -18,6 +18,6 @@ Building on *nix
 
 Building on Windows
 -------------------
- - Download winbuilds, the latest winbuilds includes a bug in ld so use 'win-builds-for-patching.zip' from the 'files' directory in this repo
- - Extract 'win-builds-for-patching.zip' and run 'win-install.bat'
- - run 'build.cmd'
+ - Download winbuilds, the latest winbuilds includes a bug in ld so use `win-builds-for-patching.zip` from the `files` directory in this repo
+ - Extract `win-builds-for-patching.zip` and run `win-install.bat`
+ - run `build.cmd`
