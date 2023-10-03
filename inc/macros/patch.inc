@@ -83,6 +83,14 @@
     @ENDPATCH
 %endmacro
 
+%macro @CALL_NOP 2
+    @PATCH (%1)
+    db 0xE8                     ; far call
+    dd (%2) - (%1) - 5          ; relative offset
+    db 0x90                     ; NOP
+    @ENDPATCH
+%endmacro
+
 %macro @HOOK 1
     %define @HOOKEND (%1 + 5)
     @LJMP {(%1)}, dest%1
