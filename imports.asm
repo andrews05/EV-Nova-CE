@@ -9,7 +9,10 @@ cextern _imp__GetProcAddress
     %1_library kernel32
     %1_import GetPrivateProfileStringA
     %1_import GetPrivateProfileIntA
-    %1_import VirtualProtect
+    %1_import MultiByteToWideChar
+
+    %1_library user32
+    %1_import DrawTextW
     
     %1_library msvcrt
     %1_import $I10_OUTPUT

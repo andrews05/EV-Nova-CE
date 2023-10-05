@@ -12,6 +12,7 @@ BASEOBJS    = rsrc.o \
 			  sym.o \
 			  imports.o \
 			  src/winmain.o \
+			  src/macroman-fix.o \
 			  src/windows-keys-fix.o \
 			  src/radar-interference-fix.o \
 			  src/open-pilot-fix.o \

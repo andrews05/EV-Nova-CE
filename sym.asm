@@ -6,6 +6,8 @@
 ; functions
 
 setcglob 0x004D2A80, nv_WinMain
+setcglob 0x004D86D0, nv_Alloc
+setcglob 0x004D87D0, nv_Free
 
 ; imports
 

@@ -16,4 +16,7 @@
 
 int APIENTRY nv_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow);
 
+void* nv_Alloc(size_t count);
+void nv_Free(void *ptr);
+
 #endif
