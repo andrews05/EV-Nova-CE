@@ -5,9 +5,11 @@
 
 ; functions
 
+setcglob 0x004B45E0, nv_InitializeMonitor
 setcglob 0x004D2A80, nv_WinMain
 setcglob 0x004D86D0, nv_Alloc
 setcglob 0x004D87D0, nv_Free
+setcglob 0x004ECBD0, nv_SetupScreen
 
 ; imports
 
