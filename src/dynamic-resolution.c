@@ -15,19 +15,14 @@
 CALL(0x0041629B, _InitializeMonitor);
 
 void InitializeMonitor() {
-    // Get the full path to ddraw.ini in the current directory
-    LPSTR ddrawIni = GlobalAlloc(0, 4096);
-    GetFullPathNameA("ddraw.ini", 4096, ddrawIni, NULL);
-
     // Get width and height from the ini
-    int width = GetPrivateProfileIntA("ddraw", "width", 0, ddrawIni);
-    int height = GetPrivateProfileIntA("ddraw", "height", 0, ddrawIni);
-
-    GlobalFree(ddrawIni);
+    int width = GetPrivateProfileIntA("EV Nova", "game_width", 0, ".\\ddraw.ini");
+    int height = GetPrivateProfileIntA("EV Nova", "game_height", 0, ".\\ddraw.ini");
 
     // Fallback to current display metrics
     if (width == 0) {
-        width = GetSystemMetrics(SM_CXSCREEN);
+        // Force width to a multiple of 2 as Nova won't render properly with an odd width
+        width = GetSystemMetrics(SM_CXSCREEN) & 0xFFFE;
     }
     if (height == 0) {
         height = GetSystemMetrics(SM_CYSCREEN);
