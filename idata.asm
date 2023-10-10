@@ -80,13 +80,6 @@ dd 0x0        ; ForwarderChain
 dd 0x190DC0   ; Name
 dd 0x18FA74   ; FirstThunk
 
-; iconv.dll
-dd 0x18F5BC   ; OriginalFirstThunk
-dd 0x0        ; TimeDateStamp
-dd 0x0        ; ForwarderChain
-dd 0x190DEC   ; Name
-dd 0x18FA80   ; FirstThunk
-
 ; END
 dd 0x0        ; OriginalFirstThunk
 dd 0x0        ; TimeDateStamp
