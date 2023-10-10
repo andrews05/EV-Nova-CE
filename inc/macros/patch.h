@@ -16,6 +16,15 @@
         ".long " #dst "-" #src " - 5;"              \
     )
 
+#define SJMP(src, dst)                              \
+    __asm (                                         \
+        ".section .patch,\"d0\";"                   \
+        ".long " #src ";"                           \
+        ".long 2;"                                  \
+        ".byte 0xEB;"                               \
+        ".byte " #dst "-" #src " - 2;"              \
+    )
+
 #define CALL(src, dst)                              \
     __asm (                                         \
         ".section .patch,\"d0\";"                   \
@@ -41,4 +50,20 @@
         ".long " #dst ";"                           \
         ".long 4;"                                  \
         ".long " #value ";"                         \
+    )
+
+#define SETWORD(dst, value)                         \
+    __asm (                                         \
+        ".section .patch,\"d0\";"                   \
+        ".long " #dst ";"                           \
+        ".long 2;"                                  \
+        ".short " #value ";"                        \
+    )
+
+#define SETBYTE(dst, value)                         \
+    __asm (                                         \
+        ".section .patch,\"d0\";"                   \
+        ".long " #dst ";"                           \
+        ".long 1;"                                  \
+        ".byte " #value ";"                         \
     )
