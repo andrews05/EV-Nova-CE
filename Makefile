@@ -18,6 +18,7 @@ BASEOBJS    = rsrc.o \
 			  src/open-pilot-fix.o \
 			  src/font-substitution-fix.o \
 			  src/widescreen-roid-fix.o \
+			  src/dlog-size-fix.o \
 			  src/dynamic-resolution.o
 HERETIC     = src/HERETiC.o
 OBJS        = $(BASEOBJS) $(HERETIC)
