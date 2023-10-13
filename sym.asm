@@ -4,6 +4,9 @@
 ; vars
 
 setcglob 0x007CDAB0, g_nv_debugLog
+setcglob 0x007D4D0E, g_nv_gridThumbBounds
+setcglob 0x007D510E, g_nv_gridCellBounds
+setcglob 0x007D51AE, g_nv_gridCellImageBounds
 setcglob 0x008700A0, g_nv_screenWidth
 setcglob 0x0087019C, g_nv_screenHeight
 setcglob 0x00870078, g_nv_hwnd

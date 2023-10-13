@@ -6,6 +6,9 @@
 
 ; ### vars ###
 
+cextern g_gridCellWidth
+cextern g_gridCellHeight
+
 ; ### functions ###
 
 ; ### Imports ###
