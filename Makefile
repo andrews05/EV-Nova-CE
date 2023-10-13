@@ -23,6 +23,7 @@ OBJS        = rsrc.o \
 			  src/font-substitution-fix.o \
 			  src/widescreen-roid-fix.o \
 			  src/odd-width-fix.o \
+			  src/scale-dlog.o \
 			  src/dynamic-resolution.o \
 			  src/windowed-toggle.o \
 			  src/hotkeys.o \
