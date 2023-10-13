@@ -28,7 +28,7 @@ int WINAPI DrawTextAToW(HDC hdc, LPCWSTR lpchText, int cchText, LPRECT lprc, UIN
 }
 
 // Allocate twice the number of bytes
-void* alloc_Wide(size_t count) {
+void *alloc_Wide(size_t count) {
     return nv_Alloc(count * 2);
 }
 
