@@ -24,6 +24,7 @@ OBJS        = rsrc.o \
 			  src/widescreen-roid-fix.o \
 			  src/odd-width-fix.o \
 			  src/scale-dlog.o \
+			  src/scale-grid.o \
 			  src/dynamic-resolution.o \
 			  src/windowed-toggle.o \
 			  src/hotkeys.o \

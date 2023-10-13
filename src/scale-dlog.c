@@ -6,12 +6,16 @@
 
 
 double g_scaleFactor = 0;
+int g_gridCellWidth = 83;
+int g_gridCellHeight = 54;
 
 // Get the scale factor from the ini
 void initScaleFactor() {
     char buf[8];
     GetPrivateProfileStringA("EV Nova", "ui_scale", "1.0", buf, sizeof buf, ".\\ddraw.ini");
     g_scaleFactor = atof(buf);
+    g_gridCellWidth = ROUND(g_gridCellWidth * g_scaleFactor);
+    g_gridCellHeight = ROUND(g_gridCellHeight * g_scaleFactor);
 }
 
 // Apply the scale factor to a value
@@ -22,6 +26,7 @@ int scale(int val) {
     return ROUND(val * g_scaleFactor);
 }
 
+// Apply the scale factor to a rect
 void scaleRect(QDRect *rect) {
     rect->top = scale(rect->top);
     rect->left = scale(rect->left);
