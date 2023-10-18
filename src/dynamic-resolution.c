@@ -74,5 +74,5 @@ void ToggleFullscren(int unknown) {
         g_nv_runInAWindowPref ? CNC_DDRAW_SET_WINDOWED : CNC_DDRAW_SET_FULLSCREEN,
         0);
 
-    return ((void (*)(int))0x004CFDB0)(unknown);
+    ((void (*)(int))0x004CFDB0)(unknown);
 }
