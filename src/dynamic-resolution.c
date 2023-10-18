@@ -19,6 +19,9 @@
 // Replace CALL to InitializeMonitor
 CALL(0x0041629B, _InitializeMonitor);
 
+// Switch between windowed and fullscreen mode without restart
+CALL(0x00488FE6, _ToggleFullscren);
+
 // Replace original runInAWindow bool with ours to make sure the game doesn't change its behavior
 // Init runInAWindow bool
 SETDWORD(0x004C7750 + 2, _g_runInAWindow);
@@ -28,6 +31,16 @@ SETDWORD(0x004C7618 + 3, _g_runInAWindow);
 bool g_runInAWindow;
 
 void InitializeMonitor() {
+    // Setup g_runInAWindow bool
+    char buf[8];
+    GetPrivateProfileStringA("ddraw", "fullscreen", "false", buf, sizeof buf, ".\\ddraw.ini");
+    BOOL upscaled = _strcmpi(buf, "yes") == 0 || _strcmpi(buf, "true") == 0 || _strcmpi(buf, "1") == 0;
+
+    GetPrivateProfileStringA("ddraw", "windowed", "false", buf, sizeof buf, ".\\ddraw.ini");
+    BOOL windowed = _strcmpi(buf, "yes") == 0 || _strcmpi(buf, "true") == 0 || _strcmpi(buf, "1") == 0;
+
+    g_runInAWindow = g_nv_runInAWindowPref = windowed && !upscaled;
+
     // Get width and height from the ini
     int width = GetPrivateProfileIntA("EV Nova", "game_width", 0, ".\\ddraw.ini");
     int height = GetPrivateProfileIntA("EV Nova", "game_height", 0, ".\\ddraw.ini");
@@ -45,9 +58,21 @@ void InitializeMonitor() {
     // Fullscreen is forced on as exact behavior will be controlled by cnc ddraw
     nv_SetupScreen(width, height, 15, NV_SCREEN_FULLSCREEN | NV_SCREEN_UNKNOWN_1);
 
+    // Let cnc-ddraw override the fullscreen mode if requested
     PostMessageA(
         g_nv_hwnd, 
         WM_TOGGLE_FULLSCREEN, 
         g_runInAWindow ? CNC_DDRAW_SET_WINDOWED : CNC_DDRAW_SET_FULLSCREEN,
         0);
+}
+
+void ToggleFullscren(int unknown) {
+    // Switch instantly between windowed/fullscreen without restart
+    PostMessageA(
+        g_nv_hwnd,
+        WM_TOGGLE_FULLSCREEN,
+        g_nv_runInAWindowPref ? CNC_DDRAW_SET_WINDOWED : CNC_DDRAW_SET_FULLSCREEN,
+        0);
+
+    return ((void (*)(int))0x004CFDB0)(unknown);
 }

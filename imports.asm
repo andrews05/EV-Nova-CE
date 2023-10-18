@@ -14,7 +14,7 @@ cextern _imp__GetProcAddress
     %1_library user32
     %1_import DrawTextW
     
-    ; %1_library msvcrt
+     %1_library msvcrt
     ; %1_import $I10_OUTPUT
     ; %1_import ??0__non_rtti_object@@QAE@ABV0@@Z
     ; %1_import ??0__non_rtti_object@@QAE@PBD@Z
@@ -503,7 +503,7 @@ cextern _imp__GetProcAddress
     ; %1_import _stat64
     ; %1_import _stati64
     ; %1_import _statusfp
-    ; %1_import _strcmpi
+     %1_import _strcmpi
     ; %1_import _strdate
     ; %1_import _strerror
     ; %1_import _Strftime

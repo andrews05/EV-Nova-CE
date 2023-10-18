@@ -13,6 +13,7 @@ int g_nv_screenWidth;
 int g_nv_screenHeight;
 HWND g_nv_hwnd;
 bool g_nv_runInAWindow;
+bool g_nv_runInAWindowPref;
 
 // ### types ###
 
