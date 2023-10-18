@@ -299,7 +299,7 @@ setcglob 0x0058F5F4, _imp__CreateDIBSection
 setcglob 0x0058F96C, _imp__CreateCursor
 setcglob 0x0058F5F0, _imp__CreateCompatibleDC
 setcglob 0x0058F6E0, _imp__CreateCompatibleBitmap
-setcglob 0x0058F678, _imp__ConfigureBitmap
+setcglob 0x0058F678, _imp__CreateBitmap
 setcglob 0x0058F91C, _imp__CopyIcon
 setcglob 0x0058FA78, _imp__CommDlgExtendedError
 setcglob 0x0058F6C8, _imp__CombineRgn
