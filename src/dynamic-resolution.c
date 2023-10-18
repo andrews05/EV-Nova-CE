@@ -19,6 +19,14 @@
 // Replace CALL to InitializeMonitor
 CALL(0x0041629B, _InitializeMonitor);
 
+// Replace original runInAWindow bool with ours to make sure the game doesn't change its behavior
+// Init runInAWindow bool
+SETDWORD(0x004C7750 + 2, _g_runInAWindow);
+// Init secondary runInAWindow bool - Used to check if the "Run In A Winodw" setting was changed in the menu
+SETDWORD(0x004C7618 + 3, _g_runInAWindow);
+
+bool g_runInAWindow;
+
 void InitializeMonitor() {
     // Get width and height from the ini
     int width = GetPrivateProfileIntA("EV Nova", "game_width", 0, ".\\ddraw.ini");
@@ -40,6 +48,6 @@ void InitializeMonitor() {
     PostMessageA(
         g_nv_hwnd, 
         WM_TOGGLE_FULLSCREEN, 
-        g_nv_runInAWindow ? CNC_DDRAW_SET_WINDOWED : CNC_DDRAW_SET_FULLSCREEN, 
+        g_runInAWindow ? CNC_DDRAW_SET_WINDOWED : CNC_DDRAW_SET_FULLSCREEN,
         0);
 }
