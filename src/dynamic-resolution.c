@@ -20,7 +20,7 @@
 CALL(0x0041629B, _InitializeMonitor);
 
 // Switch between windowed and fullscreen mode without restart
-CALL(0x00488FE6, _ToggleFullscren);
+CALL(0x00488FE6, _ToggleFullscreen);
 
 // Replace original runInAWindow bool with ours to make sure the game doesn't change its behavior
 // Init runInAWindow bool
@@ -66,7 +66,7 @@ void InitializeMonitor() {
         0);
 }
 
-void ToggleFullscren(int unknown) {
+void ToggleFullscreen(int unknown) {
     // Switch instantly between windowed/fullscreen without restart
     PostMessageA(
         g_nv_hwnd,
