@@ -33,3 +33,21 @@ int parseDlog(short *parsedDlog, unsigned short *dlogResource) {
     // Return the DITL id
     return (int)SWAP16(dlogResource[9]);
 }
+
+
+// Replace CALL to configureBitmap
+CALL(0x004CF83E, _configureBitmap);
+
+int configureBitmap(void *ptr, int unknown1, int depth, short *bounds) {
+    short rect[4];
+    rect[0] = bounds[0];
+    rect[1] = bounds[1];
+    rect[2] = bounds[2];
+    rect[3] = bounds[3];
+    // Ensure width is a multiple of 2 by incrementing the right edge as necessary
+    // This is required to avoid broken text rendering that might occur within odd-width dialogs
+    if ((rect[3] - rect[1]) % 2) {
+        rect[3]++;
+    }
+    return nv_ConfigureBitmap(ptr, unknown1, depth, rect);
+}

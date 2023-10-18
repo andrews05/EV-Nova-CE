@@ -287,7 +287,7 @@ cextern _imp__CreateDIBSection
 cextern _imp__CreateCursor
 cextern _imp__CreateCompatibleDC
 cextern _imp__CreateCompatibleBitmap
-cextern _imp__CreateBitmap
+cextern _imp__ConfigureBitmap
 cextern _imp__CopyIcon
 cextern _imp__CommDlgExtendedError
 cextern _imp__CombineRgn
