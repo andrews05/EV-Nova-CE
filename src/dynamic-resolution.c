@@ -10,6 +10,11 @@
 #define NV_SCREEN_BORDERLESS 0x20 // Nova never sets this
 #define NV_SCREEN_ENUMERATE_DD_DEVICES 0x10000 // Exact meaning uncertain; Nova never sets this
 
+// cnc-ddraw specific settings
+#define WM_TOGGLE_FULLSCREEN WM_APP+117
+
+#define CNC_DDRAW_SET_FULLSCREEN 1
+#define CNC_DDRAW_SET_WINDOWED 2
 
 // Replace CALL to InitializeMonitor
 CALL(0x0041629B, _InitializeMonitor);
@@ -31,4 +36,10 @@ void InitializeMonitor() {
     // Proceed with setup call
     // Fullscreen is forced on as exact behavior will be controlled by cnc ddraw
     nv_SetupScreen(width, height, 15, NV_SCREEN_FULLSCREEN | NV_SCREEN_UNKNOWN_1);
+
+    PostMessageA(
+        g_nv_hwnd, 
+        WM_TOGGLE_FULLSCREEN, 
+        g_nv_runInAWindow ? CNC_DDRAW_SET_WINDOWED : CNC_DDRAW_SET_FULLSCREEN, 
+        0);
 }
