@@ -6,6 +6,8 @@
 setcglob 0x007CDAB0, g_nv_debugLog
 setcglob 0x008700A0, g_nv_screenWidth
 setcglob 0x0087019C, g_nv_screenHeight
+setcglob 0x00870078, g_nv_hwnd
+setcglob 0x005914D8, g_nv_runInAWindow
 
 ; functions
 

@@ -1,6 +1,8 @@
 #ifndef NOVA_H 
 #define NOVA_H
 
+#include <stdbool.h>
+
 // This header works with sym.asm which defines the Vanilla symbols
 // This header will be split up as it becomes larger
 
@@ -9,6 +11,8 @@
 void *g_nv_debugLog;
 int g_nv_screenWidth;
 int g_nv_screenHeight;
+HWND g_nv_hwnd;
+bool g_nv_runInAWindow;
 
 // ### types ###
 
