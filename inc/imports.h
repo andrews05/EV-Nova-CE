@@ -14,6 +14,6 @@
 
 // ### Functions ###
 
-void imports_init();
+BOOL imports_init();
 
 #endif

@@ -17,7 +17,12 @@
 %macro load_import 1
     push str_%1
     push esi
-    call [_imp__GetProcAddress]
+    call [edi]
+    
+    mov edx, str_%1
+    test eax, eax
+    jz .fail
+    
     mov [_imp__%1], eax
 %endmacro
 
@@ -28,8 +33,21 @@
 %endmacro
 
 %macro load_library 1
+    mov edx, str_LoadLibraryA
+    test ebx, ebx
+    jz .fail
+    
+    mov edx, str_GetProcAddress
+    test edi, edi
+    jz .fail
+
     push str_%1_dll
-    call [_imp__LoadLibraryA]
+    call [ebx]
+    
+    mov edx, str_%1_dll
+    test eax, eax
+    jz .fail
+    
     mov esi, eax
 %endmacro
 

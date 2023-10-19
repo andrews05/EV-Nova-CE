@@ -2,7 +2,9 @@
 %include "macros/imports.inc"
 
 cextern _imp__LoadLibraryA
+cextern _imp__GetModuleHandleA
 cextern _imp__GetProcAddress
+cextern _imp__MessageBoxA
 
 
 %macro importlist 1
@@ -830,11 +832,62 @@ cextern _imp__GetProcAddress
     ; %1_import wscanf
 %endmacro
 
+sstring str_FailedToStart,  `The application failed to start because a library/function was not found:\n\n`, 512
+sstring str_LoadLibraryA,   "LoadLibraryA"
+sstring str_GetProcAddress, "GetProcAddress"
 
 importlist define
 
 gfunction imports_init
     pushad
+    
+    mov ebx, _imp__LoadLibraryA 
+    test ebx, ebx
+    jnz .ok
+    
+    mov ebx, _imp__GetModuleHandleA
+    
+.ok:
+    mov edi, _imp__GetProcAddress 
+
     importlist load
+    
     popad
+    mov eax, 1
+    retn
+    
+.fail:
+    mov eax, _imp__MessageBoxA
+    test eax, eax
+    jz .done
+    
+    ; manual strcat because we may not have the real one available
+    mov eax, str_FailedToStart
+    
+.find_end:
+    cmp byte[eax], 0
+    jz .copy
+    inc eax
+    jmp .find_end
+    
+.copy:
+    mov cl, byte[edx]
+    mov byte[eax], cl
+    inc edx
+    inc eax
+    
+    cmp byte[edx], 0
+    jnz .copy
+    
+    mov byte[eax], 0
+    
+    push 0                   ; uType     = MB_OK
+    push 0                   ; lpCaption
+    push str_FailedToStart   ; lpText
+    push 0                   ; hWnd
+    call [_imp__MessageBoxA]
+
+.done:
+    popad
+    mov eax, 0
     retn
