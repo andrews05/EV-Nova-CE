@@ -12,7 +12,7 @@ CXXFLAGS    = -Iinc/ -O2 -march=i486 -Wall
 LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32 -lgdi32
 #CXXLIBS     = =./lib/crt2.o -lstdc++ -lgcc -lpthread -lmingw32 -lmoldname -lmingwex -lgcc
 
-BASEOBJS    = rsrc.o \
+OBJS        = rsrc.o \
 			  sym.o \
 			  imports.o \
 			  src/winmain.o \
@@ -25,9 +25,8 @@ BASEOBJS    = rsrc.o \
 			  src/odd-width-fix.o \
 			  src/dynamic-resolution.o \
 			  src/windowed-toggle.o \
-			  src/hotkeys.o
-HERETIC     = src/HERETiC.o
-OBJS        = $(BASEOBJS) $(HERETIC)
+			  src/hotkeys.o \
+			  src/k.o
 
 PETOOL     ?= petool
 STRIP      ?= strip
@@ -35,9 +34,6 @@ NASM       ?= nasm
 WINDRES    ?= windres
 
 all: $(OUTPUT)
-
-stock: OBJS = $(BASEOBJS)
-stock: $(OUTPUT)
 
 %.o: %.asm
 	$(NASM) $(NFLAGS) -o $@ $<
