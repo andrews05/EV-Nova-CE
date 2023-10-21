@@ -10,13 +10,12 @@ SECTIONS
     .CRT              0x588000 : { EV_Nova.dat(.CRT) }
     /DISCARD/                  : { EV_Nova.dat(.rsrc) }
     FILL0             0x589000 : { . = . + 0x5534; }
-    .o_idata          0x58F000 : { EV_Nova.dat(.idata) }
+    .idata            0x58F000 : { EV_Nova.dat(.idata) }
     /DISCARD/                  : { EV_Nova.dat(.bss) }
     .bss              0x591000 : { . = . + 0x2DFE13; }
     /DISCARD/                  : { EV_Nova.dat(.reloc) }
 
     /DISCARD/                  : { *(.drectve) *(.rdata$zzz) }
-    .idata       ALIGN(0x1000) : { *(.idata) }
     .p_text      ALIGN(0x1000) : { *(.text) }
     .p_rdata     ALIGN(0x1000) : { *(.rdata) }
     .p_data      ALIGN(0x1000) : { *(.data) }

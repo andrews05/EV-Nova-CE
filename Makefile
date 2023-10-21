@@ -3,13 +3,13 @@
 INPUT       = EV_Nova.dat
 OUTPUT      = EV\ Nova.exe
 LDS         = EV_Nova.lds
+IMPORTS     = 0x18F000 7670
 LDFLAGS     = --section-alignment=0x1000 --subsystem=windows --enable-stdcall-fixup
 NFLAGS      = -f elf -Iinc/
 CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 
 BASEOBJS    = rsrc.o \
 			  sym.o \
-			  idata.o \
 			  imports.o \
 			  src/winmain.o \
 			  src/macroman-fix.o \

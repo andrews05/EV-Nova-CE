@@ -8,6 +8,9 @@
 // Clear CALL to libiconv_open
 // This is not necessary for the patch but the call is no longer required so we may as well get rid of it
 CLEAR(0x004BC43C, 0x90, 0x004BC442);
+// Remove iconv.dll dependency
+SETDWORD(0x00400000 + 0x18F5BC, 0); // OriginalFirstThunk
+SETDWORD(0x00400000 + 0x18FA80, 0); // FirstThunk
 
 // Replace CALL to alloc
 CALL(0x004BC783, _alloc_Wide);
