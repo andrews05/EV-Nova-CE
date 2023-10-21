@@ -8,12 +8,12 @@
 
 // ### Variables ###
 
-void *g_nv_debugLog;
-int g_nv_screenWidth;
-int g_nv_screenHeight;
-HWND g_nv_hwnd;
-bool g_nv_runInAWindow;
-bool g_nv_runInAWindowPref;
+extern void *g_nv_debugLog;
+extern int g_nv_screenWidth;
+extern int g_nv_screenHeight;
+extern HWND g_nv_hwnd;
+extern bool g_nv_runInAWindow;
+extern bool g_nv_runInAWindowPref;
 
 // ### types ###
 

@@ -5,6 +5,7 @@
         ".long " #start ";"                         \
         ".long " #end "-" #start ";"                \
         ".fill " #end "-" #start ", 1, " #value ";" \
+		".section .text;"                           \
     )
 
 #define LJMP(src, dst)                              \
@@ -14,6 +15,7 @@
         ".long 5;"                                  \
         ".byte 0xE9;"                               \
         ".long " #dst "-" #src " - 5;"              \
+		".section .text;"                           \
     )
 
 #define SJMP(src, dst)                              \
@@ -23,6 +25,7 @@
         ".long 2;"                                  \
         ".byte 0xEB;"                               \
         ".byte " #dst "-" #src " - 2;"              \
+		".section .text;"                           \
     )
 
 #define CALL(src, dst)                              \
@@ -32,6 +35,7 @@
         ".long 5;"                                  \
         ".byte 0xE8;"                               \
         ".long " #dst "-" #src " - 5;"              \
+		".section .text;"                           \
     )
     
 #define CALL_NOP(src, dst)                          \
@@ -42,6 +46,7 @@
         ".byte 0xE8;"                               \
         ".long " #dst "-" #src " - 5;"              \
         ".byte 0x90;"                               \
+		".section .text;"                           \
     )
 
 #define SETDWORD(dst, value)                        \
@@ -50,6 +55,7 @@
         ".long " #dst ";"                           \
         ".long 4;"                                  \
         ".long " #value ";"                         \
+		".section .text;"                           \
     )
 
 #define SETWORD(dst, value)                         \
@@ -58,6 +64,7 @@
         ".long " #dst ";"                           \
         ".long 2;"                                  \
         ".short " #value ";"                        \
+		".section .text;"                           \
     )
 
 #define SETBYTE(dst, value)                         \
@@ -66,4 +73,5 @@
         ".long " #dst ";"                           \
         ".long 1;"                                  \
         ".byte " #value ";"                         \
+		".section .text;"                           \
     )
