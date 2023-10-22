@@ -18,6 +18,6 @@ Building on *nix
 
 Building on Windows
 -------------------
- - Download winbuilds, the latest winbuilds includes a bug in ld so use `win-builds-for-patching.zip` from the `files` directory in this repo
- - Extract `win-builds-for-patching.zip` and run `win-install.bat`
+ - Download [w64devkit-mini-for-patching.zip](https://github.com/FunkyFr3sh/petool/releases/latest/download/w64devkit-mini-for-patching.zip)
+ - Extract `w64devkit-mini-for-patching.zip` to `C:\`
  - run `build.cmd`
