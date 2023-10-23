@@ -15,7 +15,7 @@ SECTIONS
     .bss              0x591000 : { . = . + 0x2DFE13; }
     /DISCARD/                  : { EV_Nova.dat(.reloc) }
 
-    /DISCARD/                  : { *(.drectve) *(.rdata$zzz) *(.reloc) }
+    /DISCARD/                  : { *(.drectve) *(.rdata$zzz) *(.reloc) *(.eh_frame) *(.comment) }
     .p_text      ALIGN(0x1000) : { *(.text) }
     .p_rdata     ALIGN(0x1000) : { *(.rdata) }
     .p_data      ALIGN(0x1000) : { *(.data) }
