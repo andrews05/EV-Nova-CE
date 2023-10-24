@@ -6,7 +6,7 @@ LDS         = EV_Nova.lds
 IMPORTS     = 0x18F000 7670
 LDFLAGS     = --section-alignment=0x1000 --subsystem=windows --enable-stdcall-fixup --disable-dynamicbase --disable-nxcompat
 NFLAGS      = -f elf -Iinc/
-CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
+CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486 -fno-asynchronous-unwind-tables
 
 BASEOBJS    = rsrc.o \
 			  sym.o \
