@@ -50,6 +50,7 @@ $(OUTPUT): $(LDS) $(INPUT) $(OBJS)
 ifneq (,$(IMPORTS))
 	$(PETOOL) setdd "$@" 1 $(IMPORTS) || ($(RM) "$@" && exit 1)
 endif
+	$(PETOOL) setdd "$@" 12 0 0 || ($(RM) "$@" && exit 1)
 	$(PETOOL) patch "$@" || ($(RM) "$@" && exit 1)
 	$(STRIP) -R .patch "$@" || ($(RM) "$@" && exit 1)
 	$(PETOOL) dump "$@"
