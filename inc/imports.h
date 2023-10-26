@@ -16,4 +16,19 @@
 
 BOOL imports_init();
 
+WINBASEAPI
+HMODULE
+WINAPI
+LoadLibraryA_p(
+    _In_ LPCSTR lpLibFileName
+);
+
+WINBASEAPI
+FARPROC
+WINAPI
+GetProcAddress_p(
+    _In_ HMODULE hModule,
+    _In_ LPCSTR lpProcName
+);
+
 #endif

@@ -159,6 +159,7 @@ setcglob 0x0058F814, _imp__LockResource
 setcglob 0x0058F90C, _imp__LoadStringA
 setcglob 0x0058F810, _imp__LoadResource
 setcglob 0x0058F7AC, _imp__LoadLibraryA
+setcglob 0x0058F7AC, _imp__LoadLibraryA_p
 setcglob 0x0058F950, _imp__LoadIconA
 setcglob 0x0058F918, _imp__LoadCursorA
 setcglob 0x0058F6B0, _imp__LineTo
@@ -204,6 +205,7 @@ setcglob 0x0058F68C, _imp__GetRgnBox
 setcglob 0x0058F700, _imp__GetRegionData
 setcglob 0x0058F72C, _imp__GetProcessHeap
 setcglob 0x0058F73C, _imp__GetProcAddress
+setcglob 0x0058F73C, _imp__GetProcAddress_p
 setcglob 0x0058F640, _imp__GetPixel
 setcglob 0x0058F958, _imp__GetParent
 setcglob 0x0058FA74, _imp__GetOpenFileNameA

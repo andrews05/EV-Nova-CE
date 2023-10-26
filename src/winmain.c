@@ -4,9 +4,9 @@
 #include "imports.h"
 
 
-CALL(0x00503FE5, _fake_WinMain);
+CALL(0x00503FE5, _WinMain);
 
-int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
     if (!imports_init())
         return 0;

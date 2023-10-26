@@ -19,9 +19,13 @@ CALL(0x004BC783, _alloc_Wide);
 CALL_NOP(0x004BC7C7, _libiconv_Wide);
 
 // Replace CALLs to DrawTextA
-CALL_NOP(0x004BC943, _DrawTextW);
-CALL_NOP(0x004BC964, _DrawTextW);
+CALL_NOP(0x004BC943, _DrawTextAToW);
+CALL_NOP(0x004BC964, _DrawTextAToW);
 
+
+int WINAPI DrawTextAToW(HDC hdc, LPCWSTR lpchText, int cchText, LPRECT lprc, UINT format) {
+    return DrawTextW(hdc, lpchText, cchText, lprc, format);
+}
 
 // Allocate twice the number of bytes
 void* alloc_Wide(size_t count) {

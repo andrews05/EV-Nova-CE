@@ -6,7 +6,9 @@ LDS         = EV_Nova.lds
 IMPORTS     = 0x18F000 7670
 LDFLAGS     = --section-alignment=0x1000 --subsystem=windows --enable-stdcall-fixup --disable-dynamicbase --disable-nxcompat --disable-reloc-section
 NFLAGS      = -f elf -Iinc/
-CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486 -fno-asynchronous-unwind-tables
+CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486 
+CXXFLAGS    = -Iinc/ -O2 -march=i486 
+LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32
 
 BASEOBJS    = rsrc.o \
 			  sym.o \
@@ -37,11 +39,14 @@ stock: $(OUTPUT)
 %.o: %.asm
 	$(NASM) $(NFLAGS) -o $@ $<
     
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+    
 rsrc.o: $(INPUT)
 	$(PETOOL) re2obj $(INPUT) $@
 
 $(OUTPUT): $(LDS) $(INPUT) $(OBJS)
-	$(LD) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS)
+	$(LD) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(LIBS)
 ifneq (,$(IMPORTS))
 	$(PETOOL) setdd "$@" 1 $(IMPORTS) || ($(RM) "$@" && exit 1)
 endif
