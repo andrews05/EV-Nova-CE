@@ -6,10 +6,11 @@
 
 CALL(0x00503FE5, _fake_WinMain);
 
+int WinMainCRTStartup (void);
 int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
     if (!imports_init())
         return 0;
 
-    return WinMain(hInst, hInstPrev, cmdline, cmdshow);
+    return WinMainCRTStartup();
 }

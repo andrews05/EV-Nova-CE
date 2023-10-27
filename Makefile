@@ -10,12 +10,13 @@ NFLAGS      = -f elf -Iinc/
 CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 CXXFLAGS    = -Iinc/ -O2 -march=i486
 LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32 -lgdi32
-#CXXLIBS     = =/../i686-w64-mingw32/lib/crt2.o -lstdc++ -lgcc -lpthread -lmingw32 -lmoldname -lmingwex -lgcc
+CXXLIBS     = =/../i686-w64-mingw32/lib/crt2.o -lstdc++ -lgcc -lpthread -lmingw32 -lmoldname -lmingwex -lgcc
 
 BASEOBJS    = rsrc.o \
 			  sym.o \
 			  imports.o \
 			  src/winmain.o \
+              src/cpp-example.o \
 			  src/macroman-fix.o \
 			  src/windows-keys-fix.o \
 			  src/radar-interference-fix.o \
