@@ -14,7 +14,27 @@ SECTIONS
     .rdata            0x56B000 : { EV_Nova.dat(.rdata) }
     .exc              0x574000 : { EV_Nova.dat(.exc) }
     .data             0x575000 : { EV_Nova.dat(.data) }
-    .CRT              0x588000 : { EV_Nova.dat(.CRT) }
+
+  .CRT 0x588000 :
+  {
+     EV_Nova.dat(.CRT)
+    ___crt_xc_start__ = . ;
+    KEEP (*(SORT(.CRT$XC*)))  /* C initialization */
+    ___crt_xc_end__ = . ;
+    ___crt_xi_start__ = . ;
+    KEEP (*(SORT(.CRT$XI*)))  /* C++ initialization */
+    ___crt_xi_end__ = . ;
+    ___crt_xl_start__ = . ;
+    KEEP (*(SORT(.CRT$XL*)))  /* TLS callbacks */
+    /* ___crt_xl_end__ is defined in the TLS Directory support code */
+    ___crt_xp_start__ = . ;
+    KEEP (*(SORT(.CRT$XP*)))  /* Pre-termination */
+    ___crt_xp_end__ = . ;
+    ___crt_xt_start__ = . ;
+    KEEP (*(SORT(.CRT$XT*)))  /* Termination */
+    ___crt_xt_end__ = . ;
+  }
+
     /DISCARD/                  : { EV_Nova.dat(.rsrc) }
     FILL0             0x589000 : { . = . + 0x5534; }
     .idata            0x58F000 : { EV_Nova.dat(.idata) }
@@ -22,8 +42,8 @@ SECTIONS
     .bss              0x591000 : { . = . + 0x2DFE13; }
     /DISCARD/                  : { EV_Nova.dat(.reloc) }
 
-    /DISCARD/                  : { *(.rdata$zzz) *(.comment) }
-    
+    /DISCARD/                  : { *(.rdata$zzz) }
+
   .p_text BLOCK(__section_alignment__) :
   {
     KEEP (*(SORT_NONE(.init)))
@@ -148,7 +168,7 @@ SECTIONS
     KEEP (SORT(*)(.idata$6))
     KEEP (SORT(*)(.idata$7))
   }
-  .p_CRT BLOCK(__section_alignment__) :
+  .CRT BLOCK(__section_alignment__) :
   {
     ___crt_xc_start__ = . ;
     KEEP (*(SORT(.CRT$XC*)))  /* C initialization */
@@ -192,7 +212,7 @@ SECTIONS
     KEEP (*(.rsrc))
     KEEP (*(.rsrc$*))
   }
-  .reloc BLOCK(__section_alignment__) :
+  .p_reloc BLOCK(__section_alignment__) :
   {
     *(.reloc)
   }
