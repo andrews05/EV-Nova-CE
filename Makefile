@@ -48,7 +48,7 @@ rsrc.o: $(INPUT)
 	$(PETOOL) re2obj $(INPUT) $@
 
 $(OUTPUT): $(LDS) $(INPUT) $(OBJS)
-	$(LD) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(CXXLIBS) $(LIBS) -L=/../lib/gcc/i686-w64-mingw32/$(GCCVERSION)
+	$(LD) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(CXXLIBS) $(LIBS) -L=/../lib/gcc/i686-w64-mingw32/$(GCCVERSION) -L/mingw32/lib/gcc/i686-w64-mingw32/$(GCCVERSION)
 ifneq (,$(IMPORTS))
 	$(PETOOL) setdd "$@" 1 $(IMPORTS) || ($(RM) "$@" && exit 1)
 endif
