@@ -10,7 +10,7 @@ NFLAGS      = -f elf -Iinc/
 CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486
 CXXFLAGS    = -Iinc/ -O2 -march=i486
 LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32 -lgdi32
-#CXXLIBS     = =/../i686-w64-mingw32/lib/crt2.o -lstdc++ -lgcc -lpthread -lmingw32 -lmoldname -lmingwex -lgcc
+#CXXLIBS     = =./lib/crt2.o -lstdc++ -lgcc -lpthread -lmingw32 -lmoldname -lmingwex -lgcc
 
 BASEOBJS    = rsrc.o \
 			  sym.o \
@@ -48,7 +48,7 @@ rsrc.o: $(INPUT)
 	$(PETOOL) re2obj $(INPUT) $@
 
 $(OUTPUT): $(LDS) $(INPUT) $(OBJS)
-	$(LD) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(CXXLIBS) $(LIBS) -L=/../lib/gcc/i686-w64-mingw32/$(GCCVERSION) -L/mingw32/lib/gcc/i686-w64-mingw32/$(GCCVERSION) -L./lib/gcc/i686-w64-mingw32/$(GCCVERSION)
+	$(LD) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(CXXLIBS) $(LIBS) -L=./../lib/gcc/i686-w64-mingw32/$(GCCVERSION) -L=./lib/gcc/i686-w64-mingw32/$(GCCVERSION)
 ifneq (,$(IMPORTS))
 	$(PETOOL) setdd "$@" 1 $(IMPORTS) || ($(RM) "$@" && exit 1)
 endif
