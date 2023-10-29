@@ -24,6 +24,7 @@ BASEOBJS    = rsrc.o \
 			  src/widescreen-roid-fix.o \
 			  src/dlog-size-fix.o \
 			  src/dynamic-resolution.o \
+			  src/windowed-toggle.o \
 			  src/hotkeys.o
 HERETIC     = src/HERETiC.o
 OBJS        = $(BASEOBJS) $(HERETIC)
