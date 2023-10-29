@@ -15,6 +15,9 @@
 // Replace original runInAWindow bool with ours to make sure the game doesn't change its behavior
 bool g_runInAWindow;
 
+// Skip reading the original windowed pref so the game always thinks it's in fullscreen
+CLEAR(0x004C754A, 0x90, 0x004C7550);
+
 // Determine windowed state from ddraw ini
 CALL(0x004161ED, _ReadPrefs);
 void ReadPrefs() {
