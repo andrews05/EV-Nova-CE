@@ -12,7 +12,6 @@
 
 // Replace CALL to parseDlog
 CALL(0x004CF7C3, _parseDlog);
-
 int parseDlog(short *parsedDlog, unsigned short *dlogResource) {
     // Read the bounds rect
     short top = SWAP16(dlogResource[0]);
@@ -37,17 +36,12 @@ int parseDlog(short *parsedDlog, unsigned short *dlogResource) {
 
 // Replace CALL to configureBitmap
 CALL(0x004CF83E, _configureBitmap);
-
-int configureBitmap(void *ptr, int unknown1, int depth, short *bounds) {
-    short rect[4];
-    rect[0] = bounds[0];
-    rect[1] = bounds[1];
-    rect[2] = bounds[2];
-    rect[3] = bounds[3];
+int configureBitmap(void *ptr, int unknown1, int depth, QDRect *bounds) {
+    QDRect rect = *bounds;
     // Ensure width is a multiple of 2 by incrementing the right edge as necessary
     // This is required to avoid broken text rendering that might occur within odd-width dialogs
-    if ((rect[3] - rect[1]) % 2) {
-        rect[3]++;
+    if ((rect.right - rect.left) % 2) {
+        rect.right++;
     }
-    return nv_ConfigureBitmap(ptr, unknown1, depth, rect);
+    return nv_ConfigureBitmap(ptr, unknown1, depth, &rect);
 }
