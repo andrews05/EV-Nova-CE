@@ -19,6 +19,7 @@ extern int g_nv_screenHeight;
 extern HWND g_nv_hwnd;
 extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
+extern void *g_nv_activeDialog;
 
 // ### types ###
 
@@ -41,5 +42,8 @@ void nv_FlushLog(void *logFile);
 int nv_ConfigureBitmap(void *ptr, int unknown1, int depth, QDRect *bounds);
 int *nv_ProcessDitlEntry(int itemType, int resourceId, int unknown1, int unknown2,
     QDRect *boundsRect, char *text, int textLength, void *output);
+void nv_DrawPict(void *pict, QDRect *frame);
+QDRect *nv_GetDialogBounds(void *dialog);
+void nv_ShiftRect(QDRect *frame, short x, short y);
 
 #endif

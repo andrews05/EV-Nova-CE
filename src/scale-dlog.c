@@ -65,3 +65,29 @@ int *processDitlEntry(int itemType, int resourceId, int unknown1, int unknown2,
     scaleRect(bounds);
     return nv_ProcessDitlEntry(itemType, resourceId, unknown1, unknown2, bounds, text, textLength, output);
 }
+
+
+// Apply the scale factor to multipart dialog backgrounds, as these don't normally scale to fit
+CALL(0x00447781, _scaleAndShiftRect); // Misson Offer middle
+CALL(0x004477F6, _scaleAndShiftRect); // Misson Offer upper
+CALL(0x00447879, _scaleAndShiftRect_bottom); // Mission Offer lower
+CALL(0x00499956, _scaleAndShiftRect); // Generic middle
+CALL(0x004999CB, _scaleAndShiftRect); // Generic upper
+CALL(0x00499A4D, _scaleAndShiftRect_bottom); // Generic lower
+CALL(0x0049A6D4, _scaleAndShiftRect); // Player Info middle
+CALL(0x0049A762, _scaleAndShiftRect); // Player Info upper
+CALL(0x0049A801, _scaleAndShiftRect_bottom); // Player Info lower
+
+// Scale a rect before shifting it
+void scaleAndShiftRect(QDRect *frame, int x, int y) {
+    scaleRect(frame);
+    nv_ShiftRect(frame, x, y);
+}
+
+// Scale a rect before shifting it, while keeping it bottom-aligned
+void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
+    short bottom = frame->bottom;
+    scaleRect(frame);
+    y -= frame->bottom - bottom;
+    nv_ShiftRect(frame, x, y);
+}

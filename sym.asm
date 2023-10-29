@@ -3,21 +3,25 @@
 
 ; vars
 
+setcglob 0x005914D8, g_nv_runInAWindow
+setcglob 0x005914D9, g_nv_runInAWindowPref
 setcglob 0x007CDAB0, g_nv_debugLog
 setcglob 0x007D4D0E, g_nv_gridThumbBounds
 setcglob 0x007D510E, g_nv_gridCellBounds
 setcglob 0x007D51AE, g_nv_gridCellImageBounds
+setcglob 0x00864F40, g_nv_activeDialog
 setcglob 0x008700A0, g_nv_screenWidth
 setcglob 0x0087019C, g_nv_screenHeight
 setcglob 0x00870078, g_nv_hwnd
-setcglob 0x005914D8, g_nv_runInAWindow
-setcglob 0x005914D9, g_nv_runInAWindowPref
 
 ; functions
 
 setcglob 0x0046F740, nv_ConfigureBitmap
 setcglob 0x004B45E0, nv_InitializeMonitor
+setcglob 0x004B8D50, nv_ShiftRect
+setcglob 0x004B9070, nv_DrawPict
 setcglob 0x004CEDE0, nv_ProcessDitlEntry
+setcglob 0x004CFD30, nv_GetDialogBounds
 setcglob 0x004D2A80, WinMain
 setcglob 0x004D86D0, nv_Alloc
 setcglob 0x004D87D0, nv_Free
