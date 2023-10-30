@@ -20,6 +20,8 @@ setcglob 0x0046F740, nv_ConfigureBitmap
 setcglob 0x004B45E0, nv_InitializeMonitor
 setcglob 0x004B8D50, nv_ShiftRect
 setcglob 0x004B9070, nv_DrawPict
+setcglob 0x004BC450, nv_LoadFont
+setcglob 0x004BC600, nv_FindLoadedFont
 setcglob 0x004CEDE0, nv_ProcessDitlEntry
 setcglob 0x004CFD30, nv_GetDialogBounds
 setcglob 0x004D2A80, WinMain

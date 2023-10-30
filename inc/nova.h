@@ -45,5 +45,7 @@ int *nv_ProcessDitlEntry(int itemType, int resourceId, int unknown1, int unknown
 void nv_DrawPict(void *pict, QDRect *frame);
 QDRect *nv_GetDialogBounds(void *dialog);
 void nv_ShiftRect(QDRect *frame, short x, short y);
+void *nv_FindLoadedFont(void *name, int size, int style);
+void *nv_LoadFont(void *name, int size, int style);
 
 #endif

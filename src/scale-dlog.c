@@ -91,3 +91,23 @@ void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
     y -= frame->bottom - bottom;
     nv_ShiftRect(frame, x, y);
 }
+
+
+// Apply the scale factor to font sizes
+int scaleFontSize(int size) {
+    int newSize = scale(size);
+    // Until Status Bar scaling can be implemented, we need to limit some sizes
+    if ((size == 10 || size == 12) && newSize > size + 2) {
+        newSize = size + 2;
+    }
+    return newSize;
+}
+
+CALL(0x004BC698, _findFontScaled);
+void *findFontScaled(void *name, int size, int style) {
+    return nv_FindLoadedFont(name, scaleFontSize(size), style);
+}
+CALL(0x004BC6BF, _loadFontScaled);
+void *loadFontScaled(void *name, int size, int style) {
+    return nv_LoadFont(name, scaleFontSize(size), style);
+}
