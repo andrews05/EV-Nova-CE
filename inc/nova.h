@@ -17,6 +17,12 @@ extern bool g_nv_runInAWindowPref;
 
 // ### types ###
 
+typedef struct QDRect {
+    short top;
+    short left;
+    short bottom;
+    short right;
+} QDRect;
 
 // ### Functions ###
 
@@ -29,6 +35,6 @@ void nv_Free(void *ptr);
 int nv_SetupScreen(int width, int height, int depth, int flags);
 void nv_WriteLogFormat(void *logFile, char *format, ...);
 void nv_FlushLog(void *logFile);
-int nv_ConfigureBitmap(void *ptr, int unknown1, int depth, short *bounds);
+int nv_ConfigureBitmap(void *ptr, int unknown1, int depth, QDRect *bounds);
 
 #endif
