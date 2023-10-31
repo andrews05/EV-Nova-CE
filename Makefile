@@ -25,6 +25,7 @@ OBJS        = rsrc.o \
 			  src/odd-width-fix.o \
 			  src/scale-dlog.o \
 			  src/scale-grid.o \
+			  src/scale-status-bar.o \
 			  src/dynamic-resolution.o \
 			  src/windowed-toggle.o \
 			  src/hotkeys.o \

@@ -8,6 +8,7 @@
 
 cextern g_gridCellWidth
 cextern g_gridCellHeight
+cextern g_statusBarWidth
 
 ; ### functions ###
 
