@@ -9,6 +9,7 @@ bool g_scaleEnabled = false;
 double g_scaleFactor = 0;
 int g_gridCellWidth = 83; // Used in scale-grid.asm
 int g_gridCellHeight = 54;
+int g_statusBarWidth = 194; // Used in scale-status-bar.asm
 
 
 // Double the width of the button buffer to avoid clipping
@@ -26,6 +27,8 @@ void initFontsAndScaleFactor() {
     g_scaleEnabled = g_scaleFactor != 1.0;
     g_gridCellWidth = ROUND(g_gridCellWidth * g_scaleFactor);
     g_gridCellHeight = ROUND(g_gridCellHeight * g_scaleFactor);
+    // Status bar width should be kept to a multiple of 2
+    g_statusBarWidth = ROUND(g_statusBarWidth * g_scaleFactor / 2) * 2;
     
     // Original function call replaced by the patch
     ((void (*)())0x004BC3E0)();
@@ -103,6 +106,21 @@ void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
     scaleRect(frame);
     y -= frame->bottom - bottom;
     nv_ShiftRect(frame, x, y);
+}
+
+
+// Apply the scale factor to the status bar background
+CALL(0x004CDF58, _scaleAndShiftRect);
+
+// Scale each status bar item from the intf resource
+CALL(0x004CDEBF, _scaleIntfItems);
+void scaleIntfItems(int unknown) {
+    QDRect *radar = (QDRect *)0x007355DC;
+    for (int i=0; i<8; i++) {
+        scaleRect(&radar[i]);
+    }
+    // Original function call replaced by the patch
+    ((void (*)(int))0x004D8BA0)(unknown);
 }
 
 
