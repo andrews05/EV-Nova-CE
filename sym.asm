@@ -6,13 +6,16 @@
 setcglob 0x005914D8, g_nv_runInAWindow
 setcglob 0x005914D9, g_nv_runInAWindowPref
 setcglob 0x007CDAB0, g_nv_debugLog
+setcglob 0x007D2B94, g_nv_playerInfoDialog
 setcglob 0x007D4D0E, g_nv_gridThumbBounds
 setcglob 0x007D510E, g_nv_gridCellBounds
 setcglob 0x007D51AE, g_nv_gridCellImageBounds
+setcglob 0x007D8298, g_nv_buttonCanvas
 setcglob 0x00864F40, g_nv_activeDialog
+setcglob 0x00870064, g_nv_currentContext
+setcglob 0x00870078, g_nv_hwnd
 setcglob 0x008700A0, g_nv_screenWidth
 setcglob 0x0087019C, g_nv_screenHeight
-setcglob 0x00870078, g_nv_hwnd
 
 ; functions
 
@@ -23,6 +26,7 @@ setcglob 0x004B9070, nv_DrawPict
 setcglob 0x004BC450, nv_LoadFont
 setcglob 0x004BC600, nv_FindLoadedFont
 setcglob 0x004CEDE0, nv_ProcessDitlEntry
+setcglob 0x004CF960, nv_GetDialogItemAndBounds
 setcglob 0x004CFD30, nv_GetDialogBounds
 setcglob 0x004D2A80, WinMain
 setcglob 0x004D86D0, nv_Alloc

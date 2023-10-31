@@ -116,3 +116,34 @@ CALL(0x004BC6BF, _loadFontScaled);
 void *loadFontScaled(void *name, int size, int style) {
     return nv_LoadFont(name, scaleFontSize(size), style);
 }
+
+
+// Apply the scale factor to text positions
+// Start by re-implementing setDrawingOrigin
+void setDrawingOrigin(short x, short y) {
+    if (g_nv_currentContext != NULL) {
+        g_nv_currentContext->posX = x;
+        g_nv_currentContext->posY = y;
+    }
+}
+
+// Replace the original setDrawingOrigin
+LJMP(0x004BA2F0, _setDrawingOriginScaled);
+void setDrawingOriginScaled(short x, short y) {
+    if (g_nv_activeDialog != NULL && g_nv_currentContext != g_nv_buttonCanvas.context) {
+        int itemNum = 0;
+        if (g_nv_activeDialog == g_nv_playerInfoDialog) {
+            itemNum = 6;
+        }
+        if (itemNum != 0) {
+            QDRect bounds;
+            nv_GetDialogItemAndBounds(g_nv_activeDialog, itemNum, NULL, NULL, &bounds);
+            x = scale(x - bounds.left) + bounds.left;
+            y = scale(y - bounds.top) + bounds.top;
+        }
+    }
+    setDrawingOrigin(x, y);
+}
+
+// Don't apply scaling for centered text
+CALL(0x0046232E, _setDrawingOrigin);
