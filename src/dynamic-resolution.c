@@ -20,8 +20,7 @@ void InitializeMonitor() {
 
     // Fallback to current display metrics
     if (width == 0) {
-        // Force width to a multiple of 2 as Nova won't render properly with an odd width
-        width = GetSystemMetrics(SM_CXSCREEN) & 0xFFFE;
+        width = GetSystemMetrics(SM_CXSCREEN);
     }
     if (height == 0) {
         height = GetSystemMetrics(SM_CYSCREEN);
