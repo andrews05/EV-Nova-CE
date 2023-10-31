@@ -7,8 +7,8 @@ GCCVERSION  = $(shell gcc --version | grep ^gcc | sed 's/^.* //g')
 IMPORTS     = 0x18F000 7670
 LDFLAGS     = --section-alignment=0x1000 --subsystem=windows --enable-stdcall-fixup --disable-dynamicbase --disable-nxcompat --disable-reloc-section
 NFLAGS      = -f elf -Iinc/
-CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486 -Wall -Wextra
-CXXFLAGS    = -Iinc/ -O2 -march=i486 -Wall -Wextra
+CFLAGS      = -std=c99 -Iinc/ -O2 -march=i486 -Wall
+CXXFLAGS    = -Iinc/ -O2 -march=i486 -Wall
 LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32 -lgdi32
 #CXXLIBS     = =./lib/crt2.o -lstdc++ -lgcc -lpthread -lmingw32 -lmoldname -lmingwex -lgcc
 

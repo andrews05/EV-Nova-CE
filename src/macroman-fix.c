@@ -1,5 +1,4 @@
 #include <windows.h>
-#include <_mingw.h>
 #include "macros/patch.h"
 #include "nova.h"
 
@@ -34,6 +33,6 @@ void* alloc_Wide(size_t count) {
 }
 
 // Convert MacRoman to WideChar instead of CP1252
-size_t libiconv_Wide(void* __UNUSED_PARAM(cd), const char** inbuf, size_t* inbytesleft, char** outbuf, size_t* outbytesleft) {
+size_t libiconv_Wide(void* cd, const char** inbuf, size_t* inbytesleft, char** outbuf, size_t* outbytesleft) {
     return MultiByteToWideChar(CP_MACCP, 0, *inbuf, *inbytesleft, (LPWSTR)*outbuf, *outbytesleft);
 }
