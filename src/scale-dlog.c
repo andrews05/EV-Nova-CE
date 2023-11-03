@@ -9,6 +9,11 @@ double g_scaleFactor = 0;
 int g_gridCellWidth = 83;
 int g_gridCellHeight = 54;
 
+
+// Double the width of the button buffer to avoid clipping
+SETDWORD(0x004A329A + 1, 400);
+
+
 // Get the scale factor from the ini
 void initScaleFactor() {
     char buf[8];
