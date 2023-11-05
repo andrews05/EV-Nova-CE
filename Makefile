@@ -15,6 +15,7 @@ LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32 -lgdi32
 BASEOBJS    = rsrc.o \
 			  sym.o \
 			  imports.o \
+			  src/debug.o \
 			  src/winmain.o \
 			  src/macroman-fix.o \
 			  src/windows-keys-fix.o \
