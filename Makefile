@@ -14,6 +14,7 @@ LIBS        = -lgdi32 -lgdiplus -lcnc_ddraw
 
 OBJS        = res/res.o \
 			  sym.o \
+			  src/debug.o \
 			  src/winmain.o \
 			  src/blitters.o \
 			  src/debug-mode.o \
