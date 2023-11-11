@@ -6,6 +6,7 @@
 
 
 double g_scaleFactor = 0;
+bool g_scaleEnabled = false;
 int g_gridCellWidth = 83;
 int g_gridCellHeight = 54;
 
@@ -19,6 +20,10 @@ void initScaleFactor() {
     char buf[8];
     GetPrivateProfileStringA("EV Nova", "ui_scale", "1.0", buf, sizeof buf, ".\\ddraw.ini");
     g_scaleFactor = atof(buf);
+    if (g_scaleFactor == 0) {
+        g_scaleFactor = 1.0;
+    }
+    g_scaleEnabled = g_scaleFactor != 1.0;
     g_gridCellWidth = ROUND(g_gridCellWidth * g_scaleFactor);
     g_gridCellHeight = ROUND(g_gridCellHeight * g_scaleFactor);
 }
@@ -33,10 +38,12 @@ int scale(int val) {
 
 // Apply the scale factor to a rect
 void scaleRect(QDRect *rect) {
-    rect->top = scale(rect->top);
-    rect->left = scale(rect->left);
-    rect->bottom = scale(rect->bottom);
-    rect->right = scale(rect->right);
+    if (g_scaleEnabled) {
+        rect->top = scale(rect->top);
+        rect->left = scale(rect->left);
+        rect->bottom = scale(rect->bottom);
+        rect->right = scale(rect->right);
+    }
 }
 
 // Replace CALL to parseDlog
@@ -100,6 +107,9 @@ void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
 
 // Apply the scale factor to font sizes
 int scaleFontSize(int size) {
+    if (!g_scaleEnabled) {
+        return size;
+    }
     int newSize = scale(size);
     // Until Status Bar scaling can be implemented, we need to limit some sizes
     if ((size == 10 || size == 12) && newSize > size + 2) {
@@ -130,7 +140,7 @@ void setDrawingOrigin(short x, short y) {
 // Replace the original setDrawingOrigin
 LJMP(0x004BA2F0, _setDrawingOriginScaled);
 void setDrawingOriginScaled(short x, short y) {
-    if (g_nv_activeDialog != NULL && g_nv_currentContext != g_nv_buttonCanvas.context) {
+    if (g_scaleEnabled && g_nv_activeDialog != NULL && g_nv_currentContext != g_nv_buttonCanvas.context) {
         int itemNum = 0;
         if (g_nv_activeDialog == g_nv_playerInfoDialog) {
             itemNum = 6;
