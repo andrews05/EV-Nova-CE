@@ -5,39 +5,47 @@
 // Applies a scale factor to dialogs
 
 
+bool g_scaleEnabled = false;
 double g_scaleFactor = 0;
-int g_gridCellWidth = 83;
+int g_gridCellWidth = 83; // Used in scale-grid.asm
 int g_gridCellHeight = 54;
 
 
 // Double the width of the button buffer to avoid clipping
 SETDWORD(0x004A329A + 1, 400);
 
-
 // Get the scale factor from the ini
-void initScaleFactor() {
+CALL(0x004D2B9E, _initFontsAndScaleFactor);
+void initFontsAndScaleFactor() {
     char buf[8];
     GetPrivateProfileStringA("EV Nova", "ui_scale", "1.0", buf, sizeof buf, ".\\ddraw.ini");
     g_scaleFactor = atof(buf);
+    if (g_scaleFactor == 0) {
+        g_scaleFactor = 1.0;
+    }
+    g_scaleEnabled = g_scaleFactor != 1.0;
     g_gridCellWidth = ROUND(g_gridCellWidth * g_scaleFactor);
     g_gridCellHeight = ROUND(g_gridCellHeight * g_scaleFactor);
+    
+    // Original function call replaced by the patch
+    ((void (*)())0x004BC3E0)();
 }
 
 // Apply the scale factor to a value
 int scale(int val) {
-    if (g_scaleFactor == 0) {
-        initScaleFactor();
-    }
     return ROUND(val * g_scaleFactor);
 }
 
 // Apply the scale factor to a rect
 void scaleRect(QDRect *rect) {
-    rect->top = scale(rect->top);
-    rect->left = scale(rect->left);
-    rect->bottom = scale(rect->bottom);
-    rect->right = scale(rect->right);
+    if (g_scaleEnabled) {
+        rect->top = scale(rect->top);
+        rect->left = scale(rect->left);
+        rect->bottom = scale(rect->bottom);
+        rect->right = scale(rect->right);
+    }
 }
+
 
 // Replace CALL to parseDlog
 CALL(0x004CF7C3, _parseDlogScaled);
@@ -100,6 +108,9 @@ void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
 
 // Apply the scale factor to font sizes
 int scaleFontSize(int size) {
+    if (!g_scaleEnabled) {
+        return size;
+    }
     int newSize = scale(size);
     // Until Status Bar scaling can be implemented, we need to limit some sizes
     if ((size == 10 || size == 12) && newSize > size + 2) {
@@ -130,7 +141,7 @@ void setDrawingOrigin(short x, short y) {
 // Replace the original setDrawingOrigin
 LJMP(0x004BA2F0, _setDrawingOriginScaled);
 void setDrawingOriginScaled(short x, short y) {
-    if (g_nv_activeDialog != NULL && g_nv_currentContext != g_nv_buttonCanvas.context) {
+    if (g_scaleEnabled && g_nv_activeDialog != NULL && g_nv_currentContext != g_nv_buttonCanvas.context) {
         int itemNum = 0;
         if (g_nv_activeDialog == g_nv_playerInfoDialog) {
             itemNum = 6;
