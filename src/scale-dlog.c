@@ -158,3 +158,24 @@ void setDrawingOriginScaled(short x, short y) {
 
 // Don't apply scaling for centered text
 CALL(0x0046232E, _setDrawingOrigin);
+
+
+// Create a scaled rect, scaling only the difference from a given offset rect
+void createBoundsRectScaled(QDRect *bounds, short left, short top, short right, short bottom, QDRect *offset) {
+    bounds->top = scale(top - offset->top) + offset->top;
+    bounds->left = scale(left - offset->left) + offset->left;
+    bounds->bottom = scale(bottom - offset->bottom) + offset->bottom;
+    bounds->right = scale(right - offset->right) + offset->right;
+}
+
+// Scale news text rects
+CALL(0x0047D42B, _createNewsRect1);
+void createNewsRect1(QDRect *bounds, short left, short top, short right, short bottom) {
+    QDRect offset = g_nv_newsDialog->boundsZeroed;
+    offset.bottom = offset.top;
+    createBoundsRectScaled(bounds, left, top, right, bottom, &offset);
+}
+CALL(0x0047D4B4, _createNewsRect2);
+void createNewsRect2(QDRect *bounds, short left, short top, short right, short bottom) {
+    createBoundsRectScaled(bounds, left, top, right, bottom, &g_nv_newsDialog->boundsZeroed);
+}

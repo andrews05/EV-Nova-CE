@@ -6,6 +6,7 @@
 setcglob 0x005914D8, g_nv_runInAWindow
 setcglob 0x005914D9, g_nv_runInAWindowPref
 setcglob 0x007CDAB0, g_nv_debugLog
+setcglob 0x007D0694, g_nv_newsDialog
 setcglob 0x007D2B94, g_nv_playerInfoDialog
 setcglob 0x007D4D0E, g_nv_gridThumbBounds
 setcglob 0x007D510E, g_nv_gridCellBounds

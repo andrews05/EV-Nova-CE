@@ -64,6 +64,13 @@ typedef struct NVCanvas {
     QDRect bounds;
 } NVCanvas;
 
+typedef struct NVDialog {
+    NVCanvas canvas;
+    QDRect bounds;
+    QDRect boundsZeroed;
+    // Incomplete...
+} NVDialog;
+
 // ### Variables ###
 
 extern void *g_nv_debugLog;
@@ -72,8 +79,9 @@ extern int g_nv_screenHeight;
 extern HWND g_nv_hwnd;
 extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
-extern void *g_nv_activeDialog;
-extern void *g_nv_playerInfoDialog;
+extern NVDialog *g_nv_activeDialog;
+extern NVDialog *g_nv_newsDialog;
+extern NVDialog *g_nv_playerInfoDialog;
 extern NVContext *g_nv_currentContext;
 extern NVCanvas g_nv_buttonCanvas;
 
