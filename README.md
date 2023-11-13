@@ -1,7 +1,7 @@
-EV Nova patch
+EV Nova Community Edition
 ==================
 
-Patches to EV Nova 1.0.10.0
+Patches to EV Nova 1.0.10 (Windows)
 
 Authors
 -------
