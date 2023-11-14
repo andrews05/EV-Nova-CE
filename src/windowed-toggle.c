@@ -2,6 +2,8 @@
 #include "macros/patch.h"
 #include "nova.h"
 
+__declspec(dllimport) BOOL DDIsWindowed();
+
 // Change the windowed checkbox to defer to cnc ddraw
 
 
@@ -21,12 +23,7 @@ CLEAR(0x004C754A, 0x90, 0x004C7550);
 // Determine windowed state from ddraw ini
 CALL(0x004161ED, _ReadPrefs);
 void ReadPrefs() {
-    BOOL(*DDIsWindowed)() = (void*)GetProcAddress(GetModuleHandleA("ddraw.dll"), "DDIsWindowed");
-
-    if (DDIsWindowed)
-    {
-        g_runInAWindow = DDIsWindowed();
-    }
+    g_runInAWindow = DDIsWindowed();
 
     // Original function call replaced by the patch
     ((void (*)())0x004C7400)();
