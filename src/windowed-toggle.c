@@ -21,16 +21,13 @@ CLEAR(0x004C754A, 0x90, 0x004C7550);
 // Determine windowed state from ddraw ini
 CALL(0x004161ED, _ReadPrefs);
 void ReadPrefs() {
-    // Setup g_runInAWindow bool
-    char buf[8];
-    GetPrivateProfileStringA("ddraw", "fullscreen", "false", buf, sizeof buf, ".\\ddraw.ini");
-    BOOL upscaled = _strcmpi(buf, "yes") == 0 || _strcmpi(buf, "true") == 0 || _strcmpi(buf, "1") == 0;
+    BOOL(*DDIsWindowed)() = (void*)GetProcAddress(GetModuleHandleA("ddraw.dll"), "DDIsWindowed");
 
-    GetPrivateProfileStringA("ddraw", "windowed", "false", buf, sizeof buf, ".\\ddraw.ini");
-    BOOL windowed = _strcmpi(buf, "yes") == 0 || _strcmpi(buf, "true") == 0 || _strcmpi(buf, "1") == 0;
+    if (DDIsWindowed)
+    {
+        g_runInAWindow = DDIsWindowed();
+    }
 
-    g_runInAWindow = windowed && !upscaled;
-    
     // Original function call replaced by the patch
     ((void (*)())0x004C7400)();
 }
