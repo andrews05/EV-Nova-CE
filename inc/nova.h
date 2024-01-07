@@ -81,7 +81,13 @@ extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
 extern NVDialog *g_nv_activeDialog;
 extern NVDialog *g_nv_newsDialog;
+extern NVDialog *g_nv_commsDialog;
+extern NVDialog *g_nv_plunderDialog;
+extern NVDialog *g_nv_outfitterDialog;
+extern NVDialog *g_nv_shipyardDialog;
+extern NVDialog *g_nv_shipInfoDialog;
 extern NVDialog *g_nv_playerInfoDialog;
+extern NVDialog *g_nv_mapDialog;
 extern NVContext *g_nv_currentContext;
 extern NVCanvas g_nv_buttonCanvas;
 
