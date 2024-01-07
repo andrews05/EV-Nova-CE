@@ -7,11 +7,17 @@ setcglob 0x005914D8, g_nv_runInAWindow
 setcglob 0x005914D9, g_nv_runInAWindowPref
 setcglob 0x007CDAB0, g_nv_debugLog
 setcglob 0x007D0694, g_nv_newsDialog
+setcglob 0x007D17B8, g_nv_commsDialog
+setcglob 0x007D17C0, g_nv_plunderDialog
+setcglob 0x007D2B84, g_nv_outfitterDialog
+setcglob 0x007D2B8C, g_nv_shipyardDialog
+setcglob 0x007D2B90, g_nv_shipInfoDialog
 setcglob 0x007D2B94, g_nv_playerInfoDialog
 setcglob 0x007D4D0E, g_nv_gridThumbBounds
 setcglob 0x007D510E, g_nv_gridCellBounds
 setcglob 0x007D51AE, g_nv_gridCellImageBounds
 setcglob 0x007D8298, g_nv_buttonCanvas
+setcglob 0x007DCF94, g_nv_mapDialog
 setcglob 0x00864F40, g_nv_activeDialog
 setcglob 0x00870064, g_nv_currentContext
 setcglob 0x00870078, g_nv_hwnd
