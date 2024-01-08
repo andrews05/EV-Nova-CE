@@ -21,7 +21,7 @@
     ; Divide x by global var
     MOV EAX, EDX
     MOV CL, [g_gridCellWidth]
-    IDIV CL
+    DIV CL
     MOVZX ECX, AL
     ; Repeat these original instructions
     MOVZX EAX, word [ESP]
@@ -30,7 +30,7 @@
     ; Divide y by global var
     MOV EAX, EDX
     MOV DL, [g_gridCellHeight]
-    IDIV DL
+    DIV DL
     MOVZX EDI, AL
     JMP @HOOKEND
 
@@ -39,7 +39,7 @@
     ; Divide x by global var
     MOV EAX, EDX
     MOV CL, [g_gridCellWidth]
-    IDIV CL
+    DIV CL
     MOVZX ECX, AL
     ; Repeat these original instructions
     MOVZX EAX, word [ESP]
@@ -48,6 +48,6 @@
     ; Divide y by global var
     MOV EAX, EDX
     MOV DL, [g_gridCellHeight]
-    IDIV DL
+    DIV DL
     MOVZX EDI, AL
     JMP @HOOKEND
