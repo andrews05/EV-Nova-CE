@@ -79,6 +79,7 @@ extern int g_nv_screenHeight;
 extern HWND g_nv_hwnd;
 extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
+extern QDRect g_nv_statusBarAreas[8];
 extern NVDialog *g_nv_activeDialog;
 extern NVDialog *g_nv_newsDialog;
 extern NVDialog *g_nv_commsDialog;
@@ -88,8 +89,10 @@ extern NVDialog *g_nv_shipyardDialog;
 extern NVDialog *g_nv_shipInfoDialog;
 extern NVDialog *g_nv_playerInfoDialog;
 extern NVDialog *g_nv_mapDialog;
+extern NVContext *g_nv_mainContext;
 extern NVContext *g_nv_currentContext;
 extern NVCanvas g_nv_buttonCanvas;
+extern NVCanvas g_nv_mainBufferCanvas;
 
 // ### Functions ###
 

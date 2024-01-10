@@ -5,6 +5,9 @@
 
 setcglob 0x005914D8, g_nv_runInAWindow
 setcglob 0x005914D9, g_nv_runInAWindowPref
+setcglob 0x00596D1C, g_nv_mainContext
+setcglob 0x00597950, g_nv_mainBufferCanvas
+setcglob 0x007355DC, g_nv_statusBarAreas
 setcglob 0x007CDAB0, g_nv_debugLog
 setcglob 0x007D0694, g_nv_newsDialog
 setcglob 0x007D17B8, g_nv_commsDialog

@@ -136,63 +136,80 @@ void *loadFontScaled(void *name, int size, int style) {
 
 
 // Apply the scale factor to text positions
-// Start by re-implementing setDrawingOrigin
-void setDrawingOrigin(short x, short y) {
-    if (g_nv_currentContext != NULL) {
-        g_nv_currentContext->posX = x;
-        g_nv_currentContext->posY = y;
+// Rather than apply scaling to every single hardcoded offset, we're going
+// to try to determine the bounds box that the text is positioned within.
+bool scalePointWithinBounds(short *x, short *y, QDRect *bounds) {
+    // If the point is within this item's bounds, apply scaling to the difference
+    if (*x >= bounds->left && *x < bounds->right-2 && *y >= bounds->top && *y < bounds->bottom-2) {
+        *x = scale(*x - bounds->left) + bounds->left;
+        *y = scale(*y - bounds->top) + bounds->top;
+        return true;
     }
+    return false;
 }
 
 // Replace the original setDrawingOrigin
 LJMP(0x004BA2F0, _setDrawingOriginScaled);
 void setDrawingOriginScaled(short x, short y) {
-    if (g_scaleEnabled && g_nv_activeDialog != NULL && g_nv_currentContext != g_nv_buttonCanvas.context) {
-        int itemNums[3];
-        int itemCount = 0;
+    if (g_scaleEnabled && g_nv_currentContext == g_nv_mainBufferCanvas.context) {
+        if (g_nv_activeDialog != NULL) {
+            // Apply scaling within specific dialog items
+            int itemNums[3];
+            int itemCount = 0;
+            if (g_nv_activeDialog == g_nv_commsDialog) {
+                // Ship and planet comms share the same dialog var with no easy way to distinguish them
+                // Check all relevant items - the wrong one is unlikely to be an issue
+                itemNums[0] = 12; // Ship info (not in planet comms)
+                itemNums[1] = 6; // Planet info (offscreen button in ship comms)
+                itemNums[2] = 10; // Ship response/escort costs (not in planet comms)
+                itemCount = 3;
+            } else if (g_nv_activeDialog == g_nv_plunderDialog) {
+                itemNums[0] = 5; // Main text area
+                itemCount = 1;
+            } else if (g_nv_activeDialog == g_nv_shipyardDialog || g_nv_activeDialog == g_nv_outfitterDialog) {
+                itemNums[0] = 9; // Purchase details
+                itemCount = 1;
+            } else if (g_nv_activeDialog == g_nv_shipInfoDialog) {
+                itemNums[0] = 5; // Ship specs
+                itemCount = 1;
+            } else if (g_nv_activeDialog == g_nv_playerInfoDialog) {
+                itemNums[0] = 6; // Main text area
+                itemCount = 1;
+            } else if (g_nv_activeDialog == g_nv_mapDialog) {
+                itemNums[0] = 2; // Ports/hazards
+                itemNums[1] = 6; // System info
+                itemCount = 2;
+            }
 
-        // Apply scaling within specific dialog items
-        if (g_nv_activeDialog == g_nv_commsDialog) {
-            // Ship and planet comms share the same dialog var with no easy way to distinguish them
-            // Check all relevant items - the wrong one is unlikely to be an issue
-            itemNums[0] = 12; // Ship info (not in planet comms)
-            itemNums[1] = 6; // Planet info (offscreen button in ship comms)
-            itemNums[2] = 10; // Ship response/escort costs (not in planet comms)
-            itemCount = 3;
-        } else if (g_nv_activeDialog == g_nv_plunderDialog) {
-            itemNums[0] = 5; // Main text area
-            itemCount = 1;
-        } else if (g_nv_activeDialog == g_nv_shipyardDialog || g_nv_activeDialog == g_nv_outfitterDialog) {
-            itemNums[0] = 9; // Purchase details
-            itemCount = 1;
-        } else if (g_nv_activeDialog == g_nv_shipInfoDialog) {
-            itemNums[0] = 5; // Ship specs
-            itemCount = 1;
-        } else if (g_nv_activeDialog == g_nv_playerInfoDialog) {
-            itemNums[0] = 6; // Main text area
-            itemCount = 1;
-        } else if (g_nv_activeDialog == g_nv_mapDialog) {
-            itemNums[0] = 2; // Ports/hazards
-            itemNums[1] = 6; // System info
-            itemCount = 2;
-        }
-
-        for (int i = 0; i < itemCount; i++) {
-            QDRect bounds;
-            nv_GetDialogItemAndBounds(g_nv_activeDialog, itemNums[i], NULL, NULL, &bounds);
-            // If the origin is within this item's bounds, apply scaling to the difference
-            if (x >= bounds.left && x < bounds.right-2 && y >= bounds.top && y < bounds.bottom-2) {
-                x = scale(x - bounds.left) + bounds.left;
-                y = scale(y - bounds.top) + bounds.top;
-                break;
+            // Check each item
+            for (int i = 0; i < itemCount; i++) {
+                QDRect bounds;
+                nv_GetDialogItemAndBounds(g_nv_activeDialog, itemNums[i], NULL, NULL, &bounds);
+                if (scalePointWithinBounds(&x, &y, &bounds)) {
+                    break;
+                }
+            }
+        } else {
+            // Apply scaling within status bar items - currently just the cargo area
+            int statusBarOffset = g_nv_mainContext->bitmap.bounds.right - g_statusBarWidth;
+            for (int i = 7; i < 8; i++) {
+                QDRect bounds = g_nv_statusBarAreas[i];
+                nv_ShiftRect(&bounds, statusBarOffset, 0);
+                scalePointWithinBounds(&x, &y, &bounds);
             }
         }
     }
-    setDrawingOrigin(x, y);
+
+    g_nv_currentContext->posX = x;
+    g_nv_currentContext->posY = y;
 }
 
-// Don't apply scaling for centered text
-CALL(0x0046232E, _setDrawingOrigin);
+// For centered text, scale only the y value
+CALL(0x0046232E, _setDrawingOriginScaledY);
+void setDrawingOriginScaledY(short x, short y) {
+    setDrawingOriginScaled(x, y);
+    g_nv_currentContext->posX = x;
+}
 
 
 // Create a scaled rect, scaling only the difference from a given offset rect
