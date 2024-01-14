@@ -79,6 +79,7 @@ extern int g_nv_screenHeight;
 extern HWND g_nv_hwnd;
 extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
+extern bool g_nv_debugMode;
 extern QDRect g_nv_statusBarAreas[8];
 extern NVDialog *g_nv_activeDialog;
 extern NVDialog *g_nv_newsDialog;

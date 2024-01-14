@@ -29,6 +29,7 @@ OBJS        = rsrc.o \
 			  src/dynamic-resolution.o \
 			  src/windowed-toggle.o \
 			  src/hotkeys.o \
+			  src/debug-mode.o \
 			  src/k.o
 
 PETOOL     ?= petool
