@@ -74,12 +74,14 @@ typedef struct NVDialog {
 // ### Variables ###
 
 extern void *g_nv_debugLog;
+extern void *g_nv_beep1;
 extern int g_nv_screenWidth;
 extern int g_nv_screenHeight;
 extern HWND g_nv_hwnd;
 extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
 extern bool g_nv_debugMode;
+extern short g_nv_currentVolume;
 extern QDRect g_nv_statusBarAreas[8];
 extern NVDialog *g_nv_activeDialog;
 extern NVDialog *g_nv_newsDialog;
@@ -113,5 +115,7 @@ QDRect *nv_GetDialogBounds(void *dialog);
 void nv_ShiftRect(QDRect *frame, short x, short y);
 void *nv_FindLoadedFont(void *name, int size, int style);
 void *nv_LoadFont(void *name, int size, int style);
+void nv_PlaySound(void *sound, int unknown, short vol1, short vol2);
+int nv_KeyCheck(short scanCode);
 
 #endif

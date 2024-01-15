@@ -5,9 +5,11 @@
 
 setcglob 0x005914D8, g_nv_runInAWindow
 setcglob 0x005914D9, g_nv_runInAWindowPref
+setcglob 0x00591560, g_nv_beep1
 setcglob 0x00596D1C, g_nv_mainContext
 setcglob 0x00596D3A, g_nv_debugMode
 setcglob 0x00597950, g_nv_mainBufferCanvas
+setcglob 0x007353F2, g_nv_currentVolume
 setcglob 0x007355DC, g_nv_statusBarAreas
 setcglob 0x007CDAB0, g_nv_debugLog
 setcglob 0x007D0694, g_nv_newsDialog
@@ -30,6 +32,8 @@ setcglob 0x0087019C, g_nv_screenHeight
 
 ; functions
 
+setcglob 0x00469CA0, nv_KeyCheck
+setcglob 0x0046AAD0, nv_PlaySound
 setcglob 0x0046F740, nv_ConfigureBitmap
 setcglob 0x004B45E0, nv_InitializeMonitor
 setcglob 0x004B8D50, nv_ShiftRect
