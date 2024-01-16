@@ -66,6 +66,9 @@ int NumberToString(char *buffer, int value, int flags) {
     return negative + ((int (*)(char*, int, int))0x004FBFE0)(buffer, value, flags);
 }
 
+// Replace incorrect to call getShieldCapacity with getArmorCapacity
+CALL(0x00452745, 0x004637A0);
+
 
 // Remap keys to be usable on modern keyboards, including laptops
 
