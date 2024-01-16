@@ -54,6 +54,19 @@ int CheckEnableDebug(short scanCode) {
     return nv_KeyCheck(scanCode);
 }
 
+// Fix NumberToString to handle negative values, as displayed in some places in debug mode
+CALL(0x004BBCF4, _NumberToString);
+int NumberToString(char *buffer, int value, int flags) {
+    bool negative = value < 0;
+    if (negative) {
+        *buffer++ = '-';
+        value *= -1;
+    }
+    // Proceed with original function call
+    return negative + ((int (*)(char*, int, int))0x004FBFE0)(buffer, value, flags);
+}
+
+
 // Remap keys to be usable on modern keyboards, including laptops
 
 // Explore map: F10 (was Numpad= on Mac)
