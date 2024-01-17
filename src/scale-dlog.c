@@ -5,6 +5,14 @@
 // Applies a scale factor to dialogs
 
 
+#define SET_ORIGIN_SCALED(addr, xOffset, yOffset) \
+    CALL(addr, _scale_ ## addr); \
+    void scale_ ## addr(int x, int y) { \
+        g_nv_currentContext->posX = x - xOffset + scale(xOffset); \
+        g_nv_currentContext->posY = y - yOffset + scale(yOffset); \
+    }
+
+
 bool g_scaleEnabled = false;
 double g_scaleFactor = 0;
 int g_gridCellWidth = 83; // Used in scale-grid.asm
@@ -190,9 +198,9 @@ void setDrawingOriginScaled(short x, short y) {
                 }
             }
         } else {
-            // Apply scaling within status bar items - currently just the cargo area
+            // Apply scaling within status bar items - target and cargo area
             int statusBarOffset = g_nv_mainContext->bitmap.bounds.right - g_statusBarWidth;
-            for (int i = 7; i < 8; i++) {
+            for (int i = 6; i < 8; i++) {
                 QDRect bounds = g_nv_statusBarAreas[i];
                 nv_ShiftRect(&bounds, statusBarOffset, 0);
                 scalePointWithinBounds(&x, &y, &bounds);
@@ -210,6 +218,22 @@ void setDrawingOriginScaledY(short x, short y) {
     setDrawingOriginScaled(x, y);
     g_nv_currentContext->posX = x;
 }
+
+// Outfitter names
+SET_ORIGIN_SCALED(0x0049161f, 0, -6);
+SET_ORIGIN_SCALED(0x00491522, 0, -14);
+SET_ORIGIN_SCALED(0x004915ba, 0, -3);
+
+// Shipyard names
+SET_ORIGIN_SCALED(0x0049511c, 0, -6);
+SET_ORIGIN_SCALED(0x0049501d, 0, -14);
+SET_ORIGIN_SCALED(0x004950b6, 0, -3);
+
+// Target
+SET_ORIGIN_SCALED(0x0046078f, 5, -6);
+SET_ORIGIN_SCALED(0x00460a4b, 5, -6);
+SET_ORIGIN_SCALED(0x00460a07, -7, -6);
+SET_ORIGIN_SCALED(0x00460e3d, -7, -6);
 
 
 // Create a scaled rect, scaling only the difference from a given offset rect
