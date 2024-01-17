@@ -2,19 +2,7 @@
 %include "macros/datatypes.inc"
 %include "nova.inc"
 
-; Change the outfitter/shipyard grid drawing and click detection to reference global vars for the cell size
-
-; Grid cell height
-@HOOK 0x0049918D, 0x00499193
-    IMUL EDI, [g_gridCellHeight]
-    IMUL ESI, [g_gridCellHeight]
-    JMP @HOOKEND
-
-; Grid cell width
-@HOOK 0x0049919C, 0x004991A2
-    IMUL EDI, [g_gridCellWidth]
-    IMUL EAX, [g_gridCellWidth]
-    JMP @HOOKEND
+; Change the outfitter/shipyard click detection to reference global vars for the cell size
 
 ; Outfitter click
 @HOOK 0x00490974, 0x004909A0

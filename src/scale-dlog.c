@@ -17,6 +17,7 @@ bool g_scaleEnabled = false;
 double g_scaleFactor = 0;
 int g_gridCellWidth = 83; // Used in scale-grid.asm
 int g_gridCellHeight = 54;
+int g_gridThumbSize = 32;
 int g_statusBarWidth = 194; // Used in scale-status-bar.asm
 
 
@@ -35,6 +36,7 @@ void initFontsAndScaleFactor() {
     g_scaleEnabled = g_scaleFactor != 1.0;
     g_gridCellWidth = ROUND(g_gridCellWidth * g_scaleFactor);
     g_gridCellHeight = ROUND(g_gridCellHeight * g_scaleFactor);
+    g_gridThumbSize = ROUND(g_gridThumbSize * g_scaleFactor);
     // Status bar width should be kept to a multiple of 2
     g_statusBarWidth = ROUND(g_statusBarWidth * g_scaleFactor / 2) * 2;
     
@@ -254,4 +256,38 @@ void createNewsRect1(QDRect *bounds, short left, short top, short right, short b
 CALL(0x0047D4B4, _createNewsRect2);
 void createNewsRect2(QDRect *bounds, short left, short top, short right, short bottom) {
     createBoundsRectScaled(bounds, left, top, right, bottom, &g_nv_newsDialog->boundsZeroed);
+}
+
+
+// Scale grid cells and thumbnails
+LJMP(0x00499150, _constructGridCells);
+void constructGridCells(QDRect *bounds) {
+    for (int i = 0; i < 20; i++) {
+        int x = i % 4;
+        int y = i / 4;
+        QDRect *cell = g_nv_gridCellBounds + i;
+        cell->left = x * g_gridCellWidth + bounds->left;
+        cell->top = y * g_gridCellHeight + bounds->top;
+        cell->right = cell->left + g_gridCellWidth + 1;
+        cell->bottom = cell->top + g_gridCellHeight + 1;
+        QDRect *thumb = g_nv_gridCellImageBounds + i;
+        thumb->left = (cell->left + cell->right - g_gridThumbSize) / 2;
+        thumb->bottom = (cell->top + cell->bottom + g_gridThumbSize / 2) / 2;
+        thumb->right = thumb->left + g_gridThumbSize;
+        thumb->top = thumb->bottom - g_gridThumbSize;
+    }
+    for (int i = 0; i < 0x80; i++) {
+        QDRect *thumb = g_nv_gridThumbBounds + i;
+        thumb->left = g_gridThumbSize * i;
+        thumb->top = 0;
+        thumb->right = thumb->left + g_gridThumbSize;
+        thumb->bottom = g_gridThumbSize;
+    }
+}
+CALL(0x0049EE94, _createThumbsBufferRect);
+void createThumbsBufferRect(QDRect *rect, short left, short top, short right, short bottom) {
+    rect->left = 0;
+    rect->top = 0;
+    rect->right = g_gridThumbSize * 0x80;
+    rect->bottom = g_gridThumbSize;
 }
