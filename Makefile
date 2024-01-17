@@ -18,7 +18,7 @@ OBJS        = rsrc.o \
 			  src/winmain.o \
 			  src/macroman-fix.o \
 			  src/windows-keys-fix.o \
-			  src/radar-interference-fix.o \
+			  src/ppat-decoder.o \
 			  src/open-pilot-fix.o \
 			  src/font-substitution-fix.o \
 			  src/widescreen-roid-fix.o \

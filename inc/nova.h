@@ -9,6 +9,7 @@
 // ### Macros ###
 
 #define SWAP16(val) (val >> 8 | val << 8)
+#define SWAP32(val) (val >> 24 | (val & 0xff0000) >> 8 | (val & 0xff00) << 8 | val << 24)
 #define ROUND(val) (int)((double)val + (val >= 0 ? 0.5 : -0.5))
 
 // ### types ###
