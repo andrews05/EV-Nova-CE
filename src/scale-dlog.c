@@ -11,6 +11,11 @@
         g_nv_currentContext->posX = x - xOffset + scale(xOffset); \
         g_nv_currentContext->posY = y - yOffset + scale(yOffset); \
     }
+#define DRAW_PSTRING_CENTERED_SCALED(addr, yOffset) \
+    CALL(addr, _scale_ ## addr); \
+    void scale_ ## addr(char *pString, short left, short right, short top) { \
+        nv_DrawPStringCentered(pString, left, right, top - yOffset + scale(yOffset)); \
+    }
 
 
 bool g_scaleEnabled = false;
@@ -135,13 +140,9 @@ void scaleIntfItems(int unknown) {
 
 
 // Apply the scale factor to font sizes
-CALL(0x004BC698, _findFontScaled);
-void *findFontScaled(void *name, int size, int style) {
-    return nv_FindLoadedFont(name, scale(size), style);
-}
-CALL(0x004BC6BF, _loadFontScaled);
-void *loadFontScaled(void *name, int size, int style) {
-    return nv_LoadFont(name, scale(size), style);
+LJMP(0x004B6920, _setFontSizeScaled);
+void setFontSizeScaled(short size) {
+    g_nv_currentContext->fontSize = scale(size);
 }
 
 
@@ -180,8 +181,9 @@ void setDrawingOriginScaled(short x, short y) {
                 itemNums[0] = 9; // Purchase details
                 itemCount = 1;
             } else if (g_nv_activeDialog == g_nv_shipInfoDialog) {
+                itemNums[1] = 3; // Ship title
                 itemNums[0] = 5; // Ship specs
-                itemCount = 1;
+                itemCount = 2;
             } else if (g_nv_activeDialog == g_nv_playerInfoDialog) {
                 itemNums[0] = 6; // Main text area
                 itemCount = 1;
@@ -221,6 +223,12 @@ void setDrawingOriginScaledY(short x, short y) {
     g_nv_currentContext->posX = x;
 }
 
+// Button text
+SET_ORIGIN_SCALED(0x004a3732, 0, 5);
+
+// Spaceport
+DRAW_PSTRING_CENTERED_SCALED(0x00492d10, 18);
+
 // Outfitter names
 SET_ORIGIN_SCALED(0x0049161f, 0, -6);
 SET_ORIGIN_SCALED(0x00491522, 0, -14);
@@ -231,11 +239,44 @@ SET_ORIGIN_SCALED(0x0049511c, 0, -6);
 SET_ORIGIN_SCALED(0x0049501d, 0, -14);
 SET_ORIGIN_SCALED(0x004950b6, 0, -3);
 
+// Trade Center
+SET_ORIGIN_SCALED(0x0048d792, 7, 12);
+SET_ORIGIN_SCALED(0x0048d7c8, -123, 12);
+SET_ORIGIN_SCALED(0x0048d816, -70, 12);
+SET_ORIGIN_SCALED(0x0048e17e, 7, 10);
+SET_ORIGIN_SCALED(0x0048e1e9, -110, 10);
+SET_ORIGIN_SCALED(0x0048de8f, 6, 10);
+SET_ORIGIN_SCALED(0x0048df1f, -110, 10);
+SET_ORIGIN_SCALED(0x0048df52, -70, 10);
+SET_ORIGIN_SCALED(0x0048e0a4, -10, 10);
+
+// Nav system
+DRAW_PSTRING_CENTERED_SCALED(0x0045e679, 22);
+DRAW_PSTRING_CENTERED_SCALED(0x0045e6cf, 12);
+DRAW_PSTRING_CENTERED_SCALED(0x0045e781, 29);
+DRAW_PSTRING_CENTERED_SCALED(0x0045e72b, 29);
+DRAW_PSTRING_CENTERED_SCALED(0x0045e5b9, 12);
+DRAW_PSTRING_CENTERED_SCALED(0x0045e94f, 29);
+
+// Secondary weapon
+DRAW_PSTRING_CENTERED_SCALED(0x0046104e, 12);
+DRAW_PSTRING_CENTERED_SCALED(0x0046114b, 12);
+DRAW_PSTRING_CENTERED_SCALED(0x004610e1, 12);
+DRAW_PSTRING_CENTERED_SCALED(0x0046124d, 12);
+
 // Target
 SET_ORIGIN_SCALED(0x0046078f, 5, -6);
 SET_ORIGIN_SCALED(0x00460a4b, 5, -6);
 SET_ORIGIN_SCALED(0x00460a07, -7, -6);
 SET_ORIGIN_SCALED(0x00460e3d, -7, -6);
+
+// Cargo
+SET_ORIGIN_SCALED(0x00461432, 77, 12);
+SET_ORIGIN_SCALED(0x00461471, 110, 12);
+SET_ORIGIN_SCALED(0x004616fe, 77, 30);
+SET_ORIGIN_SCALED(0x0046173d, 87, 46);
+SET_ORIGIN_SCALED(0x0046156e, 77, 66);
+SET_ORIGIN_SCALED(0x004615d1, 87, 82);
 
 
 // Create a scaled rect, scaling only the difference from a given offset rect

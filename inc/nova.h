@@ -115,12 +115,12 @@ int nv_ConfigureBitmap(void *ptr, int unknown1, int depth, QDRect *bounds);
 int *nv_ProcessDitlEntry(int itemType, int resourceId, int unknown1, int unknown2,
     QDRect *boundsRect, char *text, int textLength, void *output);
 void nv_DrawPict(void *pict, QDRect *frame);
+void nv_DrawPStringCentered(char *pString, short left, short right, short top);
 void nv_DrawText(char *text, int length, QDRect *frame, bool block, short lineHeight);
 void nv_GetDialogItemAndBounds(void *dialog, int num, int *type, void *item, QDRect *bounds);
 QDRect *nv_GetDialogBounds(void *dialog);
 void nv_ShiftRect(QDRect *frame, short x, short y);
-void *nv_FindLoadedFont(void *name, int size, int style);
-void *nv_LoadFont(void *name, int size, int style);
+void nv_SetFontSize(short size);
 void nv_PlaySound(void *sound, int unknown, short vol1, short vol2);
 int nv_KeyCheck(short scanCode);
 

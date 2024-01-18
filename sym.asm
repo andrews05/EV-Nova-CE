@@ -33,14 +33,14 @@ setcglob 0x0087019C, g_nv_screenHeight
 
 ; functions
 
+setcglob 0x004622F0, nv_DrawPStringCentered
 setcglob 0x00469CA0, nv_KeyCheck
 setcglob 0x0046AAD0, nv_PlaySound
 setcglob 0x0046F740, nv_ConfigureBitmap
 setcglob 0x004B45E0, nv_InitializeMonitor
+setcglob 0x004B6920, nv_SetFontSize
 setcglob 0x004B8D50, nv_ShiftRect
 setcglob 0x004B9070, nv_DrawPict
-setcglob 0x004BC450, nv_LoadFont
-setcglob 0x004BC600, nv_FindLoadedFont
 setcglob 0x004BC760, nv_DrawText
 setcglob 0x004CEDE0, nv_ProcessDitlEntry
 setcglob 0x004CF960, nv_GetDialogItemAndBounds
