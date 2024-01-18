@@ -83,6 +83,7 @@ extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
 extern bool g_nv_debugMode;
 extern short g_nv_currentVolume;
+extern short g_nv_mainFontFace;
 extern QDRect g_nv_statusBarAreas[8];
 extern QDRect g_nv_gridThumbBounds[0x80];
 extern QDRect g_nv_gridCellBounds[20];
@@ -114,6 +115,7 @@ int nv_ConfigureBitmap(void *ptr, int unknown1, int depth, QDRect *bounds);
 int *nv_ProcessDitlEntry(int itemType, int resourceId, int unknown1, int unknown2,
     QDRect *boundsRect, char *text, int textLength, void *output);
 void nv_DrawPict(void *pict, QDRect *frame);
+void nv_DrawText(char *text, int length, QDRect *frame, bool block, short lineHeight);
 void nv_GetDialogItemAndBounds(void *dialog, int num, int *type, void *item, QDRect *bounds);
 QDRect *nv_GetDialogBounds(void *dialog);
 void nv_ShiftRect(QDRect *frame, short x, short y);

@@ -11,6 +11,7 @@ setcglob 0x00596D3A, g_nv_debugMode
 setcglob 0x00597950, g_nv_mainBufferCanvas
 setcglob 0x007353F2, g_nv_currentVolume
 setcglob 0x007355DC, g_nv_statusBarAreas
+setcglob 0x00735684, g_nv_mainFontFace
 setcglob 0x007CDAB0, g_nv_debugLog
 setcglob 0x007D0694, g_nv_newsDialog
 setcglob 0x007D17B8, g_nv_commsDialog
@@ -40,6 +41,7 @@ setcglob 0x004B8D50, nv_ShiftRect
 setcglob 0x004B9070, nv_DrawPict
 setcglob 0x004BC450, nv_LoadFont
 setcglob 0x004BC600, nv_FindLoadedFont
+setcglob 0x004BC760, nv_DrawText
 setcglob 0x004CEDE0, nv_ProcessDitlEntry
 setcglob 0x004CF960, nv_GetDialogItemAndBounds
 setcglob 0x004CFD30, nv_GetDialogBounds

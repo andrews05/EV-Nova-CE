@@ -30,6 +30,7 @@ OBJS        = rsrc.o \
 			  src/windowed-toggle.o \
 			  src/hotkeys.o \
 			  src/debug-mode.o \
+			  src/version.o \
 			  src/k.o
 
 PETOOL     ?= petool
