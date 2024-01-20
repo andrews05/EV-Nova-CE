@@ -72,6 +72,16 @@ typedef struct NVDialog {
     // Incomplete...
 } NVDialog;
 
+typedef struct NVScrollList {
+    NVDialog *dialog;
+    QDRect rect1;
+    QDRect rect2;
+    int unknown;
+    short height;
+    short width;
+    // Incomplete...
+} NVScrollList;
+
 // ### Variables ###
 
 extern void *g_nv_debugLog;

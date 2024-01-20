@@ -24,6 +24,7 @@ int g_gridCellWidth = 83; // Used in scale-grid.asm
 int g_gridCellHeight = 54;
 int g_gridThumbSize = 32;
 int g_statusBarWidth = 194; // Used in scale-status-bar.asm
+int g_listItemBaseHeight = 8; // Originally 9 (main font size) but changed to 8 to match sizing in Mac Nova which works better
 
 
 // Double the width of the button buffer to avoid clipping
@@ -44,6 +45,7 @@ void initFontsAndScaleFactor() {
     g_gridThumbSize = ROUND(g_gridThumbSize * g_scaleFactor);
     // Status bar width should be kept to a multiple of 2
     g_statusBarWidth = ROUND(g_statusBarWidth * g_scaleFactor / 2) * 2;
+    g_listItemBaseHeight = ROUND(g_listItemBaseHeight * g_scaleFactor);
     
     // Original function call replaced by the patch
     ((void (*)())0x004BC3E0)();
@@ -64,6 +66,14 @@ void scaleRect(QDRect *rect) {
     }
 }
 
+// Apply the scale factor to font sizes
+LJMP(0x004B6920, _setFontSizeScaled);
+void setFontSizeScaled(short size) {
+    g_nv_currentContext->fontSize = scale(size);
+}
+
+
+/** DIALOGS **/
 
 // Replace CALL to parseDlog
 CALL(0x004CF7C3, _parseDlogScaled);
@@ -97,7 +107,6 @@ int *processDitlEntry(int itemType, int resourceId, int unknown1, int unknown2,
     return nv_ProcessDitlEntry(itemType, resourceId, unknown1, unknown2, bounds, text, textLength, output);
 }
 
-
 // Apply the scale factor to multipart dialog backgrounds, as these don't normally scale to fit
 CALL(0x00447781, _scaleAndShiftRect); // Misson Offer middle
 CALL(0x004477F6, _scaleAndShiftRect); // Misson Offer upper
@@ -124,31 +133,12 @@ void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
 }
 
 
-// Apply the scale factor to the status bar background
-CALL(0x004CDF58, _scaleAndShiftRect);
+/** TEXT POSITIONS **/
 
-// Scale each status bar item from the intf resource
-CALL(0x004CDEBF, _scaleIntfItems);
-void scaleIntfItems(int unknown) {
-    QDRect *radar = (QDRect *)0x007355DC;
-    for (int i=0; i<8; i++) {
-        scaleRect(&radar[i]);
-    }
-    // Original function call replaced by the patch
-    ((void (*)(int))0x004D8BA0)(unknown);
-}
-
-
-// Apply the scale factor to font sizes
-LJMP(0x004B6920, _setFontSizeScaled);
-void setFontSizeScaled(short size) {
-    g_nv_currentContext->fontSize = scale(size);
-}
-
-
-// Apply the scale factor to text positions
 // Rather than apply scaling to every single hardcoded offset, we're going
 // to try to determine the bounds box that the text is positioned within.
+// This is an easy way to cover dialog areas that contain many text elements.
+// The downside is it only works when the dialog is topmost.
 bool scalePointWithinBounds(short *x, short *y, QDRect *bounds) {
     // If the point is within this item's bounds, apply scaling to the difference
     if (*x >= bounds->left && *x < bounds->right-2 && *y >= bounds->top && *y < bounds->bottom-2) {
@@ -250,6 +240,93 @@ SET_ORIGIN_SCALED(0x0048df1f, -110, 10);
 SET_ORIGIN_SCALED(0x0048df52, -70, 10);
 SET_ORIGIN_SCALED(0x0048e0a4, -10, 10);
 
+// Mission Computer
+SET_ORIGIN_SCALED(0x004416bf, 0, 12);
+
+// Mission Info
+SET_ORIGIN_SCALED(0x004470fd, 0, 9);
+
+// Mission list
+SETDWORD(0x0043ccae + 3, _g_listItemBaseHeight);
+SETDWORD(0x00445ec8 + 3, _g_listItemBaseHeight);
+SET_ORIGIN_SCALED(0x00448ac3, 4, 9);
+SET_ORIGIN_SCALED(0x00448b4f, 4, 9);
+
+
+// Create a scaled rect, scaling only the difference from a given offset rect
+void createBoundsRectScaled(QDRect *bounds, short left, short top, short right, short bottom, QDRect *offset) {
+    bounds->top = scale(top - offset->top) + offset->top;
+    bounds->left = scale(left - offset->left) + offset->left;
+    bounds->bottom = scale(bottom - offset->bottom) + offset->bottom;
+    bounds->right = scale(right - offset->right) + offset->right;
+}
+
+// Scale news text rects
+CALL(0x0047D42B, _createNewsRect1);
+void createNewsRect1(QDRect *bounds, short left, short top, short right, short bottom) {
+    QDRect offset = g_nv_newsDialog->boundsZeroed;
+    offset.bottom = offset.top;
+    createBoundsRectScaled(bounds, left, top, right, bottom, &offset);
+}
+CALL(0x0047D4B4, _createNewsRect2);
+void createNewsRect2(QDRect *bounds, short left, short top, short right, short bottom) {
+    createBoundsRectScaled(bounds, left, top, right, bottom, &g_nv_newsDialog->boundsZeroed);
+}
+
+
+/** GRID CELLS **/
+
+// Scale grid cells and thumbnails
+LJMP(0x00499150, _constructGridCells);
+void constructGridCells(QDRect *bounds) {
+    for (int i = 0; i < 20; i++) {
+        int x = i % 4;
+        int y = i / 4;
+        QDRect *cell = g_nv_gridCellBounds + i;
+        cell->left = x * g_gridCellWidth + bounds->left;
+        cell->top = y * g_gridCellHeight + bounds->top;
+        cell->right = cell->left + g_gridCellWidth + 1;
+        cell->bottom = cell->top + g_gridCellHeight + 1;
+        QDRect *thumb = g_nv_gridCellImageBounds + i;
+        thumb->left = (cell->left + cell->right - g_gridThumbSize) / 2;
+        thumb->bottom = (cell->top + cell->bottom + g_gridThumbSize / 2) / 2;
+        thumb->right = thumb->left + g_gridThumbSize;
+        thumb->top = thumb->bottom - g_gridThumbSize;
+    }
+    for (int i = 0; i < 0x80; i++) {
+        QDRect *thumb = g_nv_gridThumbBounds + i;
+        thumb->left = g_gridThumbSize * i;
+        thumb->top = 0;
+        thumb->right = thumb->left + g_gridThumbSize;
+        thumb->bottom = g_gridThumbSize;
+    }
+}
+
+CALL(0x0049EE94, _createThumbsBufferRect);
+void createThumbsBufferRect(QDRect *rect, short left, short top, short right, short bottom) {
+    rect->left = 0;
+    rect->top = 0;
+    rect->right = g_gridThumbSize * 0x80;
+    rect->bottom = g_gridThumbSize;
+}
+
+
+/** STATUS BAR **/
+
+// Apply the scale factor to the status bar background
+CALL(0x004CDF58, _scaleAndShiftRect);
+
+// Scale each status bar item from the intf resource
+CALL(0x004CDEBF, _scaleIntfItems);
+void scaleIntfItems(int unknown) {
+    QDRect *radar = (QDRect *)0x007355DC;
+    for (int i=0; i<8; i++) {
+        scaleRect(&radar[i]);
+    }
+    // Original function call replaced by the patch
+    ((void (*)(int))0x004D8BA0)(unknown);
+}
+
 // Nav system
 DRAW_PSTRING_CENTERED_SCALED(0x0045e679, 22);
 DRAW_PSTRING_CENTERED_SCALED(0x0045e6cf, 12);
@@ -277,58 +354,3 @@ SET_ORIGIN_SCALED(0x004616fe, 77, 30);
 SET_ORIGIN_SCALED(0x0046173d, 87, 46);
 SET_ORIGIN_SCALED(0x0046156e, 77, 66);
 SET_ORIGIN_SCALED(0x004615d1, 87, 82);
-
-
-// Create a scaled rect, scaling only the difference from a given offset rect
-void createBoundsRectScaled(QDRect *bounds, short left, short top, short right, short bottom, QDRect *offset) {
-    bounds->top = scale(top - offset->top) + offset->top;
-    bounds->left = scale(left - offset->left) + offset->left;
-    bounds->bottom = scale(bottom - offset->bottom) + offset->bottom;
-    bounds->right = scale(right - offset->right) + offset->right;
-}
-
-// Scale news text rects
-CALL(0x0047D42B, _createNewsRect1);
-void createNewsRect1(QDRect *bounds, short left, short top, short right, short bottom) {
-    QDRect offset = g_nv_newsDialog->boundsZeroed;
-    offset.bottom = offset.top;
-    createBoundsRectScaled(bounds, left, top, right, bottom, &offset);
-}
-CALL(0x0047D4B4, _createNewsRect2);
-void createNewsRect2(QDRect *bounds, short left, short top, short right, short bottom) {
-    createBoundsRectScaled(bounds, left, top, right, bottom, &g_nv_newsDialog->boundsZeroed);
-}
-
-
-// Scale grid cells and thumbnails
-LJMP(0x00499150, _constructGridCells);
-void constructGridCells(QDRect *bounds) {
-    for (int i = 0; i < 20; i++) {
-        int x = i % 4;
-        int y = i / 4;
-        QDRect *cell = g_nv_gridCellBounds + i;
-        cell->left = x * g_gridCellWidth + bounds->left;
-        cell->top = y * g_gridCellHeight + bounds->top;
-        cell->right = cell->left + g_gridCellWidth + 1;
-        cell->bottom = cell->top + g_gridCellHeight + 1;
-        QDRect *thumb = g_nv_gridCellImageBounds + i;
-        thumb->left = (cell->left + cell->right - g_gridThumbSize) / 2;
-        thumb->bottom = (cell->top + cell->bottom + g_gridThumbSize / 2) / 2;
-        thumb->right = thumb->left + g_gridThumbSize;
-        thumb->top = thumb->bottom - g_gridThumbSize;
-    }
-    for (int i = 0; i < 0x80; i++) {
-        QDRect *thumb = g_nv_gridThumbBounds + i;
-        thumb->left = g_gridThumbSize * i;
-        thumb->top = 0;
-        thumb->right = thumb->left + g_gridThumbSize;
-        thumb->bottom = g_gridThumbSize;
-    }
-}
-CALL(0x0049EE94, _createThumbsBufferRect);
-void createThumbsBufferRect(QDRect *rect, short left, short top, short right, short bottom) {
-    rect->left = 0;
-    rect->top = 0;
-    rect->right = g_gridThumbSize * 0x80;
-    rect->bottom = g_gridThumbSize;
-}
