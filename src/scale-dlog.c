@@ -171,9 +171,8 @@ void setDrawingOriginScaled(short x, short y) {
                 itemNums[0] = 9; // Purchase details
                 itemCount = 1;
             } else if (g_nv_activeDialog == g_nv_shipInfoDialog) {
-                itemNums[1] = 3; // Ship title
                 itemNums[0] = 5; // Ship specs
-                itemCount = 2;
+                itemCount = 1;
             } else if (g_nv_activeDialog == g_nv_playerInfoDialog) {
                 itemNums[0] = 6; // Main text area
                 itemCount = 1;
@@ -206,11 +205,11 @@ void setDrawingOriginScaled(short x, short y) {
     g_nv_currentContext->posY = y;
 }
 
-// For centered text, scale only the y value
-CALL(0x0046232E, _setDrawingOriginScaledY);
-void setDrawingOriginScaledY(short x, short y) {
-    setDrawingOriginScaled(x, y);
+// Override the above for centered text
+CALL(0x0046232E, _setDrawingOrigin);
+void setDrawingOrigin(short x, short y) {
     g_nv_currentContext->posX = x;
+    g_nv_currentContext->posY = y;
 }
 
 // Status message - allow room for 2 lines of text
@@ -228,7 +227,7 @@ CLEAR(0x004b0051, 0x90, 0x004b0051 + 7);
 // Button text
 SET_ORIGIN_SCALED(0x004a3732, 0, 5);
 
-// Spaceport
+// Spaceport title
 DRAW_PSTRING_CENTERED_SCALED(0x00492d10, 18);
 
 // Outfitter grid text
@@ -242,6 +241,9 @@ SET_ORIGIN_SCALED(0x0049511c, 0, -6);
 SET_ORIGIN_SCALED(0x0049501d, 0, -14);
 SET_ORIGIN_SCALED(0x004950b6, 0, -3);
 
+// Shipyard info title
+DRAW_PSTRING_CENTERED_SCALED(0x00495df9, 18);
+
 // Trade Center
 SET_ORIGIN_SCALED(0x0048d792, 7, 12);
 SET_ORIGIN_SCALED(0x0048d7c8, -123, 12);
@@ -253,8 +255,11 @@ SET_ORIGIN_SCALED(0x0048df1f, -110, 10);
 SET_ORIGIN_SCALED(0x0048df52, -70, 10);
 SET_ORIGIN_SCALED(0x0048e0a4, -10, 10);
 
-// Map
+// Map date
 SET_ORIGIN_SCALED(0x004a6382, -5, 36);
+
+// Player info
+DRAW_PSTRING_CENTERED_SCALED(0x0049bf9e, 55);
 
 // Mission Computer
 SET_ORIGIN_SCALED(0x004416bf, 0, 12);
@@ -343,6 +348,15 @@ void scaleIntfItems(int unknown) {
     ((void (*)(int))0x004D8BA0)(unknown);
 }
 
+// Scale target image
+CALL(0x004601D5, _createTargetImageBoundsRect);
+void createTargetImageBoundsRect(QDRect *bounds, short left, short top, short right, short bottom) {
+    bounds->left = left + 64 - scale(64);
+    bounds->top = top + 32 - scale(32);
+    bounds->right = right - 64 + scale(64);
+    bounds->bottom = bottom - 32 + scale(32);
+}
+
 // Nav system
 DRAW_PSTRING_CENTERED_SCALED(0x0045e679, 22);
 DRAW_PSTRING_CENTERED_SCALED(0x0045e6cf, 12);
@@ -358,6 +372,14 @@ DRAW_PSTRING_CENTERED_SCALED(0x004610e1, 12);
 DRAW_PSTRING_CENTERED_SCALED(0x0046124d, 12);
 
 // Target
+DRAW_PSTRING_CENTERED_SCALED(0x00460422, 47);
+DRAW_PSTRING_CENTERED_SCALED(0x0046052c, 16);
+DRAW_PSTRING_CENTERED_SCALED(0x0046057c, 16);
+DRAW_PSTRING_CENTERED_SCALED(0x00460178, 16);
+DRAW_PSTRING_CENTERED_SCALED(0x004602c7, 29);
+DRAW_PSTRING_CENTERED_SCALED(0x00460695, -6);
+DRAW_PSTRING_CENTERED_SCALED(0x004603c9, -6);
+DRAW_PSTRING_CENTERED_SCALED(0x00460764, -6);
 SET_ORIGIN_SCALED(0x0046078f, 5, -6);
 SET_ORIGIN_SCALED(0x00460a4b, 5, -6);
 SET_ORIGIN_SCALED(0x00460a07, -7, -6);
