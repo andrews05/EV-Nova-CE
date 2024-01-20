@@ -213,6 +213,16 @@ void setDrawingOriginScaledY(short x, short y) {
     g_nv_currentContext->posX = x;
 }
 
+// Status message - allow room for 2 lines of text
+CALL(0x004b002a, _createStatusMessageBounds);
+void createStatusMessageBounds(QDRect *bounds, short left, short top, short right, short bottom) {
+    bounds->left = left;
+    bounds->top = top - scale(26) - 4;
+    bounds->right = right;
+    bounds->bottom = bottom;
+}
+CLEAR(0x004b0051, 0x90, 0x004b0051 + 7);
+
 // Button text
 SET_ORIGIN_SCALED(0x004a3732, 0, 5);
 
