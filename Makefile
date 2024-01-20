@@ -21,6 +21,7 @@ OBJS        = rsrc.o \
 			  src/ppat-decoder.o \
 			  src/open-pilot-fix.o \
 			  src/font-substitution-fix.o \
+			  src/mission-bbs-title-fix.o \
 			  src/widescreen-roid-fix.o \
 			  src/odd-width-fix.o \
 			  src/scale-dlog.o \
