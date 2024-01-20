@@ -27,8 +27,9 @@ int g_statusBarWidth = 194; // Used in scale-status-bar.asm
 int g_listItemBaseHeight = 8; // Originally 9 (main font size) but changed to 8 to match sizing in Mac Nova which works better
 
 
-// Double the width of the button buffer to avoid clipping
-SETDWORD(0x004A329A + 1, 400);
+// Increase the size of the button buffer to avoid clipping
+SETBYTE(0x004A3298 + 1, 75);
+SETDWORD(0x004A329A + 1, 500);
 
 // Get the scale factor from the ini
 CALL(0x004D2B9E, _initFontsAndScaleFactor);
