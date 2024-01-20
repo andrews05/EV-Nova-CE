@@ -138,7 +138,7 @@ void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
 // Rather than apply scaling to every single hardcoded offset, we're going
 // to try to determine the bounds box that the text is positioned within.
 // This is an easy way to cover dialog areas that contain many text elements.
-// The downside is it only works when the dialog is topmost.
+// However, it only works relative to top-left and the dialog must be topmost.
 bool scalePointWithinBounds(short *x, short *y, QDRect *bounds) {
     // If the point is within this item's bounds, apply scaling to the difference
     if (*x >= bounds->left && *x < bounds->right-2 && *y >= bounds->top && *y < bounds->bottom-2) {
@@ -221,6 +221,8 @@ void createStatusMessageBounds(QDRect *bounds, short left, short top, short righ
     bounds->right = right;
     bounds->bottom = bottom;
 }
+// Clear a weird calculation Nova used to determine the height based on the width
+// The idea was to account for wrapping on narrower screens but we don't need this
 CLEAR(0x004b0051, 0x90, 0x004b0051 + 7);
 
 // Button text
@@ -250,6 +252,9 @@ SET_ORIGIN_SCALED(0x0048de8f, 6, 10);
 SET_ORIGIN_SCALED(0x0048df1f, -110, 10);
 SET_ORIGIN_SCALED(0x0048df52, -70, 10);
 SET_ORIGIN_SCALED(0x0048e0a4, -10, 10);
+
+// Map
+SET_ORIGIN_SCALED(0x004a6382, -5, 36);
 
 // Mission Computer
 SET_ORIGIN_SCALED(0x004416bf, 0, 12);
