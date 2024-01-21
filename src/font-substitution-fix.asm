@@ -15,7 +15,7 @@
 ; substitute.
 ;
 ; Geneva is the hardcoded font for all standard text. Arial is a poor substitute as it is much
-; harder to ready at small sizes. The substitution is also unncessary as Windows will default to
+; harder to read at small sizes. The substitution is also unncessary as Windows will default to
 ; Arial anyway if the font isn't found.
 ;
 ; Charcoal is Nova's font for button text, set in the data files. As above, this is unncessary.
