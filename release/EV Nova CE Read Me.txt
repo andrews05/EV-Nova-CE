@@ -1,0 +1,66 @@
+EV Nova Community Edition r2
+
+
+Patch Notes
+
+• Registration requirement has been removed.
+• Game resolution can be set in the ddraw.ini file. By default it will match your desktop
+  resolution.
+• Experimental UI scaling can be set in the ddraw.ini file.
+• Radar interference works again and also supports lower depth ppats as used in the.
+• Asteroids will always work regardless of the resolution. No extra plug-ins required.
+• Opening a pilot no longer switches to windowed mode temporarily.
+• Windows keys are no longer disabled while playing.
+• Forced font substitution has been disabled, allowing original Mac fonts such as Geneva and
+  Charcoal to work when installed.
+• Certain non-ascii characters are now displayed correctly (e.g. in The Frozen Heart plug-in).
+• The "Run in a window" setting will immediately switch mode, functioning the same as alt-F.
+• Odd width resolutions are now semi-supported (by leaving a blank column on the right edge).
+• Dialogs are no longer forced to even dimensions. This prevents scaling the background image
+  unnecessarily, resolving a performance issue on Apple Silicon.
+• Mission title in the BBS no longer renders poorly when running in Wine.
+• Particle cap has been increased from 1,024 to 100,000.
+• Additional keyboard shortcuts from Mac Nova 1.1 have been added:
+    - Spacebar to open (and close) ship info in the shipyard
+    - B to show/hide borders in the map
+    - C to clear route in the map (previously centered map, but Spacebar still does this)
+• Debug mode can be enabled by pressing Alt+Home (see details below).
+
+
+Debug Mode Effects
+
+• Show ids/raw values in various dialogs
+• Always have afterburner
+• 50x faster armor regen
+• Ignore capture odds (for both player and AI)
+• Skip combat rating requirement for domination
+
+
+Debug Mode Hotkeys
+
+Alt+Home:          Enable debug mode
+Hold Ctrl:         Show target debug info
+Shift+4:           +50k credits
+Alt+Shift+4:       -10k credits
+Insert:            Spawn ship
+Alt+Insert:        Spawn fleet 129 (Federation)
+Alt+Ctrl+Insert:   Spawn fleet 135 (Pirates)
+Alt+Shift+Insert:  Spawn fleet 149 (Rebels)
+Ctrl+Ins:          Spawn pers 641 (Hannah Chick)
+Delete:            Delete target
+PageUp:            Cycle ship type forwards
+PageDn:            Cycle ship type backwards
+F6:                Restore stats and ammo, activate rank 147 (Hypergate Access)
+Alt+F6:            Same as above, but empty fuel
+F7:                Make target hostile
+Alt+F7:            Make target neutral and leave system
+F8:                Disable target
+Alt+F8:            Assign target as hired escort
+F9:                Destroy target
+Shift+F9:          Destroy target as player (bear the consequences)
+Alt+F9:            Disable player
+F10:               Explore map
+Alt+F10:           Unexplore map
+Backspace:         Complete jump instantly
+Home:              Instantly restart after loss of ship (this works even when not in debug mode)
+End:               Exit debug mode
