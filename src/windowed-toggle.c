@@ -20,17 +20,16 @@ bool g_runInAWindow;
 // Skip reading the original windowed pref so the game always thinks it's in fullscreen
 CLEAR(0x004C754A, 0x90, 0x004C7550);
 
-// Determine windowed state from ddraw ini
-CALL(0x004161ED, _ReadPrefs);
-void ReadPrefs() {
+// Determine windowed state from cnc ddraw
+CALL(0x004888E3, _ReadWindowedState);
+void ReadWindowedState(int itemNum, bool state) {
     g_runInAWindow = DDIsWindowed();
 
     // Original function call replaced by the patch
-    ((void (*)())0x004C7400)();
+    ((void (*)(int, bool))0x004CFD40)(itemNum, g_runInAWindow);
 }
 
-// Change prefs dialog to work with our bool
-SETDWORD(0x004888CA + 2, _g_runInAWindow);
+// Change prefs toggle to work with our bool
 SETDWORD(0x00488FD1 + 2, _g_runInAWindow);
 SETDWORD(0x00488FDB + 1, _g_runInAWindow);
 
