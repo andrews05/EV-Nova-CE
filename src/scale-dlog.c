@@ -27,10 +27,6 @@ int g_statusBarWidth = 194; // Used in scale-status-bar.asm
 int g_listItemBaseHeight = 8; // Originally 9 (main font size) but changed to 8 to match sizing in Mac Nova which works better
 
 
-// Increase the size of the button buffer to avoid clipping
-SETBYTE(0x004A3298 + 1, 75);
-SETDWORD(0x004A329A + 1, 500);
-
 // Get the scale factor from the ini
 CALL(0x004D2B9E, _initFontsAndScaleFactor);
 void initFontsAndScaleFactor() {
@@ -131,6 +127,25 @@ void scaleAndShiftRect_bottom(QDRect *frame, int x, int y) {
     scaleRect(frame);
     y -= frame->bottom - bottom;
     nv_ShiftRect(frame, x, y);
+}
+
+
+/** BUTTONS **/
+
+// Increase the size of the button buffer to avoid clipping
+SETBYTE(0x004A3298 + 1, 75);
+SETDWORD(0x004A329A + 1, 500);
+
+// Scale the button ends
+CALL(0x004A34FA, _compositeButtonLeft);
+void compositeButtonLeft(NVBitmap *source, NVBitmap *mask, NVBitmap *dest, QDRect *sourceFrame, QDRect *maskFrame, QDRect *destFrame) {
+    destFrame->right = destFrame->left + scale(destFrame->right - destFrame->left);
+    ((void (*)(NVBitmap*,NVBitmap*,NVBitmap*,QDRect*,QDRect*,QDRect*))0x004B9410)(source, mask, dest, sourceFrame, maskFrame, destFrame);
+}
+CALL(0x004A35B9, _compositeButtonRight);
+void compositeButtonRight(NVBitmap *source, NVBitmap *mask, NVBitmap *dest, QDRect *sourceFrame, QDRect *maskFrame, QDRect *destFrame) {
+    destFrame->left = destFrame->right - scale(destFrame->right - destFrame->left);
+    ((void (*)(NVBitmap*,NVBitmap*,NVBitmap*,QDRect*,QDRect*,QDRect*))0x004B9410)(source, mask, dest, sourceFrame, maskFrame, destFrame);
 }
 
 
