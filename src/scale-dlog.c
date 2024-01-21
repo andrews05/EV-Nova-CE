@@ -148,6 +148,9 @@ void compositeButtonRight(NVBitmap *source, NVBitmap *mask, NVBitmap *dest, QDRe
     ((void (*)(NVBitmap*,NVBitmap*,NVBitmap*,QDRect*,QDRect*,QDRect*))0x004B9410)(source, mask, dest, sourceFrame, maskFrame, destFrame);
 }
 
+// Button text position
+SET_ORIGIN_SCALED(0x004a3732, 0, 5);
+
 
 /** TEXT POSITIONS **/
 
@@ -227,21 +230,6 @@ void setDrawingOrigin(short x, short y) {
     g_nv_currentContext->posX = x;
     g_nv_currentContext->posY = y;
 }
-
-// Status message - allow room for 2 lines of text
-CALL(0x004b002a, _createStatusMessageBounds);
-void createStatusMessageBounds(QDRect *bounds, short left, short top, short right, short bottom) {
-    bounds->left = left;
-    bounds->top = top - scale(26) - 4;
-    bounds->right = right;
-    bounds->bottom = bottom;
-}
-// Clear a weird calculation Nova used to determine the height based on the width
-// The idea was to account for wrapping on narrower screens but we don't need this
-CLEAR(0x004b0051, 0x90, 0x004b0051 + 7);
-
-// Button text
-SET_ORIGIN_SCALED(0x004a3732, 0, 5);
 
 // Spaceport title
 DRAW_PSTRING_CENTERED_SCALED(0x00492d10, 18);
@@ -408,3 +396,17 @@ SET_ORIGIN_SCALED(0x004616fe, 77, 30);
 SET_ORIGIN_SCALED(0x0046173d, 87, 46);
 SET_ORIGIN_SCALED(0x0046156e, 77, 66);
 SET_ORIGIN_SCALED(0x004615d1, 87, 82);
+
+// Status message
+// Nova used a weird calculation for the height to allow for wrapping at narrower resolutions. This could
+// cause clipping at very wide resolutions though, so instead we use a fixed height with room for two lines.
+CALL(0x004B002A, _createStatusMessageRect);
+void createStatusMessageRect(QDRect *rect, short left, short top, short right, short bottom) {
+    QDRect bounds = g_nv_mainContext->bitmap.bounds;
+    rect->left = bounds.left + 25;
+    rect->right = bounds.right - g_statusBarWidth - 50;
+    rect->bottom = bounds.bottom - 5;
+    rect->top = rect->bottom - scale(26) - 4;
+}
+// Clear the weird calculation
+CLEAR(0x004B0051, 0x90, 0x004B0051 + 7);
