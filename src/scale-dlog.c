@@ -344,9 +344,8 @@ CALL(0x004CDF58, _scaleAndShiftRect);
 // Scale each status bar item from the intf resource
 CALL(0x004CDEBF, _scaleIntfItems);
 void scaleIntfItems(int unknown) {
-    QDRect *radar = (QDRect *)0x007355DC;
     for (int i=0; i<8; i++) {
-        scaleRect(&radar[i]);
+        scaleRect(&g_nv_statusBarAreas[i]);
     }
     // Original function call replaced by the patch
     ((void (*)(int))0x004D8BA0)(unknown);
@@ -410,3 +409,28 @@ void createStatusMessageRect(QDRect *rect, short left, short top, short right, s
 }
 // Clear the weird calculation
 CLEAR(0x004B0051, 0x90, 0x004B0051 + 7);
+
+
+/** ESCORT MENU **/
+
+// Scale the escort menu
+CALL(0x004ABDB0, _createEscortMenuRect);
+void createEscortMenuRect(QDRect *rect, short left, short top, short right, short bottom) {
+    rect->left = scale(left);
+    rect->top = scale(top);
+    rect->right = scale(right);
+    rect->bottom = scale(bottom);
+}
+CALL(0x0049E7F2, _highlightEscortMenuItem);
+void highlightEscortMenuItem(QDRect *rect) {
+    rect->top = scale(rect->top);
+    rect->bottom = scale(rect->bottom);
+    ((void (*)(QDRect*))0x004B6B90)(rect);
+}
+CALL(0x0049E54E, _setEscortMenuTextOrigin);
+CALL(0x0049E636, _setEscortMenuTextOrigin);
+CALL(0x0049E759, _setEscortMenuTextOrigin);
+void setEscortMenuTextOrigin(int x, int y) {
+    g_nv_currentContext->posX = x;
+    g_nv_currentContext->posY = scale(y);
+}
