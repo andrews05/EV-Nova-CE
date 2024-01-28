@@ -46,8 +46,8 @@ SETBYTE(0x00450A6B + 1, 0x41);
 // Complete jump: Backspace (was Numpad.)
 SETBYTE(0x00452B20 + 1, 0x0E);
 
-// Spawn ship: Remove F6 alias
-SETBYTE(0x00452D30 + 1, 0xFF);
+// Spawn ship: Change F6 alias to NumpadEnter (works with Fn+Return on Mac)
+SETBYTE(0x00452D30 + 1, 0x6A);
 
 // Spawn fleet modifier: Shift (was B, originally Cmd on Mac)
 SETBYTE(0x00452BF5 + 1, 0x2A);

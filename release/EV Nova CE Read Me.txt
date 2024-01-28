@@ -42,7 +42,7 @@ Alt+Home:          Enable debug mode
 Hold Ctrl:         Show target debug info
 Shift+4:           +50k credits
 Alt+Shift+4:       -10k credits
-Insert:            Spawn ship
+Insert / KpdEnter: Spawn ship
 Alt+Insert:        Spawn fleet 129 (Federation)
 Alt+Ctrl+Insert:   Spawn fleet 135 (Pirates)
 Alt+Shift+Insert:  Spawn fleet 149 (Rebels)
