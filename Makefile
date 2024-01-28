@@ -31,6 +31,7 @@ OBJS        = rsrc.o \
 			  src/windowed-toggle.o \
 			  src/hotkeys.o \
 			  src/debug-mode.o \
+			  src/no-encryption.o \
 			  src/particle-cap.o \
 			  src/version.o \
 			  src/k.o
