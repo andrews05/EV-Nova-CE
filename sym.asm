@@ -20,6 +20,7 @@ setcglob 0x007D2B84, g_nv_outfitterDialog
 setcglob 0x007D2B8C, g_nv_shipyardDialog
 setcglob 0x007D2B90, g_nv_shipInfoDialog
 setcglob 0x007D2B94, g_nv_playerInfoDialog
+setcglob 0x007D4C0E, g_nv_promptResult
 setcglob 0x007D4D0E, g_nv_gridThumbBounds
 setcglob 0x007D510E, g_nv_gridCellBounds
 setcglob 0x007D51AE, g_nv_gridCellImageBounds
@@ -31,12 +32,17 @@ setcglob 0x00870078, g_nv_hwnd
 setcglob 0x008700A0, g_nv_screenWidth
 setcglob 0x0087019C, g_nv_screenHeight
 
+
 ; functions
 
+setcglob 0x00447F20, nv_EvaluteNCBTestExpression
+setcglob 0x00448020, nv_ExecuteNCBSetExpression
 setcglob 0x004622F0, nv_DrawPStringCentered
 setcglob 0x00469CA0, nv_KeyCheck
 setcglob 0x0046AAD0, nv_PlaySound
 setcglob 0x0046F740, nv_ConfigureBitmap
+setcglob 0x004976B0, nv_ShowAlert
+setcglob 0x00497900, nv_ShowPrompt
 setcglob 0x004B45E0, nv_InitializeMonitor
 setcglob 0x004B6920, nv_SetFontSize
 setcglob 0x004B8D50, nv_ShiftRect

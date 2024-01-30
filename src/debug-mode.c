@@ -6,12 +6,32 @@
 
 
 // Replace a CALL to KeyCheck
-CALL(0x004507B6, _CheckEnableDebug);
-int CheckEnableDebug(short scanCode) {
+CALL(0x004507B6, _CheckDebugKeys);
+int CheckDebugKeys(short scanCode) {
     // Enable debug with Alt+Home
     if (!g_nv_debugMode && (nv_KeyCheck(0x38) || nv_KeyCheck(0x6F)) && nv_KeyCheck(0x60)) {
         nv_PlaySound(g_nv_beep1, 1, g_nv_currentVolume, g_nv_currentVolume);
         g_nv_debugMode = true;
+    } else if (g_nv_debugMode && nv_KeyCheck(0x35)) {
+        // NCB Test with Shift+/
+        // NCB Set with Alt+/
+        if (nv_KeyCheck(0x2A) || nv_KeyCheck(0x36)) {
+            bool ok = nv_ShowPrompt("\x1D" "Evaluate NCB Test Expression:", "\x00", 0x40);
+            // Result is a p-string but we need a c-string - get the length and ensure it is null-terminated
+            unsigned char len = g_nv_promptResult[0];
+            if (ok && len) {
+                g_nv_promptResult[len + 1] = '\0';
+                bool pass = nv_EvaluteNCBTestExpression(&g_nv_promptResult[1]);
+                nv_ShowAlert(pass ? "\x04" "True" : "\x05" "False");
+            }
+        } else if (nv_KeyCheck(0x38) || nv_KeyCheck(0x6F)) {
+            bool ok = nv_ShowPrompt("\x1B" "Execute NCB Set Expression:", "\x00", 0x40);
+            unsigned char len = g_nv_promptResult[0];
+            if (ok && len) {
+                g_nv_promptResult[len + 1] = '\0';
+                nv_ExecuteNCBSetExpression(&g_nv_promptResult[1]);
+            }
+        }
     }
     return nv_KeyCheck(scanCode);
 }

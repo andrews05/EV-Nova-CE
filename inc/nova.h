@@ -94,6 +94,7 @@ extern bool g_nv_runInAWindowPref;
 extern bool g_nv_debugMode;
 extern short g_nv_currentVolume;
 extern short g_nv_mainFontFace;
+extern char g_nv_promptResult[256];
 extern QDRect g_nv_statusBarAreas[8];
 extern QDRect g_nv_gridThumbBounds[0x80];
 extern QDRect g_nv_gridCellBounds[20];
@@ -133,5 +134,9 @@ void nv_ShiftRect(QDRect *frame, short x, short y);
 void nv_SetFontSize(short size);
 void nv_PlaySound(void *sound, int unknown, short vol1, short vol2);
 int nv_KeyCheck(short scanCode);
+void nv_ShowAlert(char *message);
+bool nv_ShowPrompt(char *message, char *defaultValue, short selectionRange);
+void nv_ExecuteNCBSetExpression(char *expression);
+bool nv_EvaluteNCBTestExpression(char *expression);
 
 #endif
