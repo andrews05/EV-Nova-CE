@@ -5,13 +5,54 @@
 // Allows activating debug mode with keyboard shortcut
 
 
+// Standard scan codes: https://kbdlayout.info/kbdusx/scancodes
+// Nova's extended codes don't seem to follow any standard - common ones listed here
+#define KEY_CTRL_L 0x1D
+#define KEY_CTRL_R 0x6B
+#define KEY_SHIFT_L 0x2A
+#define KEY_SHIFT_R 0x36
+#define KEY_ALT_L 0x38
+#define KEY_ALT_R 0x6F
+#define KEY_HOME 0x60
+#define KEY_UP 0x61
+#define KEY_PAGE_UP 0x62
+#define KEY_LEFT 0x63
+#define KEY_RIGHT 0x64
+#define KEY_END 0x65
+#define KEY_DOWN 0x66
+#define KEY_PAGE_DOWN 0x67
+#define KEY_INSERT 0x68
+#define KEY_DELETE 0x69
+#define KEY_NUM_ENTER 0x6A
+
+
 // Replace a CALL to KeyCheck
-CALL(0x004507B6, _CheckEnableDebug);
-int CheckEnableDebug(short scanCode) {
+CALL(0x004507B6, _CheckDebugKeys);
+int CheckDebugKeys(short scanCode) {
     // Enable debug with Alt+Home
-    if (!g_nv_debugMode && (nv_KeyCheck(0x38) || nv_KeyCheck(0x6F)) && nv_KeyCheck(0x60)) {
+    if (!g_nv_debugMode && (nv_KeyCheck(KEY_ALT_L) || nv_KeyCheck(KEY_ALT_R)) && nv_KeyCheck(KEY_HOME)) {
         nv_PlaySound(g_nv_beep1, 1, g_nv_currentVolume, g_nv_currentVolume);
         g_nv_debugMode = true;
+    } else if (g_nv_debugMode && (nv_KeyCheck(KEY_ALT_L) || nv_KeyCheck(KEY_ALT_R))) {
+        // NCB Test with Alt+9
+        // NCB Set with Alt+0
+        if (nv_KeyCheck(0x0A)) {
+            bool ok = nv_ShowPrompt("\x1D" "Evaluate NCB Test Expression:", "\x00", 0x40);
+            // Result is a p-string but we need a c-string - get the length and ensure it is null-terminated
+            unsigned char len = g_nv_promptResult[0];
+            if (ok && len) {
+                g_nv_promptResult[len + 1] = '\0';
+                bool pass = nv_EvaluteNCBTestExpression(&g_nv_promptResult[1]);
+                nv_ShowAlert(pass ? "\x04" "True" : "\x05" "False");
+            }
+        } else if (nv_KeyCheck(0x0B)) {
+            bool ok = nv_ShowPrompt("\x1B" "Execute NCB Set Expression:", "\x00", 0x40);
+            unsigned char len = g_nv_promptResult[0];
+            if (ok && len) {
+                g_nv_promptResult[len + 1] = '\0';
+                nv_ExecuteNCBSetExpression(&g_nv_promptResult[1]);
+            }
+        }
     }
     return nv_KeyCheck(scanCode);
 }
