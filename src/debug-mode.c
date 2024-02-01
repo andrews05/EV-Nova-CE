@@ -3,7 +3,7 @@
 #include "nova.h"
 
 // Allows activating debug mode with keyboard shortcut
-
+HWND TextBox;
 
 // Replace a CALL to KeyCheck
 CALL(0x004507B6, _CheckDebugKeys);
@@ -22,6 +22,11 @@ int CheckDebugKeys(short scanCode) {
             if (ok && len) {
                 g_nv_promptResult[len + 1] = '\0';
                 bool pass = nv_EvaluteNCBTestExpression(&g_nv_promptResult[1]);
+                TextBox = CreateWindow("EDIT",
+                                   "",
+                                   WS_BORDER | WS_CHILD | WS_VISIBLE,
+                                   10, 300, 390, 20,
+                                   g_nv_hwnd, (HMENU) 1, NULL, NULL);
                 nv_ShowAlert(pass ? "\x04" "True" : "\x05" "False");
             }
         } else if (nv_KeyCheck(0x38) || nv_KeyCheck(0x6F)) {
