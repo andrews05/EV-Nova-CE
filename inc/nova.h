@@ -91,6 +91,7 @@ extern int g_nv_screenHeight;
 extern HWND g_nv_hwnd;
 extern bool g_nv_runInAWindow;
 extern bool g_nv_runInAWindowPref;
+extern bool g_nv_noHyperspaceEffects;
 extern bool g_nv_debugMode;
 extern short g_nv_currentVolume;
 extern short g_nv_mainFontFace;

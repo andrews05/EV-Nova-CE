@@ -5,6 +5,7 @@
 
 setcglob 0x005914D8, g_nv_runInAWindow
 setcglob 0x005914D9, g_nv_runInAWindowPref
+setcglob 0x005914E0, g_nv_noHyperspaceEffects
 setcglob 0x00591560, g_nv_beep1
 setcglob 0x00596D1C, g_nv_mainContext
 setcglob 0x00596D3A, g_nv_debugMode

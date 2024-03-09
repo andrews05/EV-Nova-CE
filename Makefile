@@ -16,24 +16,25 @@ OBJS        = rsrc.o \
 			  sym.o \
 			  imports.o \
 			  src/winmain.o \
-			  src/macroman-fix.o \
-			  src/windows-keys-fix.o \
-			  src/ppat-decoder.o \
-			  src/open-pilot-fix.o \
+			  src/debug-mode.o \
+			  src/dynamic-resolution.o \
 			  src/font-substitution-fix.o \
+			  src/hotkeys.o \
+			  src/hyperspace-effects.o \
+			  src/macroman-fix.o \
 			  src/mission-bbs-title-fix.o \
-			  src/widescreen-roid-fix.o \
+			  src/no-encryption.o \
+			  src/open-pilot-fix.o \
 			  src/odd-width-fix.o \
+			  src/particle-cap.o \
+			  src/ppat-decoder.o \
 			  src/scale-dlog.o \
 			  src/scale-grid.o \
 			  src/scale-status-bar.o \
-			  src/dynamic-resolution.o \
-			  src/windowed-toggle.o \
-			  src/hotkeys.o \
-			  src/debug-mode.o \
-			  src/no-encryption.o \
-			  src/particle-cap.o \
 			  src/version.o \
+			  src/widescreen-roid-fix.o \
+			  src/windowed-toggle.o \
+			  src/windows-keys-fix.o \
 			  src/k.o
 
 PETOOL     ?= petool
