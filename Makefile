@@ -3,7 +3,7 @@
 INPUT       = EV_Nova.dat
 OUTPUT      = EV\ Nova.exe
 LDS         = EV_Nova.lds
-GCCVERSION  = $(shell gcc --version | grep ^gcc | sed 's/^.* //g')
+GCCVERSION  = $(shell $(CC) --version | grep ^$(CC) | sed 's/^.* //g')
 IMPORTS     = 0x18F000 7670
 LDFLAGS     = --section-alignment=0x1000 --subsystem=windows --enable-stdcall-fixup --disable-dynamicbase --disable-nxcompat --disable-reloc-section
 NFLAGS      = -f elf -Iinc/
