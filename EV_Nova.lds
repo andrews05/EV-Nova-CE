@@ -1,6 +1,7 @@
 /* GNU ld linker script for EV_Nova.dat */
 start = 0x503F30;
 ENTRY(start);
+SEARCH_DIR("/usr/i686-w64-mingw32/lib");
 SEARCH_DIR("=/w64devkit/i686-w64-mingw32/lib");
 SEARCH_DIR("=/w64devkit/lib");
 SEARCH_DIR("=/mingw32/i686-w64-mingw32/lib");
