@@ -84,6 +84,10 @@ typedef struct NVScrollList {
 
 // ### Variables ###
 
+extern LPSTR *g_argv;
+extern int g_argc;
+extern char g_iniPath[MAX_PATH];
+
 extern void *g_nv_debugLog;
 extern void *g_nv_beep1;
 extern int g_nv_screenWidth;

@@ -15,8 +15,8 @@
 CALL(0x0041629B, _InitializeMonitor);
 void InitializeMonitor() {
     // Get width and height from the ini
-    int width = GetPrivateProfileIntA("EV Nova", "game_width", 0, ".\\ddraw.ini");
-    int height = GetPrivateProfileIntA("EV Nova", "game_height", 0, ".\\ddraw.ini");
+    int width = GetPrivateProfileIntA("EV Nova", "game_width", 0, g_iniPath);
+    int height = GetPrivateProfileIntA("EV Nova", "game_height", 0, g_iniPath);
 
     // Fallback to current display metrics
     if (width == 0) {

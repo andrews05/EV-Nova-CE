@@ -31,7 +31,7 @@ int g_listItemBaseHeight = 8; // Originally 9 (main font size) but changed to 8 
 CALL(0x004D2B9E, _initFontsAndScaleFactor);
 void initFontsAndScaleFactor() {
     char buf[8];
-    GetPrivateProfileStringA("EV Nova", "ui_scale", "1.0", buf, sizeof buf, ".\\ddraw.ini");
+    GetPrivateProfileStringA("EV Nova", "ui_scale", "1.0", buf, sizeof buf, g_iniPath);
     g_scaleFactor = atof(buf);
     if (g_scaleFactor == 0) {
         g_scaleFactor = 1.0;
