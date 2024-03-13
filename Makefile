@@ -38,12 +38,12 @@ OBJS        = rsrc.o \
 			  src/windows-keys-fix.o \
 			  src/k.o
 
-CC         ?= i686-w64-mingw32-gcc
-CXX        ?= i686-w64-mingw32-g++
+CC          = i686-w64-mingw32-gcc
+CXX         = i686-w64-mingw32-g++
+WINDRES    ?= i686-w64-mingw32-windres
 PETOOL     ?= petool
 STRIP      ?= strip
 NASM       ?= nasm
-WINDRES    ?= windres
 
 all: $(OUTPUT)
 
