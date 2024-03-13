@@ -27,6 +27,7 @@ OBJS        = rsrc.o \
 			  src/open-pilot-fix.o \
 			  src/odd-width-fix.o \
 			  src/particle-cap.o \
+			  src/paths.o \
 			  src/ppat-decoder.o \
 			  src/scale-dlog.o \
 			  src/scale-grid.o \
