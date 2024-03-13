@@ -32,6 +32,8 @@ setcglob 0x00870064, g_nv_currentContext
 setcglob 0x00870078, g_nv_hwnd
 setcglob 0x008700A0, g_nv_screenWidth
 setcglob 0x0087019C, g_nv_screenHeight
+setcglob 0x00870D80, g_nv_argc
+setcglob 0x00870D94, g_nv_argv
 
 
 ; functions
