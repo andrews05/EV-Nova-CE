@@ -5,7 +5,7 @@
 // Display version in corner of main menu
 
 
-char version[] = "EV Nova Community Edition r2";
+char version[] = "EV Nova Community Edition r3";
 
 CALL(0x004884BC, _drawBackground);
 void drawBackground(NVBitmap *bitmap, QDRect *frame) {

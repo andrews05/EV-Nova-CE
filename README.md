@@ -1,7 +1,7 @@
 EV Nova Community Edition
 ==================
 
-Patches to EV Nova 1.0.10 (Windows) - [view patch notes](/release/EV%20Nova%20CE%20Read%20Me.txt)
+Patches to EV Nova 1.0.10 (Windows) - [view patch notes](/dist/EV%20Nova%20CE%20Read%20Me.txt)
 
 How to install
 --------------

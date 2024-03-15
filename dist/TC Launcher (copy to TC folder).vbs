@@ -1,3 +1,7 @@
+' Example script for launching a total conversion for EV Nova.
+' Simply place this file in the folder of the total conversion, alongside its "Nova Files" folder.
+' Feel free to copy, modify, or redistribute this script as much as you like.
+
 On Error Resume Next
 Set shell = CreateObject("WScript.Shell")
 evn = shell.RegRead("HKCU\Software\Microsoft\Windows\CurrentVersion\App Paths\EV Nova.exe\")

@@ -1,4 +1,4 @@
-EV Nova Community Edition r2
+EV Nova Community Edition r3
 
 
 Patch Notes
@@ -24,6 +24,14 @@ Patch Notes
     - Spacebar to open (and close) ship info in the shipyard
     - B to show/hide borders in the map
     - C to clear route in the map (previously centered map, but Spacebar still does this)
+• The app path is written to the registry, allowing scripts etc to locate the exe.
+• The game will look for its Files, Plug-ins & Pilots in the "current directory", which may be set
+  to a location other than the EV Nova folder to facilitate running total conversions. The following
+  are some possible ways of doing this (you only need to do one of these):
+    - Copy the "TC Launcher.vbs" script file to the TC's folder. Double-click to run.
+    - Create a shortcut to EV Nova.exe, get properties and set "Start in" to the path to the TC.
+• Hyperspace Effects preference is now visible and will disable the white flash when turned off.
+• Pilot files are no longer encrypted.
 • Debug mode can be enabled by pressing Alt+Home (see details below).
 
 
@@ -62,5 +70,9 @@ Alt+F9:            Disable player
 F10:               Explore map
 Alt+F10:           Unexplore map
 Backspace:         Complete jump instantly
+Alt+9:             Evaluate NCB test expression*
+Alt+0:             Execute NCB set expression*
 Home:              Instantly restart after loss of ship (this works even when not in debug mode)
 End:               Exit debug mode
+
+* Custom additions for EV Nova CE
