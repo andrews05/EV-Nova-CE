@@ -37,6 +37,6 @@ int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, in
     _splitpath(exePath, drivePath, dirPath, NULL, NULL);
     _makepath(g_iniPath, drivePath, dirPath, "ddraw", "ini");
 
-    //return WinMain(hInst, hInstPrev, cmdline, cmdshow);
-    return WinMainCRTStartup(); // uncomment for c++
+    return WinMain(hInst, hInstPrev, cmdline, cmdshow);
+    //return WinMainCRTStartup(); // uncomment for c++
 }

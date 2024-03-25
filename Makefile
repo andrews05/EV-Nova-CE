@@ -9,7 +9,7 @@ LOADCONFIG  =
 TLS         = 0x0 0
 IAT         = 0x0 0
 
-LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static
+LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -nostdlib
 ASFLAGS     = -Iinc
 NFLAGS      = -Iinc -f elf
 CFLAGS      = -Iinc -O2 -march=i486 -Wall
