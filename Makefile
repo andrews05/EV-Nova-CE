@@ -19,7 +19,7 @@ LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32 -lgdi32 -lcnc_dd
 
 OBJS        = rsrc.o \
 			  sym.o \
-			  imports.o \
+			  src/imports.o \
 			  src/winmain.o \
 			  src/debug-mode.o \
 			  src/dynamic-resolution.o \
