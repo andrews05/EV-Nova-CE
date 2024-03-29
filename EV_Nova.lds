@@ -125,7 +125,7 @@ SECTIONS
   __RUNTIME_PSEUDO_RELOC_LIST_END__ = .;
   ___RUNTIME_PSEUDO_RELOC_LIST__ = . - __rt_psrelocs_size;
   __RUNTIME_PSEUDO_RELOC_LIST__ = . - __rt_psrelocs_size;
-  .eh_frame BLOCK(__section_alignment__) :
+  .eh_fram BLOCK(__section_alignment__) :
   {
     KEEP(*(.eh_frame*))
   }
