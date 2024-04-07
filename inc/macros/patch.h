@@ -1,20 +1,21 @@
 
+#define SETINST(addr, inst)                         \
+    __asm (                                         \
+        ".section .patch,\"d0\";"                   \
+        ".long " #addr ";"                          \
+        ".long (2f - 1f);"                          \
+        "1:;"                                       \
+            inst ";"                                \
+        "2:;"                                       \
+        ".section .text;"                           \
+    )
+
 #define CLEAR(start, value, end)                    \
     __asm (                                         \
         ".section .patch,\"d0\";"                   \
         ".long " #start ";"                         \
         ".long " #end "-" #start ";"                \
         ".fill " #end "-" #start ", 1, " #value ";" \
-        ".section .text;"                           \
-    )
-
-#define LJMP(src, dst)                              \
-    __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
-        ".long 5;"                                  \
-        ".byte 0xE9;"                               \
-        ".long " #dst "-" #src " - 5;"              \
         ".section .text;"                           \
     )
 
@@ -25,6 +26,16 @@
         ".long 2;"                                  \
         ".byte 0xEB;"                               \
         ".byte " #dst "-" #src " - 2;"              \
+        ".section .text;"                           \
+    )
+
+#define LJMP(src, dst)                              \
+    __asm (                                         \
+        ".section .patch,\"d0\";"                   \
+        ".long " #src ";"                           \
+        ".long 5;"                                  \
+        ".byte 0xE9;"                               \
+        ".long " #dst "-" #src " - 5;"              \
         ".section .text;"                           \
     )
 
@@ -75,3 +86,39 @@
         ".byte " #value ";"                         \
         ".section .text;"                           \
     )
+    
+#define SETBYTES(addr, value)                       \
+    __asm (                                         \
+        ".section .patch,\"d0\";"                   \
+        ".long " #addr ";"                          \
+        ".long (2f - 1f);"                          \
+        "1:;"                                       \
+            ".ascii " #value ";"                    \
+        "2:;"                                       \
+        ".section .text;"                           \
+    )
+
+#define HOOK_1(src)                                 \
+    __asm (                                         \
+        ".section .patch,\"d0\";"                   \
+        ".long " #src ";"                           \
+        ".long 5;"                                  \
+        ".byte 0xE9;"                               \
+        ".long _dest" #src "-" #src " - 5;"         \
+        ".section .text;"                           \
+    );                                              \
+    EXTERN_C void __attribute__((naked)) dest##src()
+    
+#define HOOK_2(src, end)                            \
+    CLEAR_INT((src + 5), end);                      \
+    HOOK_1(src)
+
+#define HOOK_X(x,A,B,FUNC, ...)  FUNC  
+#define HOOK(...)         HOOK_X(,##__VA_ARGS__,    \
+                               HOOK_2(__VA_ARGS__), \
+                               HOOK_1(__VA_ARGS__), \
+                               HOOK_0(__VA_ARGS__)  \
+                               )
+
+#define CLEAR_NOP(start, end) CLEAR(start, 0x90, end)
+#define CLEAR_INT(start, end) CLEAR(start, 0xCC, end)

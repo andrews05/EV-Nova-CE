@@ -17,7 +17,7 @@
         %pop
         __SECT__
     %else
-        %error "no corrosponding `@PATCH'"
+        %error "no corresponding `@PATCH'"
     %endif
 %endmacro
 
@@ -37,14 +37,6 @@
     %endif
     times ((%3) - (%1)) db (%2) ; patch data
     @ENDPATCH
-%endmacro
-
-%macro @CLEAR_INT 2
-    @CLEAR %1, 0xCC, %2
-%endmacro
-
-%macro @CLEAR_NOP 2
-    @CLEAR %1, 0x90, %2
 %endmacro
 
 %macro @SJMP 2
@@ -120,3 +112,10 @@
     %1:
 %endmacro
 
+%macro @CLEAR_INT 2
+    @CLEAR %1, 0xCC, %2
+%endmacro
+
+%macro @CLEAR_NOP 2
+    @CLEAR %1, 0x90, %2
+%endmacro
