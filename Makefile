@@ -10,7 +10,7 @@ TLS         = 0x0 0
 IAT         = 0x0 0
 
 LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -nostdlib
-ASFLAGS     = -Iinc
+ASFLAGS     = -Iinc -msyntax=intel -mnaked-reg
 NFLAGS      = -Iinc -f elf
 CFLAGS      = -Iinc -O2 -march=i486 -Wall
 CXXFLAGS    = -Iinc -O2 -march=i486 -Wall
@@ -45,6 +45,7 @@ OBJS        = rsrc.o \
 
 CC          = i686-w64-mingw32-gcc
 CXX         = i686-w64-mingw32-g++
+AS          = i686-w64-mingw32-as
 STRIP      ?= i686-w64-mingw32-strip
 WINDRES    ?= i686-w64-mingw32-windres
 PETOOL     ?= petool
@@ -61,7 +62,7 @@ all: $(OUTPUT)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o: %.s
+%.o: %.S
 	$(AS) $(ASFLAGS) -o $@ $<
 
 %.o: %.rc
