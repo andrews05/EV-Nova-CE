@@ -62,10 +62,20 @@ _patchset_end_\@:
     dest\addr\():
 .endm
 
+.macro @CLEAR_NOP start:req, end:req
+    @CLEAR (\start), 0x90, (\end)
+.endm
+
 .macro @CLEAR_INT start:req, end:req
     @CLEAR (\start), 0xCC, (\end)
 .endm
 
-.macro @CLEAR_NOP start:req, end:req
-    @CLEAR (\start), 0x90, (\end)
+.macro @LJMP_NOP start:req, end:req, dst:req
+    @CLEAR (\start) + 5, 0x90, (\end)
+    @LJMP (\start), (\dst)
+.endm
+
+.macro @LJMP_INT start:req, end:req, dst:req
+    @CLEAR (\start) + 5, 0xCC, (\end)
+    @LJMP (\start), (\dst)
 .endm

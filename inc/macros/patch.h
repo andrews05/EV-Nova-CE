@@ -60,28 +60,28 @@
         ".section .text;"                           \
     )
 
-#define SETDWORD(dst, value)                        \
+#define SETDWORD(addr, value)                       \
     __asm (                                         \
         ".section .patch,\"d0\";"                   \
-        ".long " #dst ";"                           \
+        ".long " #addr ";"                          \
         ".long 4;"                                  \
         ".long " #value ";"                         \
         ".section .text;"                           \
     )
 
-#define SETWORD(dst, value)                         \
+#define SETWORD(addr, value)                        \
     __asm (                                         \
         ".section .patch,\"d0\";"                   \
-        ".long " #dst ";"                           \
+        ".long " #addr ";"                          \
         ".long 2;"                                  \
         ".short " #value ";"                        \
         ".section .text;"                           \
     )
 
-#define SETBYTE(dst, value)                         \
+#define SETBYTE(addr, value)                        \
     __asm (                                         \
         ".section .patch,\"d0\";"                   \
-        ".long " #dst ";"                           \
+        ".long " #addr ";"                          \
         ".long 1;"                                  \
         ".byte " #value ";"                         \
         ".section .text;"                           \
@@ -98,20 +98,20 @@
         ".section .text;"                           \
     )
 
-#define HOOK_1(src)                                 \
+#define HOOK_1(addr)                                \
     __asm (                                         \
         ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
+        ".long " #addr ";"                          \
         ".long 5;"                                  \
         ".byte 0xE9;"                               \
-        ".long _dest" #src "-" #src " - 5;"         \
+        ".long _dest" #addr "-" #addr " - 5;"       \
         ".section .text;"                           \
     );                                              \
-    EXTERN_C void __attribute__((naked)) dest##src()
+    EXTERN_C void __attribute__((naked)) dest##addr()
     
-#define HOOK_2(src, end)                            \
-    CLEAR_INT((src + 5), end);                      \
-    HOOK_1(src)
+#define HOOK_2(addr, end)                           \
+    CLEAR_INT((addr + 5), end);                     \
+    HOOK_1(addr)
 
 #define HOOK_X(x,A,B,FUNC, ...)  FUNC  
 #define HOOK(...)         HOOK_X(,##__VA_ARGS__,    \
@@ -122,3 +122,11 @@
 
 #define CLEAR_NOP(start, end) CLEAR(start, 0x90, end)
 #define CLEAR_INT(start, end) CLEAR(start, 0xCC, end)
+
+#define LJMP_NOP(start, end, dst)                   \
+    CLEAR_NOP((start + 5), end);                    \
+    LJMP(start, dst)
+
+#define LJMP_INT(start, end, dst)                   \
+    CLEAR_INT((start + 5), end);                    \
+    LJMP(start, dst)

@@ -4,13 +4,8 @@ INPUT       = EV_Nova.dat
 OUTPUT      = EV\ Nova.exe
 LDS         = EV_Nova.lds
 
-IMPORTS     = 0x18F000 7670
-LOADCONFIG  =
-TLS         = 0x0 0
-IAT         = 0x0 0
-
 LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -nostdlib
-ASFLAGS     = -Iinc -msyntax=intel -mnaked-reg
+ASFLAGS     = -Iinc
 NFLAGS      = -Iinc -f elf
 CFLAGS      = -Iinc -O2 -march=i486 -Wall
 CXXFLAGS    = -Iinc -O2 -march=i486 -Wall
@@ -51,33 +46,26 @@ WINDRES    ?= i686-w64-mingw32-windres
 PETOOL     ?= petool
 NASM       ?= nasm
 
+IMPORTS     = 1  0x18F000 7670
+TLS         = 9  0x0 0
+IAT         = 12 0x0 0
+
 all: $(OUTPUT)
 
 %.o: %.asm
 	$(NASM) $(NFLAGS) -o $@ $<
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
-
-%.o: %.S
-	$(AS) $(ASFLAGS) -o $@ $<
-
 %.o: %.rc
-	$(WINDRES) $(WINDRES_FLAGS) $< $@
+	$(WINDRES) $(WFLAGS) $< $@
 
 rsrc.o: $(INPUT)
 	$(PETOOL) re2obj $(INPUT) $@
 
 $(OUTPUT): $(LDS) $(INPUT) $(OBJS)
 	$(CXX) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(LIBS) -L./lib
-ifneq (,$(IMPORTS))
-	$(PETOOL) setdd "$@" 1 $(IMPORTS) || ($(RM) "$@" && exit 1)
-endif
-	$(PETOOL) setdd "$@" 9 0 0 || ($(RM) "$@" && exit 1)
-	$(PETOOL) setdd "$@" 12 0 0 || ($(RM) "$@" && exit 1)
+	$(PETOOL) setdd "$@" $(IMPORTS) || ($(RM) "$@" && exit 1)
+	$(PETOOL) setdd "$@" $(TLS) || ($(RM) "$@" && exit 1)
+	$(PETOOL) setdd "$@" $(IAT) || ($(RM) "$@" && exit 1)
 	$(PETOOL) setc  "$@" .p_text 0x60000020 || ($(RM) "$@" && exit 1)
 	$(PETOOL) patch "$@" || ($(RM) "$@" && exit 1)
 	$(STRIP) -R .patch "$@" || ($(RM) "$@" && exit 1)
