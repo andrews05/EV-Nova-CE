@@ -62,7 +62,7 @@ rsrc.o: $(INPUT)
 	$(PETOOL) re2obj $(INPUT) $@
 
 $(OUTPUT): $(LDS) $(INPUT) $(OBJS)
-	$(CXX) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(LIBS) -L./lib
+	$(CXX) $(LDFLAGS) -T $(LDS) -o "$@" $(OBJS) $(LIBS)
 	$(PETOOL) setdd "$@" $(IMPORTS) || ($(RM) "$@" && exit 1)
 	$(PETOOL) setdd "$@" $(TLS) || ($(RM) "$@" && exit 1)
 	$(PETOOL) setdd "$@" $(IAT) || ($(RM) "$@" && exit 1)

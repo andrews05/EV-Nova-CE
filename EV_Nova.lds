@@ -1,4 +1,11 @@
 /* GNU ld linker script for EV_Nova.dat */
+
+/* Default linker script, for normal executables */
+/* Copyright (C) 2014-2023 Free Software Foundation, Inc.
+   Copying and distribution of this script, with or without modification,
+   are permitted in any medium without royalty provided the copyright
+   notice and this notice are preserved.  */
+
 start = 0x503F30;
 ENTRY(start);
 SEARCH_DIR("/usr/i686-w64-mingw32/lib");
@@ -9,6 +16,7 @@ SEARCH_DIR("=/mingw32/lib");
 SEARCH_DIR("=/usr/local/lib");
 SEARCH_DIR("=/lib");
 SEARCH_DIR("=/usr/lib");
+SEARCH_DIR("./lib");
 SECTIONS
 {
     .text             0x401000 : { EV_Nova.dat(.text) }
