@@ -12,27 +12,28 @@
 
 
 // Fix dialog placement
-CALL(0x004CF7C3, _parseDLOG);
-int parseDLOG(short *dialog, unsigned short *DLOGResource) {
-    // Read the bounds rect
-    short top = SWAP16(DLOGResource[0]);
-    short left = SWAP16(DLOGResource[1]);
-    short bottom = SWAP16(DLOGResource[2]);
-    short right = SWAP16(DLOGResource[3]);
+// (Obsoleted by scale-dlog)
+// CALL(0x004CF7C3, _parseDLOG);
+// int parseDLOG(short *dialog, unsigned short *DLOGResource) {
+//     // Read the bounds rect
+//     short top = SWAP16(DLOGResource[0]);
+//     short left = SWAP16(DLOGResource[1]);
+//     short bottom = SWAP16(DLOGResource[2]);
+//     short right = SWAP16(DLOGResource[3]);
 
-    // Calculate width and height
-    short width = right - left;
-    short height = bottom - top;
+//     // Calculate width and height
+//     short width = right - left;
+//     short height = bottom - top;
 
-    // Center on screen
-    dialog[6] = (g_nv_screenHeight - height) / 2;
-    dialog[7] = (g_nv_screenWidth - width) / 2;
-    dialog[8] = dialog[6] + height;
-    dialog[9] = dialog[7] + width;
+//     // Center on screen
+//     dialog[6] = (g_nv_screenHeight - height) / 2;
+//     dialog[7] = (g_nv_screenWidth - width) / 2;
+//     dialog[8] = dialog[6] + height;
+//     dialog[9] = dialog[7] + width;
 
-    // Return the DITL id
-    return (int)SWAP16(DLOGResource[9]);
-}
+//     // Return the DITL id
+//     return (int)SWAP16(DLOGResource[9]);
+// }
 
 
 // Fix text rendering in odd-width dialogs
