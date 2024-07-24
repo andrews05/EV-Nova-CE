@@ -51,15 +51,25 @@ _patchset_end_\@:
 .macro @HOOK addr:req, end
     .ifb \end
         .set @HOOKEND, (\addr) + 5
+        @LJMP (\addr), _dest\addr
     .else
         .set @HOOKEND, (\end)
-        @CLEAR (\addr) + 5, 0xCC, (\end)
+
+        .if (\end) - ((\addr) + 5) < 0
+            .error "end must be at least 5 bytes (the size of a long jump) after start (\end)"
+        .endif
+    
+        .section .patch,"d0"
+        .long (\addr)
+        .long 5 + ((\end) - ((\addr) + 5))
+        .byte 0xE9
+        .long (_dest\addr) - (\addr) - 5
+        .fill (\end) - ((\addr) + 5), 1, 0xCC
     .endif
     
-    @LJMP (\addr), dest\addr
     .section .text
     .align 8, 0xCC
-    dest\addr\():
+    _dest\addr\():
 .endm
 
 .macro @CLEAR_NOP start:req, end:req
@@ -71,11 +81,27 @@ _patchset_end_\@:
 .endm
 
 .macro @LJMP_NOP start:req, end:req, dst:req
-    @CLEAR (\start) + 5, 0x90, (\end)
-    @LJMP (\start), (\dst)
+    .if (\end) - ((\start) + 5) < 0
+        .error "end must be at least 5 bytes (the size of a long jump) after start (\end)"
+    .endif
+
+    .section .patch,"d0"
+    .long (\start)
+    .long 5 + ((\end) - ((\start) + 5))
+    .byte 0xE9
+    .long (\dst) - (\start) - 5
+    .fill (\end) - ((\start) + 5), 1, 0x90
 .endm
 
 .macro @LJMP_INT start:req, end:req, dst:req
-    @CLEAR (\start) + 5, 0xCC, (\end)
-    @LJMP (\start), (\dst)
+    .if (\end) - ((\start) + 5) < 0
+        .error "end must be at least 5 bytes (the size of a long jump) after start (\end)"
+    .endif
+
+    .section .patch,"d0"
+    .long (\start)
+    .long 5 + ((\end) - ((\start) + 5))
+    .byte 0xE9
+    .long (\dst) - (\start) - 5
+    .fill (\end) - ((\start) + 5), 1, 0xCC
 .endm

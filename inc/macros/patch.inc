@@ -33,7 +33,7 @@
 %macro @CLEAR 3
     @PATCH (%1)
     %if ((%3) - (%1)) < 0
-        %error "stop address is less than start address in @CLEAR"
+        %error "stop address is less than start address in @CLEAR" (%3)
     %endif
     times ((%3) - (%1)) db (%2) ; patch data
     @ENDPATCH
@@ -70,46 +70,27 @@
 
 %macro @HOOK 1
     %define @HOOKEND (%1 + 5)
-    @LJMP {(%1)}, dest%1
+    @LJMP {(%1)}, _dest%1
     [section .text]
     align 16, db 0xCC
-    dest%1:
+    _dest%1:
 %endmacro
 
 %macro @HOOK 2
     %define @HOOKEND %2
-    %if %2 - ((%1) + 5) < 0
-        %error "end must be at least 5 bytes (the size of a long jump) after start"
+    %if (%2) - ((%1) + 5) < 0
+        %error "end must be at least 5 bytes (the size of a long jump) after start" (%2)
     %endif
 
-    @CLEAR {(%1) + 5}, 0xCC, {(%2)}
-    @LJMP {(%1)}, dest%1
+    @PATCH (%1)
+    db 0xE9                           ; far jump
+    dd (_dest%1) - (%1) - 5           ; relative offset
+    times ((%2) - ((%1) + 5)) db 0xCC ; clear int3
+    @ENDPATCH
+    
     [section .text]
     align 16, db 0xCC
-    dest%1:
-%endmacro
-
-%macro @DETOUR 3
-    cglobal %1
-    %define @DETOUREND (%3 + 5)
-    @LJMP {(%3)}, %2
-    [section .text]
-    align 16, db 0xCC
-    %1:
-%endmacro
-
-%macro @DETOUR 4
-    cglobal %1
-    %define @DETOUREND %4
-    %if %4 - ((%3) + 5) < 0
-        %error "end must be at least 5 bytes (the size of a long jump) after start"
-    %endif
-
-    @CLEAR {(%3) + 5}, 0xCC, {(%4)}
-    @LJMP {(%3)}, %2
-    [section .text]
-    align 16, db 0xCC
-    %1:
+    _dest%1:
 %endmacro
 
 %macro @CLEAR_NOP 2
@@ -121,11 +102,25 @@
 %endmacro
 
 %macro @LJMP_NOP 3
-    @CLEAR_NOP {(%1) + 5}, %2
-    @LJMP {(%1)}, %3
+    %if (%2) - ((%1) + 5) < 0
+        %error "end must be at least 5 bytes (the size of a long jump) after start" (%2)
+    %endif
+
+    @PATCH (%1)
+    db 0xE9                           ; far jump
+    dd (%3) - (%1) - 5                ; relative offset
+    times ((%2) - ((%1) + 5)) db 0x90 ; clear NOP
+    @ENDPATCH
 %endmacro
 
 %macro @LJMP_INT 3
-    @CLEAR_INT {(%1) + 5}, %2
-    @LJMP {(%1)}, %3
+    %if (%2) - ((%1) + 5) < 0
+        %error "end must be at least 5 bytes (the size of a long jump) after start" (%2)
+    %endif
+    
+    @PATCH (%1)
+    db 0xE9                           ; far jump
+    dd (%3) - (%1) - 5                ; relative offset
+    times ((%2) - ((%1) + 5)) db 0xCC ; clear int3
+    @ENDPATCH
 %endmacro

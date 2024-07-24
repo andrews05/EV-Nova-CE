@@ -57,6 +57,25 @@
     %endif
 %endmacro
 
+;; global int array -> arg1 = name, arg2 = value, arg3 = length
+%macro gint 3
+    cglobal %1
+    sint %1, {%2}, %3
+%endmacro
+
+;; static (local) int array -> arg1 = name, arg2 = value, arg3 = length
+%macro sint 3
+    %ifidni %2,0
+        [section .bss]
+        %1 resd %3
+        __SECT__
+    %else
+        [section .data]
+        %1 times %3 dd %2
+        __SECT__
+    %endif
+%endmacro
+
 ;; global short -> arg1 = name, arg2 = value
 %macro gshort 2
     cglobal %1
@@ -76,6 +95,25 @@
     %endif
 %endmacro
 
+;; global short array -> arg1 = name, arg2 = value, arg3 = length
+%macro gshort 3
+    cglobal %1
+    sshort %1, {%2}, %3
+%endmacro
+
+;; static (local) short array -> arg1 = name, arg2 = value, arg3 = length
+%macro sshort 3
+    %ifidni %2,0
+        [section .bss]
+        %1 resw %3
+        __SECT__
+    %else
+        [section .data]
+        %1 times %3 dw %2
+        __SECT__
+    %endif
+%endmacro
+
 ;; global bool -> arg1 = name, arg2 = value
 %macro gbool 2
     cglobal %1
@@ -85,6 +123,17 @@
 ;; static (local) bool -> arg1 = name, arg2 = value
 %macro sbool 2
     sbyte %1, {%2}
+%endmacro
+
+;; global bool array -> arg1 = name, arg2 = value, arg3 = length
+%macro gbool 3
+    cglobal %1
+    sbyte %1, {%2}, %3
+%endmacro
+
+;; static (local) bool array -> arg1 = name, arg2 = value, arg3 = length
+%macro sbool 3
+    sbyte %1, {%2}, %3
 %endmacro
 
 ;; global byte -> arg1 = name, arg2 = value
