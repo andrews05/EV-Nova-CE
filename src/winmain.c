@@ -2,6 +2,7 @@
 #include "macros/patch.h"
 #include "nova.h"
 #include "imports.h"
+#include "wine.h"
 
 int WinMainCRTStartup(void);
 
@@ -11,8 +12,19 @@ CALL(0x00503FE5, _fake_WinMain);
 
 int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-    if (!imports_init())
+    if (!imports_init()) {
         return 0;
+    }
+
+    // Get path to exe
+    char exePath[MAX_PATH];
+    GetModuleFileName(NULL, exePath, sizeof(exePath));
+
+    if (wine_add_dll_overrides()) {
+        // Newly added dll overrides only work after a restart
+        ShellExecuteA(NULL, "open", exePath, cmdline, NULL, 0);
+        return 0;
+    }
 
     // Store the app path in the registry
     HKEY appPath;
@@ -27,8 +39,6 @@ int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, in
         &appPath,
         NULL
     );
-    char exePath[MAX_PATH];
-    GetModuleFileName(NULL, exePath, sizeof(exePath));
     RegSetValueExA(appPath, NULL, 0, REG_SZ, (BYTE *)exePath, sizeof(exePath));
 
     // Get full path to ddraw.ini

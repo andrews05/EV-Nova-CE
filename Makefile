@@ -36,7 +36,8 @@ OBJS        = rsrc.o \
 			  src/widescreen-roid-fix.o \
 			  src/windowed-toggle.o \
 			  src/windows-keys-fix.o \
-			  src/k.o
+			  src/k.o \
+			  src/wine.o
 
 CC          = i686-w64-mingw32-gcc
 CXX         = i686-w64-mingw32-g++
