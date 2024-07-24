@@ -2,7 +2,6 @@
 #include "macros/patch.h"
 #include "nova.h"
 #include "imports.h"
-#include "wine.h"
 
 int WinMainCRTStartup(void);
 
@@ -19,12 +18,6 @@ int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, in
     // Get path to exe
     char exePath[MAX_PATH];
     GetModuleFileName(NULL, exePath, sizeof(exePath));
-
-    if (wine_add_dll_overrides()) {
-        // Newly added dll overrides only work after a restart
-        ShellExecuteA(NULL, "open", exePath, cmdline, NULL, 0);
-        return 0;
-    }
 
     // Store the app path in the registry
     HKEY appPath;

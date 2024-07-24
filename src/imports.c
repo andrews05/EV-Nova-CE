@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include "imports.h"
+#include "wine.h"
 
 extern char _p_idata_start__, _image_base__;
 
@@ -62,6 +63,14 @@ BOOL __attribute__((optimize("O0"))) imports_init()
         import_desc++;
     }
 
+    if (wine_add_dll_overrides()) {
+        // Newly added dll overrides only work after a restart
+        char exePath[MAX_PATH];
+        GetModuleFileName(NULL, exePath, sizeof(exePath));
+        ShellExecuteA(NULL, "open", exePath, NULL, NULL, 0);
+        return 0;
+    }
+
     if (failed_func)
     {
         char msg[256];
@@ -81,8 +90,8 @@ BOOL __attribute__((optimize("O0"))) imports_init()
     {
         char msg[256];
         _snprintf(
-            msg, 
-            sizeof msg, 
+            msg,
+            sizeof msg,
             "The program can't start because %s is missing from your computer. "
                 "Try reinstalling the program to fix this problem.",
             failed_mod);
