@@ -1,102 +1,88 @@
 
+#define PATCH_START(patchaddr)                      \
+        ".section .patch,\"d0\";"                   \
+        ".long " #patchaddr ";"                     \
+        ".long (9f - 8f);"                          \
+        "8:;"
+
+#define PATCH_END                                   \
+        "9:;"                                       \
+        ".section .text;"
+
 #define SETINST(addr, inst)                         \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #addr ";"                          \
-        ".long (2f - 1f);"                          \
-        "1:;"                                       \
-            inst ";"                                \
-        "2:;"                                       \
-        ".section .text;"                           \
+        PATCH_START(addr)                           \
+        inst ";"                                    \
+        PATCH_END                                   \
     )
 
 #define CLEAR(start, value, end)                    \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #start ";"                         \
-        ".long (" #end ") - (" #start ");"          \
+        PATCH_START(start)                          \
         ".fill (" #end ") - (" #start "), 1, " #value ";" \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
 
 #define SJMP(src, dst)                              \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
-        ".long 2;"                                  \
+        PATCH_START(src)                            \
         ".byte 0xEB;"                               \
         ".byte (" #dst ") - (" #src ") - 2;"        \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
 
 #define LJMP(src, dst)                              \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
-        ".long 5;"                                  \
+        PATCH_START(src)                            \
         ".byte 0xE9;"                               \
         ".long (" #dst ") - (" #src ") - 5;"        \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
 
 #define SETDWORD(addr, value)                       \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #addr ";"                          \
-        ".long 4;"                                  \
+        PATCH_START(addr)                           \
         ".long " #value ";"                         \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
 
 #define SETWORD(addr, value)                        \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #addr ";"                          \
-        ".long 2;"                                  \
+        PATCH_START(addr)                           \
         ".short " #value ";"                        \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
 
 #define SETBYTE(addr, value)                        \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #addr ";"                          \
-        ".long 1;"                                  \
+        PATCH_START(addr)                           \
         ".byte " #value ";"                         \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
     
 #define SETBYTES(addr, value)                       \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #addr ";"                          \
-        ".long (2f - 1f);"                          \
-        "1:;"                                       \
-            ".ascii " #value ";"                    \
-        "2:;"                                       \
-        ".section .text;"                           \
+        PATCH_START(addr)                           \
+        ".ascii " #value ";"                        \
+        PATCH_END                                   \
     )
 
 #define HOOK_1(addr)                                \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #addr ";"                          \
-        ".long 5;"                                  \
+        PATCH_START(addr)                           \
         ".byte 0xE9;"                               \
         ".long _dest" #addr "-" #addr " - 5;"       \
-        ".section .text;"                           \
+        PATCH_END                                   \
     );                                              \
     EXTERN_C void __attribute__((naked)) dest##addr()
 
 #define HOOK_2(addr, end)                           \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #addr ";"                          \
-        ".long 5 + ((" #end ") - ((" #addr ") + 5));" \
+        PATCH_START(addr)                           \
         ".byte 0xE9;"                               \
         ".long _dest" #addr "-" #addr " - 5;"       \
         ".fill (" #end ") - ((" #addr ") + 5), 1, 0xCC;" \
-        ".section .text;"                           \
+        PATCH_END                                   \
     );                                              \
     EXTERN_C void __attribute__((naked)) dest##addr()
 
@@ -110,30 +96,8 @@
 #define CLEAR_NOP(start, end) CLEAR(start, 0x90, end)
 #define CLEAR_INT(start, end) CLEAR(start, 0xCC, end)
 
-#define LJMP_NOP(start, end, dst)                   \
-    __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #start ";"                         \
-        ".long 5 + ((" #end ") - ((" #start ") + 5));" \
-        ".byte 0xE9;"                               \
-        ".long (" #dst ") - (" #start ") - 5;"      \
-        ".fill (" #end ") - ((" #start ") + 5), 1, 0x90;" \
-        ".section .text;"                           \
-    )
-
-#define LJMP_INT(start, end, dst)                   \
-    __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #start ";"                         \
-        ".long 5 + ((" #end ") - ((" #start ") + 5));" \
-        ".byte 0xE9;"                               \
-        ".long (" #dst ") - (" #start ") - 5;"      \
-        ".fill (" #end ") - ((" #start ") + 5), 1, 0xCC;" \
-        ".section .text;"                           \
-    )
-
 #define WATCALL_TO_CDECL(dst, arg_count)            \
-        ".align 8, 0xCC;"                           \
+        ".align 16, 0xCC;"                          \
         ".if " #arg_count " == 0;"                  \
             "1:;"                                   \
             "push ecx;"                             \
@@ -384,24 +348,20 @@
         
 #define DETOUR_3(start, end, dst)                   \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #start ";"                         \
-        ".long 5 + ((" #end ") - ((" #start ") + 5));" \
+        PATCH_START(start)                          \
         ".byte 0xE9;"                               \
         ".long (" #dst ") - (" #start ") - 5;"      \
         ".fill (" #end ") - ((" #start ") + 5), 1, 0xCC;" \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
     
 #define DETOUR_4(start, end, dst, arg_count)        \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #start ";"                         \
-        ".long 5 + ((" #end ") - ((" #start ") + 5));" \
+        PATCH_START(start)                          \
         ".byte 0xE9;"                               \
         ".long 1f - (" #start ") - 5;"              \
         ".fill (" #end ") - ((" #start ") + 5), 1, 0xCC;" \
-        ".section .text;"                           \
+        PATCH_END                                   \
         WATCALL_TO_CDECL(dst, arg_count)            \
     )
 
@@ -417,22 +377,18 @@
 
 #define CALL_2(src, dst)                            \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
-        ".long 5;"                                  \
+        PATCH_START(src)                            \
         ".byte 0xE8;"                               \
         ".long (" #dst ") - (" #src ") - 5;"        \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
 
 #define CALL_3(src, dst, arg_count)                 \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
-        ".long 5;"                                  \
+        PATCH_START(src)                            \
         ".byte 0xE8;"                               \
         ".long 1f - (" #src ") - 5;"                \
-        ".section .text;"                           \
+        PATCH_END                                   \
         WATCALL_TO_CDECL(dst, arg_count)            \
     )
 
@@ -447,24 +403,20 @@
 
 #define CALL_NOP_2(src, dst)                        \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
-        ".long 6;"                                  \
+        PATCH_START(src)                            \
         ".byte 0xE8;"                               \
         ".long (" #dst ") - (" #src ") - 5;"        \
         ".byte 0x90;"                               \
-        ".section .text;"                           \
+        PATCH_END                                   \
     )
 
 #define CALL_NOP_3(src, dst, arg_count)             \
     __asm (                                         \
-        ".section .patch,\"d0\";"                   \
-        ".long " #src ";"                           \
-        ".long 6;"                                  \
+        PATCH_START(src)                            \
         ".byte 0xE8;"                               \
         ".long 1f - (" #src ") - 5;"                \
         ".byte 0x90;"                               \
-        ".section .text;"                           \
+        PATCH_END                                   \
         WATCALL_TO_CDECL(dst, arg_count)            \
     )
 

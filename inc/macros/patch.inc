@@ -100,27 +100,3 @@
 %macro @CLEAR_INT 2
     @CLEAR %1, 0xCC, %2
 %endmacro
-
-%macro @LJMP_NOP 3
-    %if (%2) - ((%1) + 5) < 0
-        %error "end must be at least 5 bytes (the size of a long jump) after start" (%2)
-    %endif
-
-    @PATCH (%1)
-    db 0xE9                           ; far jump
-    dd (%3) - (%1) - 5                ; relative offset
-    times ((%2) - ((%1) + 5)) db 0x90 ; clear NOP
-    @ENDPATCH
-%endmacro
-
-%macro @LJMP_INT 3
-    %if (%2) - ((%1) + 5) < 0
-        %error "end must be at least 5 bytes (the size of a long jump) after start" (%2)
-    %endif
-    
-    @PATCH (%1)
-    db 0xE9                           ; far jump
-    dd (%3) - (%1) - 5                ; relative offset
-    times ((%2) - ((%1) + 5)) db 0xCC ; clear int3
-    @ENDPATCH
-%endmacro

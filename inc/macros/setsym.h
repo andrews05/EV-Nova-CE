@@ -67,7 +67,7 @@
         ".global " #name ";"                         \
         ".equ " #name ", " #addr ";"                 \
         ".section .text;"                            \
-        ".align 8, 0xCC;"                            \
+        ".align 16, 0xCC;"                           \
         "_" #name ":;"                               \
         CDECL_TO_WATCALL(addr, arg_count)            \
     )
@@ -85,7 +85,7 @@
     __asm (                                          \
         ".global _" #name ";"                        \
         ".section .text;"                            \
-        ".align 8, 0xCC;"                            \
+        ".align 16, 0xCC;"                           \
         "_" #name ":;"                               \
         inst ";"                                     \
         "jmp " #addr ";"                             \
@@ -96,11 +96,11 @@
         ".global _" #name ";"                        \
         ".global " #name ";"                         \
         ".section .text;"                            \
-        ".align 8, 0xCC;"                            \
+        ".align 16, 0xCC;"                           \
         #name ":;"                                   \
         inst ";"                                     \
         "jmp " #addr ";"                             \
-        ".align 8, 0xCC;"                            \
+        ".align 16, 0xCC;"                           \
         "_" #name ":;"                               \
         CDECL_TO_WATCALL(name, arg_count)            \
     )

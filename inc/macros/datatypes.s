@@ -98,7 +98,7 @@
 # static (local) function -> arg1 = name
 .macro sfunction name:req
     .section .text
-    .align 8, 0xCC
+    .align 16, 0xCC
     \name\():
 .endm
 
