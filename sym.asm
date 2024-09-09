@@ -57,9 +57,11 @@ setcglob 0x004CFD30, nv_GetDialogBounds
 setcglob 0x004D2A80, WinMain
 setcglob 0x004D86D0, nv_Alloc
 setcglob 0x004D87D0, nv_Free
+setcglob 0x004D9680, nv_ConvertMacPathToWin
 setcglob 0x004ECBD0, nv_SetupScreen
 setcglob 0x004F0EB0, nv_WriteLogFormat
 setcglob 0x004F1080, nv_FlushLog
+setcglob 0x0046f500, nv_LoadFilesInFolder
 
 ; imports
 

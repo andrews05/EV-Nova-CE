@@ -1,4 +1,4 @@
-#ifndef NOVA_H 
+#ifndef NOVA_H
 #define NOVA_H
 
 #include <stdbool.h>
@@ -143,5 +143,7 @@ void nv_ShowAlert(char *message);
 bool nv_ShowPrompt(char *message, char *defaultValue, short selectionRange);
 void nv_ExecuteNCBSetExpression(char *expression);
 bool nv_EvaluteNCBTestExpression(char *expression);
+void nv_ConvertMacPathToWin(char *winPath, char *macPath);
+int nv_LoadFilesInFolder(char *folderPath, char *extension, bool log);
 
 #endif
