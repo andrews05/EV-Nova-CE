@@ -4,13 +4,13 @@ INPUT       = EV_Nova.dat
 OUTPUT      = EV\ Nova.exe
 LDS         = EV_Nova.lds
 
-LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -nostdlib
+LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -nostartfiles -mcrtdll=msvcrt-os
 ASFLAGS     = -Iinc
 NFLAGS      = -Iinc -f elf
 CFLAGS      = -Iinc -O2 -march=i486 -Wall -masm=intel
 CXXFLAGS    = -Iinc -O2 -march=i486 -Wall -masm=intel
 
-LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt -lkernel32 -lgdi32 -lcnc_ddraw
+LIBS        = -lgdi32 -lcnc_ddraw
 
 OBJS        = rsrc.o \
 			  sym.o \
