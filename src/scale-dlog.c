@@ -43,7 +43,7 @@ void initFontsAndScaleFactor() {
     // Status bar width should be kept to a multiple of 2
     g_statusBarWidth = ROUND(g_statusBarWidth * g_scaleFactor / 2) * 2;
     g_listItemBaseHeight = ROUND(g_listItemBaseHeight * g_scaleFactor);
-    
+
     // Original function call replaced by the patch
     ((void (*)())0x004BC3E0)();
 }
@@ -434,3 +434,21 @@ void setEscortMenuTextOrigin(int x, int y) {
     g_nv_currentContext->posX = x;
     g_nv_currentContext->posY = scale(y);
 }
+
+
+/** MAIN MENU */
+
+// CALL(0x004883EA, _centerMainScreenBackground);
+// void centerMainScreenBackground(NVRawBitmap *pict, QDRect *rect) {
+//     scaleRect(rect);
+//     ((void (*)(NVRawBitmap*,QDRect*))0x00466540)(pict, rect);
+// }
+CALL(0x0046656F, _getBitmapBoundsScaled);
+void getBitmapBoundsScaled(NVRawBitmap *bitmap, QDRect *bounds) {
+    bounds->top = 0;
+    bounds->left = 0;
+    bounds->bottom = scale(bitmap->height);
+    bounds->right = scale(bitmap->width);
+}
+
+CALL(0x0046F88B, _scaleAndShiftRect);
