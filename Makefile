@@ -20,6 +20,7 @@ OBJS        = rsrc.o \
 			  src/dynamic-resolution.o \
 			  src/font-substitution-fix.o \
 			  src/hotkeys.o \
+			  src/hotkeys-x2.o \
 			  src/hyperspace-effects.o \
 			  src/macroman-fix.o \
 			  src/mission-bbs-title-fix.o \
