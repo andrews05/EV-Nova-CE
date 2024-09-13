@@ -23,6 +23,7 @@ OBJS        = rsrc.o \
 			  src/hotkeys-x2.o \
 			  src/hyperspace-effects.o \
 			  src/macroman-fix.o \
+			  src/map-borders.o \
 			  src/mission-bbs-title-fix.o \
 			  src/no-encryption.o \
 			  src/open-pilot-fix.o \
