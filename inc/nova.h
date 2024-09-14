@@ -117,6 +117,7 @@ extern NVContext *g_nv_mainContext;
 extern NVContext *g_nv_currentContext;
 extern NVCanvas g_nv_buttonCanvas;
 extern NVCanvas g_nv_mainBufferCanvas;
+extern HCURSOR g_nv_cursor;
 
 // ### Functions ###
 
@@ -145,5 +146,6 @@ void nv_ExecuteNCBSetExpression(char *expression);
 bool nv_EvaluteNCBTestExpression(char *expression);
 void nv_ConvertMacPathToWin(char *winPath, char *macPath);
 int nv_LoadFilesInFolder(char *folderPath, char *extension, bool log);
+LRESULT CALLBACK nv_Wndproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 #endif

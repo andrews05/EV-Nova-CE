@@ -34,6 +34,7 @@ setcglob 0x008700A0, g_nv_screenWidth
 setcglob 0x0087019C, g_nv_screenHeight
 setcglob 0x00870D80, g_nv_argc
 setcglob 0x00870D94, g_nv_argv
+setcglob 0x00870DF8, g_nv_cursor
 
 
 ; functions
@@ -62,6 +63,7 @@ setcglob 0x004ECBD0, nv_SetupScreen
 setcglob 0x004F0EB0, nv_WriteLogFormat
 setcglob 0x004F1080, nv_FlushLog
 setcglob 0x0046f500, nv_LoadFilesInFolder
+setcglob 0x004D2440, nv_Wndproc
 
 ; imports
 

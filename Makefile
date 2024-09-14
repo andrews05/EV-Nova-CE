@@ -39,6 +39,7 @@ OBJS        = rsrc.o \
 			  src/windowed-toggle.o \
 			  src/windows-keys-fix.o \
 			  src/k.o \
+			  src/wndproc.o \
 			  src/wine.o
 
 CC          = i686-w64-mingw32-gcc
