@@ -95,3 +95,15 @@ void constructMapBorders(short a, short b, short c, short d, QDRect *mapRect) {
     ((void (*)(short, short, short, short, QDRect*))0x004A9D50)(a, b, c, d, mapRect);
 }
 SETINST(0x004AA250, "ADD EBP, [_g_mapBordersWidth]");
+
+
+// Adjust the border sizing relative to the zoom level to make it more consistent.
+// Do this by lower the scaling factor add then adding a little extra.
+// Also allow the minor borders to be slightly more prominent than before.
+double minorBorderScale = 11;
+SETDWORD(0x004AA185 + 2, _minorBorderScale);
+SETINST(0x004AA1B6, "ADD ECX, 0x9");
+
+double majorBorderScale = 22;
+SETDWORD(0x004AA1D0 + 2, _majorBorderScale);
+SETINST(0x004AA200, "ADD ECX, 0xC");
