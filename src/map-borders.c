@@ -107,3 +107,13 @@ SETINST(0x004AA1B6, "ADD ECX, 0x9");
 double majorBorderScale = 22;
 SETDWORD(0x004AA1D0 + 2, _majorBorderScale);
 SETINST(0x004AA200, "ADD ECX, 0xC");
+
+
+// Fix the proportions of the cyan dot marking the player's current system.
+// The fillCircle function is slightly wrong. Rather than trying to find and fix the error, we can
+// just follow it up with a call to frameCircle which does work correctly.
+CALL(0x004A91F2, _markCurrentSystem);
+void markCurrentSystem(QDRect *rect) {
+    ((void (*)(QDRect*))0x004BB260)(rect);
+    ((void (*)(QDRect*))0x004BA350)(rect);
+}
