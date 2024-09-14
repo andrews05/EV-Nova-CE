@@ -14,7 +14,6 @@ LRESULT CALLBACK Wndproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         if (LOWORD(lParam) == HTCLIENT)
         {
             SetCursor(g_nv_cursor ? g_nv_cursor : LoadCursor(NULL, IDC_ARROW));
-            return TRUE;
         }
 
         break;
