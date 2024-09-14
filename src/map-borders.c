@@ -75,10 +75,23 @@ SETWORD(0x004AA001 + 5, 512);
 SETWORD(0x004AA021 + 5, 512);
 
 SETBYTE(0x004AA2C4 + 2, 9);
-SETWORD(0x004AA250 + 2, 512);
 SETWORD(0x004AA2D3 + 5, 512);
 SETWORD(0x004AA2EC + 5, 512);
 
 SETBYTE(0x004AA67B + 2, 9);
 SETWORD(0x004AA6BB + 5, 512);
 SETWORD(0x004AA6CF + 5, 512);
+
+
+// To improve performance when the actual map area is smaller, determine the width and use this to
+// restrict the border calculations where possible.
+short g_mapBordersWidth = 512;
+CALL(0x004A9D3B, _constructMapBorders);
+void constructMapBorders(short a, short b, short c, short d, QDRect *mapRect) {
+    short mapWidth = (mapRect->right - mapRect->left) / 2;
+    if (mapWidth < g_mapBordersWidth) {
+        g_mapBordersWidth = mapWidth;
+    }
+    ((void (*)(short, short, short, short, QDRect*))0x004A9D50)(a, b, c, d, mapRect);
+}
+SETINST(0x004AA250, "ADD EBP, [_g_mapBordersWidth]");
