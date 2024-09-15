@@ -32,3 +32,27 @@
     MOV BX, [_g_mapBordersVisibleHeight]
     CMP word [ESP + 0x24], BX
     JMP @HOOKEND
+
+
+; Change some logic to keep the 8th scale borders visible until the full borders are completed.
+@HOOK 0x004A75B1, 0x004A75C0
+    ; We've just compared the number of full borders constructed with 0.
+    ; If it's >= 0, proceed to the next section.
+    JGE .next
+    ; If it's -1 this means the 8th scale borders have been drawn and we want to construct the full
+    ; borders on the next draw. Set the number of full borders to 0 and then go to the return.
+    MOV word [0x007DCF90], 0
+    JMP 0x004A7E29
+.next:
+    ; 0x801 indicates that all full borders have been drawn and we should return.
+    CMP word [0x007DCF90], 0x801
+    JGE 0x004A7E29
+    ; Otherwise proceed with the original code which will clear the borders data.
+    JMP @HOOKEND
+
+; Go straight to border construction after clearing the borders data.
+@LJMP 0x004A762F, 0x004A7DD0
+
+; Clear a jump that breaks the border construction loop between each system.
+; This makes sure all the systems are processed before the next draw.
+@CLEAR_NOP 0x004A7E74, 0x004A7E74 + 2

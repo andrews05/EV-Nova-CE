@@ -9,8 +9,8 @@
 // may influence the the block's colour. The govt with the highest influence value is used.
 
 
-// Set the size of the border data to 640x512, which will allow us to draw up to 1280x1024
-#define BORDERS_WIDTH 640
+// Set the size of the border data to 768x512, which will allow us to draw up to 1536x1024
+#define BORDERS_WIDTH 768
 #define BORDERS_SHIFT 9 // Gives 512
 #define BORDERS_HEIGHT (1 << BORDERS_SHIFT)
 
@@ -112,12 +112,10 @@ void constructMapBorders(short a, short b, short c, short d, QDRect *mapRect) {
 // Adjust the border sizing relative to the zoom level to make it more consistent.
 // Do this by lower the scaling factor add then adding a little extra.
 // Also allow the minor borders to be slightly more prominent than before.
-double g_minorBorderScale = 11;
-SETDWORD(0x004AA185 + 2, _g_minorBorderScale);
+SETDOUBLE(0x00575A38, 11); // minor border scale
 SETINST(0x004AA1B6, "ADD ECX, 0x9");
 
-double g_majorBorderScale = 22;
-SETDWORD(0x004AA1D0 + 2, _g_majorBorderScale);
+SETDOUBLE(0x00575A40, 22); // major border scale
 SETINST(0x004AA200, "ADD ECX, 0xC");
 
 
