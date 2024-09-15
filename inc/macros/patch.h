@@ -66,6 +66,20 @@
         ".ascii " #value ";"                        \
         PATCH_END                                   \
     )
+    
+#define SETFLOAT(addr, value)                       \
+    __asm (                                         \
+        PATCH_START(addr)                           \
+        ".float " #value ";"                        \
+        PATCH_END                                   \
+    )
+    
+#define SETDOUBLE(addr, value)                      \
+    __asm (                                         \
+        PATCH_START(addr)                           \
+        ".double " #value ";"                       \
+        PATCH_END                                   \
+    )
 
 #define HOOK_1(addr)                                \
     __asm (                                         \
