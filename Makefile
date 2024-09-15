@@ -24,6 +24,7 @@ OBJS        = rsrc.o \
 			  src/hyperspace-effects.o \
 			  src/macroman-fix.o \
 			  src/map-borders.o \
+			  src/map-borders2.o \
 			  src/mission-bbs-title-fix.o \
 			  src/no-encryption.o \
 			  src/open-pilot-fix.o \

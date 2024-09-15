@@ -9,6 +9,8 @@
 cextern g_gridCellWidth
 cextern g_gridCellHeight
 cextern g_statusBarWidth
+cextern g_mapBordersVisibleWidth
+cextern g_mapBordersVisibleHeight
 
 ; ### functions ###
 
