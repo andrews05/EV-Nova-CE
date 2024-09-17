@@ -9,8 +9,9 @@
 // may influence the the block's colour. The govt with the highest influence value is used.
 
 
-// Set the size of the border data to 768x512, which will allow us to draw up to 1536x1024
-#define BORDERS_WIDTH 768
+// Set the size of the border data to 860x512 which will allow us to draw up to 1720x1024.
+// This is sufficient to cover the map if the dialog filled a 1920x1080 screen.
+#define BORDERS_WIDTH 860
 #define BORDERS_SHIFT 9 // Gives 512
 #define BORDERS_HEIGHT (1 << BORDERS_SHIFT)
 
