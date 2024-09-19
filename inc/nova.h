@@ -32,7 +32,7 @@ typedef struct QDColor {
 } QDColor;
 
 typedef struct NVRawBitmap {
-    void *buffer;
+    BYTE *buffer;
     void *palette;
     int unknown;
     int width;
