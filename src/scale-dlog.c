@@ -40,10 +40,9 @@ void initFontsAndScaleFactor() {
     g_gridCellWidth = ROUND(g_gridCellWidth * g_scaleFactor);
     g_gridCellHeight = ROUND(g_gridCellHeight * g_scaleFactor);
     g_gridThumbSize = ROUND(g_gridThumbSize * g_scaleFactor);
-    // Status bar width should be kept to a multiple of 2
-    g_statusBarWidth = ROUND(g_statusBarWidth * g_scaleFactor / 2) * 2;
+    g_statusBarWidth = ROUND(g_statusBarWidth * g_scaleFactor);
     g_listItemBaseHeight = ROUND(g_listItemBaseHeight * g_scaleFactor);
-    
+
     // Original function call replaced by the patch
     ((void (*)())0x004BC3E0)();
 }

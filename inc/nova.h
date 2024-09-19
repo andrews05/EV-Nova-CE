@@ -128,7 +128,6 @@ void nv_Free(void *ptr);
 int nv_SetupScreen(int width, int height, int depth, int flags);
 void nv_WriteLogFormat(void *logFile, char *format, ...);
 void nv_FlushLog(void *logFile);
-int nv_ConfigureBitmap(void *ptr, int unknown1, int depth, QDRect *bounds);
 int *nv_ProcessDitlEntry(int itemType, int resourceId, int unknown1, int unknown2,
     QDRect *boundsRect, char *text, int textLength, void *output);
 void nv_DrawPict(void *pict, QDRect *frame);

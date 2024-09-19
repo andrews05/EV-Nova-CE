@@ -44,7 +44,7 @@ setcglob 0x00448020, nv_ExecuteNCBSetExpression
 setcglob 0x004622F0, nv_DrawPStringCentered
 setcglob 0x00469CA0, nv_KeyCheck
 setcglob 0x0046AAD0, nv_PlaySound
-setcglob 0x0046F740, nv_ConfigureBitmap
+setcglob 0x0046F500, nv_LoadFilesInFolder
 setcglob 0x004976B0, nv_ShowAlert
 setcglob 0x00497900, nv_ShowPrompt
 setcglob 0x004B45E0, nv_InitializeMonitor
@@ -62,7 +62,6 @@ setcglob 0x004D9680, nv_ConvertMacPathToWin
 setcglob 0x004ECBD0, nv_SetupScreen
 setcglob 0x004F0EB0, nv_WriteLogFormat
 setcglob 0x004F1080, nv_FlushLog
-setcglob 0x0046f500, nv_LoadFilesInFolder
 setcglob 0x004D2440, nv_Wndproc
 
 ; imports
