@@ -16,6 +16,7 @@ OBJS        = rsrc.o \
 			  sym.o \
 			  src/imports.o \
 			  src/winmain.o \
+			  src/blitters.o \
 			  src/debug-mode.o \
 			  src/dynamic-resolution.o \
 			  src/font-substitution-fix.o \

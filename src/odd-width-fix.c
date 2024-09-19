@@ -46,7 +46,7 @@ int createContextFixed(NVContext **context, int depth, QDRect *bounds) {
     int result = ((int (*)(NVContext**, int, QDRect*))0x004BB870)(context, depth, bounds);
     // Ensure bytesPerRow is set correctly by querying the bitmap
     BITMAP bitmap;
-    GetObject((*context)->hbitmap, sizeof(BITMAP), &bitmap);
+    GetObject((*context)->bitmap.hbitmap, sizeof(BITMAP), &bitmap);
     (*context)->bitmap.raw.bytesPerRow = bitmap.bmWidthBytes;
     return result;
 }

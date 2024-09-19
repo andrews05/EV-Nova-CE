@@ -41,13 +41,16 @@ typedef struct NVBitmap {
     QDRect bounds;
     int bitDepth;
     NVRawBitmap raw;
+    // These actually belong to the NVContext and are not strictly safe to access here
+    HDC hdc;
+    HBITMAP hbitmap;
 } NVBitmap;
 
 typedef struct NVContext {
     int active;
     NVBitmap bitmap;
-    HDC hdc;
-    HBITMAP hbitmap;
+    // HDC hdc;
+    // HBITMAP hbitmap;
     QDColor fgColor;
     QDColor bgColor;
     short posY;
