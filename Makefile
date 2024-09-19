@@ -10,11 +10,12 @@ NFLAGS     ?= -Iinc -f elf
 CFLAGS     ?= -Iinc -O2 -march=pentium4 -Wall -masm=intel
 CXXFLAGS   ?= -Iinc -O2 -march=pentium4 -Wall -masm=intel
 
-LIBS        = -lgdi32 -lcnc_ddraw
+LIBS        = -lgdi32 -lgdiplus -lcnc_ddraw
 
 OBJS        = rsrc.o \
 			  sym.o \
 			  src/winmain.o \
+			  src/blitters.o \
 			  src/debug-mode.o \
 			  src/dynamic-resolution.o \
 			  src/font-substitution-fix.o \
