@@ -40,14 +40,13 @@ SETCGLOB(0x00870DF8, g_nv_cursor);
 // functions
 
 SETCGLOB(0x00503F30, OriginalCRTStartup);
-SETCGLOB(0x004D2A80, WinMain);
-
+SETCGLOB(0x004D2A80, nv_WinMain);
 SETCGLOB(0x00447F20, nv_EvaluteNCBTestExpression);
 SETCGLOB(0x00448020, nv_ExecuteNCBSetExpression);
 SETCGLOB(0x004622F0, nv_DrawPStringCentered);
 SETCGLOB(0x00469CA0, nv_KeyCheck);
 SETCGLOB(0x0046AAD0, nv_PlaySound);
-SETCGLOB(0x0046F740, nv_ConfigureBitmap);
+SETCGLOB(0x0046f500, nv_LoadFilesInFolder);
 SETCGLOB(0x004976B0, nv_ShowAlert);
 SETCGLOB(0x00497900, nv_ShowPrompt);
 SETCGLOB(0x004B45E0, nv_InitializeMonitor);
@@ -64,7 +63,6 @@ SETCGLOB(0x004D9680, nv_ConvertMacPathToWin);
 SETCGLOB(0x004ECBD0, nv_SetupScreen);
 SETCGLOB(0x004F0EB0, nv_WriteLogFormat);
 SETCGLOB(0x004F1080, nv_FlushLog);
-SETCGLOB(0x0046f500, nv_LoadFilesInFolder);
 SETCGLOB(0x004D2440, nv_Wndproc);
 
 // imports
