@@ -36,27 +36,17 @@
 // }
 
 
-// Fix text rendering in odd-width dialogs
-CALL(0x004CF83E, _configureBitmap_evenPadded);
-int configureBitmap_evenPadded(void *ptr, int unknown1, int depth, QDRect *bounds) {
-    QDRect newBounds = *bounds;
-    // Ensure width is a multiple of 2 by incrementing the right edge as necessary
-    // Nothing is drawn to the extra column so there are no side effects
-    if ((newBounds.right - newBounds.left) % 2) {
-        newBounds.right++;
-    }
-    return nv_ConfigureBitmap(ptr, unknown1, depth, &newBounds);
-}
-
-
-// Fix text rendering in odd-width resolutions
-CALL(0x004162A0, _configureGameBounds_evenTruncated);
-void configureGameBounds_evenTruncated() {
-    QDRect *bounds = (QDRect *)0x0085F67E;
-    bounds->top = 0;
-    bounds->left = 0;
-    bounds->bottom = g_nv_screenHeight;
-    // Ensure width is a multiple of 2 by truncating the right edge
-    // This results in the game rendering at an even width, with an extra blank column on the right
-    bounds->right = g_nv_screenWidth & 0xFFFE;
+// Intercept all calls to create context
+CALL(0x0046F7A3, _createContextFixed);
+CALL(0x00476580, _createContextFixed);
+CALL(0x0047900C, _createContextFixed);
+CALL(0x004790C2, _createContextFixed);
+int createContextFixed(NVContext **context, int depth, QDRect *bounds) {
+    // Call the original function
+    int result = ((int (*)(NVContext**, int, QDRect*))0x004BB870)(context, depth, bounds);
+    // Ensure bytesPerRow is set correctly by querying the bitmap
+    BITMAP bitmap;
+    GetObject((*context)->hbitmap, sizeof(BITMAP), &bitmap);
+    (*context)->bitmap.raw.bytesPerRow = bitmap.bmWidthBytes;
+    return result;
 }
