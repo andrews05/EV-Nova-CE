@@ -4,17 +4,16 @@ INPUT       = EV_Nova.dat
 OUTPUT      = EV\ Nova.exe
 LDS         = EV_Nova.lds
 
-LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -nostdlib
+LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static
 ASFLAGS     = -Iinc
 NFLAGS      = -Iinc -f elf
-CFLAGS      = -Iinc -O2 -march=i486 -Wall -masm=intel
-CXXFLAGS    = -Iinc -O2 -march=i486 -Wall -masm=intel
+CFLAGS      = -Iinc -O2 -march=pentium4 -Wall -masm=intel
+CXXFLAGS    = -Iinc -O2 -march=pentium4 -Wall -masm=intel
 
-LIBS        = -luser32 -ladvapi32 -lshell32 -lmsvcrt-os -lkernel32 -lgdi32 -lcnc_ddraw
+LIBS        = -lmsvcrt-os -lgdi32 -lcnc_ddraw
 
 OBJS        = rsrc.o \
 			  sym.o \
-			  src/imports.o \
 			  src/winmain.o \
 			  src/debug-mode.o \
 			  src/dynamic-resolution.o \
@@ -51,9 +50,7 @@ WINDRES    ?= i686-w64-mingw32-windres
 PETOOL     ?= petool
 NASM       ?= nasm
 
-IMPORTDIR   =  1 0x18F000 7670
-TLSDIR      =  9 0x0 0
-IAT         = 12 0x0 0
+IAT         = 12 0x18F5C8 1220
 
 all: $(OUTPUT)
 
@@ -68,10 +65,8 @@ rsrc.o: $(INPUT)
 
 $(OUTPUT): $(OBJS)
 	$(CXX) $(LDFLAGS) -T $(LDS) -o "$@" $^ $(LIBS)
-	$(PETOOL) setdd "$@" $(IMPORTDIR) || ($(RM) "$@" && exit 1)
-	$(PETOOL) setdd "$@" $(TLSDIR) || ($(RM) "$@" && exit 1)
 	$(PETOOL) setdd "$@" $(IAT) || ($(RM) "$@" && exit 1)
-	$(PETOOL) setc "$@" .p_text 0x60000020 || ($(RM) "$@" && exit 1)
+	$(PETOOL) setsc "$@" .p_text 0x60000020 || ($(RM) "$@" && exit 1)
 	$(PETOOL) patch "$@" || ($(RM) "$@" && exit 1)
 	$(STRIP) -R .patch "$@" || ($(RM) "$@" && exit 1)
 #	$(PETOOL) dump "$(INPUT)"

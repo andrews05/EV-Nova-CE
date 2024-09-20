@@ -3,6 +3,10 @@
 
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // This header works with sym.asm which defines the Vanilla symbols
 // This header will be split up as it becomes larger
 
@@ -121,7 +125,7 @@ extern HCURSOR g_nv_cursor;
 
 // ### Functions ###
 
-int APIENTRY nv_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow);
+int OriginalCRTStartup(void);
 
 void *nv_Alloc(size_t count);
 void nv_Free(void *ptr);
@@ -147,5 +151,9 @@ bool nv_EvaluteNCBTestExpression(char *expression);
 void nv_ConvertMacPathToWin(char *winPath, char *macPath);
 int nv_LoadFilesInFolder(char *folderPath, char *extension, bool log);
 LRESULT CALLBACK nv_Wndproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

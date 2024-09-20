@@ -6,8 +6,7 @@
    are permitted in any medium without royalty provided the copyright
    notice and this notice are preserved.  */
 
-start = 0x503F30;
-ENTRY(start);
+ENTRY(_WinMainCRTStartup);
 SEARCH_DIR("/usr/i686-w64-mingw32/lib");
 SEARCH_DIR("=/w64devkit/i686-w64-mingw32/lib");
 SEARCH_DIR("=/w64devkit/lib");
@@ -26,7 +25,7 @@ SECTIONS
 
   .CRT 0x588000 :
   {
-     EV_Nova.dat(.CRT)
+    EV_Nova.dat(.CRT)
     ___crt_xc_start__ = . ;
     KEEP (*(SORT(.CRT$XC*)))  /* C initialization */
     ___crt_xc_end__ = . ;
@@ -46,7 +45,7 @@ SECTIONS
 
     /DISCARD/                  : { EV_Nova.dat(.rsrc) }
     FILL0             0x589000 : { . = . + 0x5534; }
-    .idata            0x58F000 : { EV_Nova.dat(.idata) }
+    .o_idata          0x58F000 : { EV_Nova.dat(.idata) }
     /DISCARD/                  : { EV_Nova.dat(.bss) }
     .bss              0x591000 : { . = . + 0x2DFE13; }
     /DISCARD/                  : { EV_Nova.dat(.reloc) }
@@ -148,7 +147,7 @@ SECTIONS
     *(COMMON)
     __bss_end__ = . ;
   }
-  .edata BLOCK(__section_alignment__) :
+  .p_edata BLOCK(__section_alignment__) :
   {
     *(.edata)
   }
@@ -161,11 +160,47 @@ SECTIONS
      *(.note.GNU-stack)
      *(.gnu.lto_*)
   }
-  .p_idata BLOCK(__section_alignment__) :
+  .idata BLOCK(__section_alignment__) :
   {
-    __p_idata_start__ = . ;
     /* This cannot currently be handled with grouped sections.
         See pe.em:sort_sections.  */
+
+    /* ADVAPI32.dll */
+    LONG (0x18F104); LONG (0x0); LONG (0x0); LONG (0x18FB08); LONG (0x18F5C8);
+
+    /* COMCTL32.dll */
+    LONG (0x18F124); LONG (0x0); LONG (0x0); LONG (0x18FB16); LONG (0x18F5E8);
+
+    /* GDI32.dll */
+    LONG (0x18F12C); LONG (0x0); LONG (0x0); LONG (0x18FFAA); LONG (0x18F5F0);
+
+    /* KERNEL32.dll */
+    LONG (0x18F24C); LONG (0x0); LONG (0x0); LONG (0x1906D8); LONG (0x18F710);
+
+    /* OPENGL32.dll */
+    LONG (0x18F3D8); LONG (0x0); LONG (0x0); LONG (0x1906E6); LONG (0x18F89C);
+
+    /* SHELL32.dll */
+    LONG (0x18F3DC); LONG (0x0); LONG (0x0); LONG (0x190706); LONG (0x18F8A0);
+
+    /* USER32.dll */
+    LONG (0x18F3E4); LONG (0x0); LONG (0x0); LONG (0x190C90); LONG (0x18F8A8);
+
+    /* VERSION.dll */
+    LONG (0x18F52C); LONG (0x0); LONG (0x0); LONG (0x190C9C); LONG (0x18F9F0);
+
+    /* WINMM.dll */
+    LONG (0x18F530); LONG (0x0); LONG (0x0); LONG (0x190D7E); LONG (0x18F9F4);
+
+    /* WSOCK32.dll */
+    LONG (0x18F560); LONG (0x0); LONG (0x0); LONG (0x190D88); LONG (0x18FA24);
+
+    /* comdlg32.dll */
+    LONG (0x18F5B0); LONG (0x0); LONG (0x0); LONG (0x190DC0); LONG (0x18FA74);
+
+    /* iconv.dll */
+    LONG (0x18F5BC); LONG (0x0); LONG (0x0); LONG (0x190DEC); LONG (0x18FA80);
+
     KEEP (SORT(*)(.idata$2))
     KEEP (SORT(*)(.idata$3))
     /* These zeroes mark the end of the import list.  */
@@ -176,24 +211,6 @@ SECTIONS
     __IAT_end__ = .;
     KEEP (SORT(*)(.idata$6))
     KEEP (SORT(*)(.idata$7))
-  }
-  .CRT BLOCK(__section_alignment__) :
-  {
-    ___crt_xc_start__ = . ;
-    KEEP (*(SORT(.CRT$XC*)))  /* C initialization */
-    ___crt_xc_end__ = . ;
-    ___crt_xi_start__ = . ;
-    KEEP (*(SORT(.CRT$XI*)))  /* C++ initialization */
-    ___crt_xi_end__ = . ;
-    ___crt_xl_start__ = . ;
-    KEEP (*(SORT(.CRT$XL*)))  /* TLS callbacks */
-    /* ___crt_xl_end__ is defined in the TLS Directory support code */
-    ___crt_xp_start__ = . ;
-    KEEP (*(SORT(.CRT$XP*)))  /* Pre-termination */
-    ___crt_xp_end__ = . ;
-    ___crt_xt_start__ = . ;
-    KEEP (*(SORT(.CRT$XT*)))  /* Termination */
-    ___crt_xt_end__ = . ;
   }
   /* Windows TLS expects .tls$AAA to be at the start and .tls$ZZZ to be
      at the end of section.  This is important because _tls_start MUST
@@ -446,3 +463,4 @@ SECTIONS
     *(.patch)
   }
 }
+

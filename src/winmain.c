@@ -1,17 +1,18 @@
 #include <windows.h>
 #include "macros/patch.h"
+#include "wine.h"
 #include "nova.h"
-#include "imports.h"
 
-int WinMainCRTStartup(void);
 
 char g_iniPath[MAX_PATH];
 
-CALL(0x00503FE5, _fake_WinMain);
-
-int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-    if (!imports_init()) {
+    if (wine_add_dll_overrides()) {
+        // Newly added dll overrides only work after a restart
+        char exePath[MAX_PATH];
+        GetModuleFileName(NULL, exePath, sizeof(exePath));
+        ShellExecuteA(NULL, "open", exePath, cmdline, NULL, cmdshow);
         return 0;
     }
 
@@ -40,6 +41,5 @@ int APIENTRY fake_WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, in
     _splitpath(exePath, drivePath, dirPath, NULL, NULL);
     _makepath(g_iniPath, drivePath, dirPath, "ddraw", "ini");
 
-    return WinMain(hInst, hInstPrev, cmdline, cmdshow);
-    //return WinMainCRTStartup(); // uncomment for c++
+    return OriginalCRTStartup();
 }
