@@ -56,3 +56,11 @@
 ; Clear a jump that breaks the border construction loop between each system.
 ; This makes sure all the systems are processed before the next draw.
 @CLEAR_NOP 0x004A7E74, 0x004A7E74 + 2
+
+
+; Fix incorrect rect being passed to borders function when clicking the Show Borders button.
+@HOOK 0x004A434A, 0x004A4353
+    LEA EDX, [ESP + 0x10]
+    PUSH EDX
+    CALL 0x004A9D10
+    JMP @HOOKEND
