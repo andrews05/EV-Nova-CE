@@ -4,13 +4,13 @@ INPUT       = EV_Nova.dat
 OUTPUT      = EV\ Nova.exe
 LDS         = EV_Nova.lds
 
-LDFLAGS     = -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static
-ASFLAGS     = -Iinc
-NFLAGS      = -Iinc -f elf
-CFLAGS      = -Iinc -O2 -march=pentium4 -Wall -masm=intel
-CXXFLAGS    = -Iinc -O2 -march=pentium4 -Wall -masm=intel
+LDFLAGS    ?= -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -mcrtdll=msvcrt-os
+ASFLAGS    ?= -Iinc
+NFLAGS     ?= -Iinc -f elf
+CFLAGS     ?= -Iinc -O2 -march=pentium4 -Wall -masm=intel
+CXXFLAGS   ?= -Iinc -O2 -march=pentium4 -Wall -masm=intel
 
-LIBS        = -lmsvcrt-os -lgdi32 -lcnc_ddraw
+LIBS        = -lgdi32 -lcnc_ddraw
 
 OBJS        = rsrc.o \
 			  sym.o \
@@ -40,6 +40,7 @@ OBJS        = rsrc.o \
 			  src/windows-keys-fix.o \
 			  src/k.o \
 			  src/wndproc.o \
+			  src/vsnprintf.o \
 			  src/wine.o
 
 CC          = i686-w64-mingw32-gcc
@@ -69,8 +70,6 @@ $(OUTPUT): $(OBJS)
 	$(PETOOL) setsc "$@" .p_text 0x60000020 || ($(RM) "$@" && exit 1)
 	$(PETOOL) patch "$@" || ($(RM) "$@" && exit 1)
 	$(STRIP) -R .patch "$@" || ($(RM) "$@" && exit 1)
-#	$(PETOOL) dump "$(INPUT)"
-#	$(PETOOL) dump "$@"
 
 clean:
 	$(RM) $(OUTPUT) $(OBJS)
