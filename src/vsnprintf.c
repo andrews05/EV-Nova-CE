@@ -1,4 +1,6 @@
 /**
+ * This file is required to workaround a "undefined reference to `__ms_vsnprintf" bug on macOS
+ *
  * This file has no copyright assigned and is placed in the Public Domain.
  * This file is part of the mingw-w64 runtime package.
  * No warranty is given; refer to the file DISCLAIMER.PD within this package.
