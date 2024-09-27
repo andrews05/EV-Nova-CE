@@ -25,6 +25,7 @@ OBJS        = rsrc.o \
 			  src/map-borders.o \
 			  src/map-borders2.o \
 			  src/mission-bbs-title-fix.o \
+			  src/nebu-sizes.o \
 			  src/no-encryption.o \
 			  src/open-pilot-fix.o \
 			  src/odd-width-fix.o \
