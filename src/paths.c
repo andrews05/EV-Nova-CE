@@ -1,9 +1,11 @@
 #include <windows.h>
+#include <stdio.h>
+#include <shlobj.h>
 #include "macros/patch.h"
 #include "nova.h"
 
-// Change some paths to be relative to CWD instead of the exe
-// This allows loading data from an alternate directory
+// Change some paths to be relative to CWD to allow loading data from an alternate directory
+// This also configures the ".nplay" file extension to open EV Nova using the directory of the file
 
 
 bool g_novaFilesFallback = false;
@@ -60,3 +62,41 @@ SETDWORD(0x004BD182 + 2, 0x0056DDC9 + 2); // Pilots
 
 // Remove warning about missing music file
 CLEAR(0x004D2B1E, 0x90, 0x004D2B1E + 5);
+
+
+// Convenience function to set a registry value
+void setRegValue(const char *name, const char *valueName, const char *value) {
+    HKEY newKey;
+    RegCreateKeyExA(HKEY_CURRENT_USER, name, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &newKey, NULL);
+    RegSetValueExA(newKey, valueName, 0, REG_SZ, (BYTE *)value, strlen(value) + 1);
+    RegCloseKey(newKey);
+}
+
+// Handle opening of .nplay files
+CALL(0x00503F99, _parseCommandLine);
+void parseCommandLine() {
+    // Get path to exe
+    char exePath[MAX_PATH];
+    GetModuleFileName(NULL, exePath, sizeof(exePath));
+
+    // Store the app path in the registry to allow scripts to locate EV Nova
+    setRegValue("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\EV Nova.exe", NULL, exePath);
+
+    // Configure the .nplay file association
+    char temp[MAX_PATH + 7];
+    setRegValue("Software\\Classes\\.nplay", NULL, "EVNova.Play.1");
+    setRegValue("Software\\Classes\\EVNova.Play.1", NULL, "Play EV Nova");
+    sprintf(temp, "\"%s\" \"%%1\"", exePath);
+    setRegValue("Software\\Classes\\EVNova.Play.1\\shell\\open\\command", NULL, temp);
+    sprintf(temp, "\"%s\",-203", exePath); // See res.rc
+    setRegValue("Software\\Classes\\EVNova.Play.1\\DefaultIcon", NULL, temp);
+    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
+
+    // Call the original function to parse command line arguments
+    ((void (*)())0x00508880)();
+
+    // Change working directory to first argument (the .nplay file) if provided
+    if (g_nv_argc > 1) {
+        SetCurrentDirectory(g_nv_argv[1]);
+    }
+}

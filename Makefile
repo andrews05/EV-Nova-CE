@@ -22,6 +22,7 @@ OBJS        = res/res.o \
 			  src/hotkeys.o \
 			  src/hotkeys-x2.o \
 			  src/hyperspace-effects.o \
+			  src/k.o \
 			  src/macroman-fix.o \
 			  src/map-borders.o \
 			  src/map-borders2.o \
@@ -40,7 +41,6 @@ OBJS        = res/res.o \
 			  src/widescreen-roid-fix.o \
 			  src/windowed-toggle.o \
 			  src/windows-keys-fix.o \
-			  src/k.o \
 			  src/wndproc.o \
 			  src/vsnprintf.o \
 			  src/wine.o
