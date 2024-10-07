@@ -12,7 +12,7 @@ CXXFLAGS   ?= -Iinc -O2 -march=pentium4 -Wall -masm=intel
 
 LIBS        = -lgdi32 -lgdiplus -lcnc_ddraw
 
-OBJS        = rsrc.o \
+OBJS        = res/res.o \
 			  sym.o \
 			  src/winmain.o \
 			  src/blitters.o \
