@@ -1,4 +1,4 @@
-EV Nova Community Edition r3
+EV Nova Community Edition r4
 
 
 Patch Notes
@@ -7,6 +7,11 @@ Patch Notes
 • Game resolution can be set in the ddraw.ini file. By default it will match your desktop
   resolution.
 • Experimental UI scaling can be set in the ddraw.ini file.
+• Image blitting has been reimplemented using GDI+, resolving performance issues on Apple Silicon
+  as well as providing improved scaling quality and 16-bit dithering.*
+• Map borders draw in a much larger area, supporting fullscreen map sizes up to 1920x1080.
+  Additionally, the drawing has been tweaked to ensure borders remain visible when zoomed out.
+• Nebula image selection prefers larger images over smaller ones, for improved display quality.
 • Radar interference works again and also supports lower depth ppats as used in the.
 • Asteroids will always work regardless of the resolution. No extra plug-ins required.
 • Opening a pilot no longer switches to windowed mode temporarily.
@@ -15,24 +20,38 @@ Patch Notes
   Charcoal to work when installed.
 • Certain non-ascii characters are now displayed correctly (e.g. in The Frozen Heart plug-in).
 • The "Run in a window" setting will immediately switch mode, functioning the same as alt-F.
-• Odd width resolutions are now semi-supported (by leaving a blank column on the right edge).
-• Dialogs are no longer forced to even dimensions. This prevents scaling the background image
-  unnecessarily, resolving a performance issue on Apple Silicon.
+• Odd width resolutions are now supported.
+• Dialogs are no longer forced to even dimensions.
 • Mission title in the BBS no longer renders poorly when running in Wine.
 • Particle cap has been increased from 1,024 to 100,000.
 • Additional keyboard shortcuts from Mac Nova 1.1 have been added:
     - Spacebar to open (and close) ship info in the shipyard
     - B to show/hide borders in the map
     - C to clear route in the map (previously centered map, but Spacebar still does this)
+• The hotkey for "x2" mode can be overridden in the ddraw.ini file.
 • The app path is written to the registry, allowing scripts etc to locate the exe.
-• The game will look for its Files, Plug-ins & Pilots in the "current directory", which may be set
-  to a location other than the EV Nova folder to facilitate running total conversions. The following
-  are some possible ways of doing this (you only need to do one of these):
-    - Copy the "TC Launcher.vbs" script file to the TC's folder. Double-click to run.
-    - Create a shortcut to EV Nova.exe, get properties and set "Start in" to the path to the TC.
+• The game supports loading data files from alternative locations (see details below).
 • Hyperspace Effects preference is now visible and will disable the white flash when turned off.
 • Pilot files are no longer encrypted.
+• Game icon has been replaced with the higher-quality version from Mac Nova.
 • Debug mode can be enabled by pressing Alt+Home (see details below).
+
+* Note: wine users should install gdiplus from winetricks for best results.
+
+
+Playing Total Converversions (TCs)
+
+EV Nova CE will load Files, Plug-ins & Pilots from the "current directory". This is normally the
+"EV Nova" folder but to facilitate playing TCs and other major plug-ins, the game provides a couple
+of mechanisms for explicitly changing this:
+• Passing the target folder path as the first argument to EV Nova.exe.
+• Creating a ".nplay" file in the target folder which can be double-clicked to launch EV Nova.
+
+Additional notes:
+• If "Nova Files" is not found in the target folder, it will fallback to the default copy. This
+  allows plug-ins that aren't strictly "total conversions" to also use this mechanism.
+• If "Nova Plug-ins" is not found in the target folder, it will try to use "Plug-ins" instead.
+  This improves compatibility with plug-ins created for Mac Nova that use this folder name.
 
 
 Debug Mode Effects
