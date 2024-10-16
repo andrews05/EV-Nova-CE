@@ -67,7 +67,7 @@ extern "C" {
             // Stride must be a multiple of 4 but the source isn't.
             // We need to copy the data into a new buffer line by line.
             stride += 4 - (stride % 4);
-            BYTE buffer[stride * source->raw.height];
+            BYTE *buffer = (BYTE*)malloc(stride * source->raw.height);
             BYTE *output = buffer;
             BYTE *input = source->raw.buffer;
             for (int i = 0; i < source->raw.height; i++) {
@@ -77,6 +77,7 @@ extern "C" {
             }
             Bitmap sBitmap(source->raw.width, source->raw.height, stride, pixelFormat, buffer);
             blit(&sBitmap, dest, srcRect, destRect);
+            free(buffer);
         } else {
             Bitmap sBitmap(source->raw.width, source->raw.height, stride, pixelFormat, source->raw.buffer);
             blit(&sBitmap, dest, srcRect, destRect);
@@ -99,7 +100,7 @@ extern "C" {
         }
         // Despite being labelled RGB, the bitmap we create actually operates as BGR.
         // We need to convert our RGB source data to BGR pixel by pixel.
-        BYTE buffer[stride * source->raw.height];
+        BYTE *buffer = (BYTE*)malloc(stride * source->raw.height);
         BYTE *output = buffer;
         BYTE *input = source->raw.buffer;
         for (int i = 0; i < source->raw.height; i++) {
@@ -113,6 +114,7 @@ extern "C" {
         }
         Bitmap sBitmap(source->raw.width, source->raw.height, stride, PixelFormat24bppRGB, buffer);
         blit(&sBitmap, dest, srcRect, destRect);
+        free(buffer);
     }
 
     SETDWORD(0x00575B80, _blit32); // 32 to 16
