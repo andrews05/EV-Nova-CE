@@ -4,7 +4,7 @@ INPUT       = EV_Nova.dat
 OUTPUT      = EV\ Nova.exe
 LDS         = EV_Nova.lds
 
-LDFLAGS    ?= -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -mcrtdll=msvcrt-os
+LDFLAGS    ?= -Wl,--large-address-aware -Wl,--subsystem=windows -Wl,--disable-nxcompat -Wl,--disable-reloc-section -Wl,--enable-stdcall-fixup -static -mcrtdll=msvcrt-os
 ASFLAGS    ?= -Iinc
 NFLAGS     ?= -Iinc -f elf
 CFLAGS     ?= -Iinc -O2 -march=pentium4 -Wall -masm=intel
@@ -26,6 +26,7 @@ OBJS        = res/res.o \
 			  src/macroman-fix.o \
 			  src/map-borders.o \
 			  src/map-borders2.o \
+			  src/memory-pool.o \
 			  src/mission-bbs-title-fix.o \
 			  src/nebu-sizes.o \
 			  src/no-encryption.o \
