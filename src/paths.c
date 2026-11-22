@@ -106,6 +106,15 @@ void parseCommandLine() {
 
     // Change working directory to first argument (the .nplay file) if provided
     if (g_nv_argc > 1) {
-        SetCurrentDirectory(g_nv_argv[1]);
+        if (!SetCurrentDirectory(g_nv_argv[1])) {
+            // Try to get the parent directory of the path
+            char* filePart;
+            int result = GetFullPathName(g_nv_argv[1], MAX_PATH, temp, &filePart);
+            if (result > 0) {
+                // Terminate the string at the file part to get the directory path
+                *filePart = '\0';
+                SetCurrentDirectory(temp);
+            }
+        }
     }
 }
