@@ -149,6 +149,7 @@ void nv_ExecuteNCBSetExpression(char *expression);
 bool nv_EvaluteNCBTestExpression(char *expression);
 void nv_ConvertMacPathToWin(char *winPath, char *macPath);
 int nv_LoadFilesInFolder(char *folderPath, char *extension, bool log);
+int nv_CountFilesInFolder(char *folderPath, char *extension, bool log);
 LRESULT CALLBACK nv_Wndproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 #ifdef __cplusplus

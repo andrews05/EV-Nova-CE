@@ -23,8 +23,8 @@ int loadNovaFilesFallback(char *folderPath, char *extension, bool log) {
 
 // When Nova Plug-ins was not found in CWD, remove "Nova " prefix and try again
 // This matches the name in Mac Nova and is helpful for compatibility
-CALL(0x004BD2D6, _loadNovaPluginsFallback);
-int loadNovaPluginsFallback(char *folderPath, char *extension, bool log) {
+CALL(0x004BD2D6, _loadNovaPlugins);
+int loadNovaPlugins(char *folderPath, char *extension, bool log) {
     int error = nv_LoadFilesInFolder(folderPath, extension, log);
     if (error) {
         error = nv_LoadFilesInFolder(folderPath + 5, extension, log);
@@ -32,6 +32,15 @@ int loadNovaPluginsFallback(char *folderPath, char *extension, bool log) {
         // If still not found, the game will create "Nova Plug-Ins" and try again
     }
     return error;
+}
+// The count determines whether the "opening files in Nova Plug-Ins" debug line shows
+CALL(0x004164B6, _countNovaPlugins);
+int countNovaPlugins(char *folderPath, char *extension, bool log) {
+    int count = nv_CountFilesInFolder(folderPath, extension, log);
+    if (count == 0) {
+        count = nv_CountFilesInFolder(folderPath + 5, extension, log);
+    }
+    return count;
 }
 
 // Ensure movies and music are loaded from appropriate nova files dir

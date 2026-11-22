@@ -47,6 +47,7 @@ SETCGLOB(0x004622F0, nv_DrawPStringCentered);
 SETCGLOB(0x00469CA0, nv_KeyCheck);
 SETCGLOB(0x0046AAD0, nv_PlaySound);
 SETCGLOB(0x0046f500, nv_LoadFilesInFolder);
+SETCGLOB(0x0046f690, nv_CountFilesInFolder);
 SETCGLOB(0x004976B0, nv_ShowAlert);
 SETCGLOB(0x00497900, nv_ShowPrompt);
 SETCGLOB(0x004B45E0, nv_InitializeMonitor);
