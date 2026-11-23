@@ -20,6 +20,7 @@
 
 bool g_scaleEnabled = false;
 double g_scaleFactor = 0;
+int g_controlLabelWidth = 100;
 int g_gridCellWidth = 83; // Used in scale-grid.asm
 int g_gridCellHeight = 54;
 int g_gridThumbSize = 32;
@@ -37,6 +38,7 @@ void initFontsAndScaleFactor() {
         g_scaleFactor = 1.0;
     }
     g_scaleEnabled = g_scaleFactor != 1.0;
+    g_controlLabelWidth = ROUND((g_controlLabelWidth-5) * g_scaleFactor) + 5;
     g_gridCellWidth = ROUND(g_gridCellWidth * g_scaleFactor);
     g_gridCellHeight = ROUND(g_gridCellHeight * g_scaleFactor);
     g_gridThumbSize = ROUND(g_gridThumbSize * g_scaleFactor);
@@ -433,3 +435,5 @@ void setEscortMenuTextOrigin(int x, int y) {
     g_nv_currentContext->posX = x;
     g_nv_currentContext->posY = scale(y);
 }
+
+// SETDWORD(0x004ceb78 + 3, 0x32C);

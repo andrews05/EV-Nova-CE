@@ -39,3 +39,15 @@
     DIV DL
     MOVZX EDI, AL
     JMP @HOOKEND
+
+; Control label
+@HOOK 0x004D0EE3, 0x004D0EE9
+    MOV AX, word [g_controlLabelWidth]
+    ADD word [ESP + 0x3A], AX
+    JMP @HOOKEND
+
+; Popup menu
+@HOOK 0x004CF20E, 0x004CF214
+    MOV BX, word [g_controlLabelWidth]
+    ADD word [ESP + 0x16], BX
+    JMP @HOOKEND
