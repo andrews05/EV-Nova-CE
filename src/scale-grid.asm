@@ -51,3 +51,6 @@
     MOV BX, word [g_controlLabelWidth]
     ADD word [ESP + 0x16], BX
     JMP @HOOKEND
+
+; Change control label to the CNTL title instead of the MENU title
+@SET 0x004CEB78, { MOV ECX, [ESP + 0x32C]}
