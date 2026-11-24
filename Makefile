@@ -23,6 +23,7 @@ OBJS        = res/res.o \
 			  src/hotkeys-x2.o \
 			  src/hyperspace-effects.o \
 			  src/k.o \
+			  src/limits.o \
 			  src/macroman-fix.o \
 			  src/map-borders.o \
 			  src/map-borders2.o \
@@ -32,7 +33,6 @@ OBJS        = res/res.o \
 			  src/no-encryption.o \
 			  src/open-pilot-fix.o \
 			  src/odd-width-fix.o \
-			  src/particle-cap.o \
 			  src/paths.o \
 			  src/ppat-decoder.o \
 			  src/scale-dlog.o \
