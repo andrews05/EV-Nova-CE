@@ -3,6 +3,7 @@
 
 // vars
 
+SETCGLOB(0x005912B4, g_nv_weaponTypes);
 SETCGLOB(0x005914D8, g_nv_runInAWindow);
 SETCGLOB(0x005914D9, g_nv_runInAWindowPref);
 SETCGLOB(0x005914E0, g_nv_noHyperspaceEffects);

@@ -1,4 +1,6 @@
 %include "macros/patch.inc"
+%include "macros/datatypes.inc"
+%include "nova.inc"
 
 ; Fix ship speed values displaying one below their nominal value
 ; due to floating-point quantization followed by truncation.
@@ -46,3 +48,31 @@
     cvttss2si ecx, dword [esp+0x924]
     db 0xEB, 0x39
 @ENDPATCH
+
+
+; Fix mass calculation in shipyard info for weapons that draw ammo from a
+; different weapon.
+@HOOK 0x004967E1, 0x004967E6
+    ; Save registers
+    PUSH EBX
+    PUSH ECX
+    ; Load the weapon
+    MOV EBX, dword [_g_nv_weaponTypes]
+    MOVZX ECX, DI
+    IMUL ECX, ECX, 200 ; 200 bytes per weapon
+    ; Check if guidance is carried ship
+    CMP word [EBX + ECX + 0x06], 99
+    JE .compareIndex
+    ; Get the weapon's ammo type
+    MOV BX, word [EBX + ECX + 0x08]
+    ; Compare with outfit modval
+    CMP BX, word [EAX + EDX + 0x0C]
+    JMP .done
+.compareIndex:
+    ; Original comparison of weapon index with outfit modval
+    CMP DI, word [EAX + EDX + 0x0C]
+.done:
+    ; Restore registers and continue
+    POP ECX
+    POP EBX
+    JMP @HOOKEND

@@ -6,6 +6,7 @@
 
 ; ### vars ###
 
+cextern g_nv_weaponTypes
 cextern g_controlLabelWidth
 cextern g_gridCellWidth
 cextern g_gridCellHeight
