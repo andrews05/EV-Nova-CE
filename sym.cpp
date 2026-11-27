@@ -53,6 +53,7 @@ SETCGLOB(0x004976B0, nv_ShowAlert);
 SETCGLOB(0x00497900, nv_ShowPrompt);
 SETCGLOB(0x004B45E0, nv_InitializeMonitor);
 SETCGLOB(0x004B6920, nv_SetFontSize);
+SETCGLOB(0x004B8CA0, nv_loadStringFromList);
 SETCGLOB(0x004B8D50, nv_ShiftRect);
 SETCGLOB(0x004B9070, nv_DrawPict);
 SETCGLOB(0x004BC760, nv_DrawText);
